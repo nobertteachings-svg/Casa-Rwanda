@@ -3,7 +3,7 @@
 **Project:** Casa Rwanda  
 **Version:** 0.3.1 (production-ready MVP)  
 **Date:** 14 July 2026  
-**Status:** Deployed on Railway — payments gated off for launch (`PAYMENTS_ENABLED=false`); Paystack/Flutterwave still to wire before charged unlocks. Admin services must deploy with **root directory = `admin/`** (do not import sibling packages from admin).
+**Status:** Deployed on Railway — payments gated off for launch (`PAYMENTS_ENABLED=false`); MTN MoMo / Airtel Money still to wire before charged unlocks. Admin services must deploy with **root directory = `admin/`** (do not import sibling packages from admin).
 
 ---
 
@@ -49,7 +49,7 @@ This handover covers everything built to date:
 | Quality attributes map | ✅ `Docs/QUALITY_ATTRIBUTES.md` |
 | Sentry monitoring | ✅ Optional (`SENTRY_DSN`) |
 | Claude AI (listing/search/ID/lease/compare) | ✅ Built (requires API key) |
-| Mobile Money / Paystack Rwanda payments | 🔜 Env + honour-system path; `PAYMENTS_ENABLED=false` at launch |
+| MTN MoMo / Airtel Money Rwanda payments | 🔜 Env + honour-system path; `PAYMENTS_ENABLED=false` at launch |
 
 **Production domain:** `casahomesrwanda.com` (`api.` / `admin.` / apex + `www`)  
 **Source of truth for product requirements:** `Docs/Casa_Product_Plan (1).docx`  

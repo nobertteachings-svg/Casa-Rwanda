@@ -3,6 +3,7 @@ export interface PublicStats {
     available: number;
     residential: number;
     commercial: number;
+    forSale: number;
     total: number;
   };
   users: {
@@ -23,6 +24,7 @@ export interface PublicListingMedia {
 export interface PublicListing {
   houseId: string;
   type: string;
+  propertySubtype?: string;
   propertyCategory: string;
   rent: number;
   location: string;
@@ -68,20 +70,61 @@ export function mediaThumb(item: PublicListingMedia): string {
 }
 
 export function formatCount(n: number): string {
-  return n.toLocaleString();
+  return n.toLocaleString("en-RW");
 }
 
-export function formatRent(amount: number, lang: "en" | "fr"): string {
-  const locale = lang === "fr" ? "fr-FR" : "en-GB";
-  return `${amount.toLocaleString(locale)} RWF`;
+export function isSaleListing(category?: string | null): boolean {
+  return category === "house_sale" || category === "land";
 }
 
-export function propertyLabel(type: string, lang: "en" | "fr"): string {
-  const labels: Record<string, { en: string; fr: string }> = {
-    room: { en: "Room", fr: "Chambre" },
-    apartment: { en: "Apartment", fr: "Appartement" },
-    villa: { en: "Villa", fr: "Villa" },
-    studio: { en: "Studio", fr: "Studio" },
-  };
-  return labels[type]?.[lang] ?? type;
+export function formatRent(amount: number, _lang?: "en" | "fr"): string {
+  return `${amount.toLocaleString("en-RW")} RWF`;
+}
+
+export function formatListingPrice(amount: number, _category?: string | null): string {
+  return formatRent(amount);
+}
+
+export function categoryLabel(category?: string | null): string {
+  if (category === "commercial") return "Commercial";
+  if (category === "house_sale") return "House for sale";
+  if (category === "land") return "Land for sale";
+  return "To rent";
+}
+
+const PROPERTY_LABELS: Record<string, string> = {
+  single_room: "Single room",
+  double_room: "Double room",
+  self_contained: "Self-contained",
+  studio: "Studio",
+  one_bedroom: "1 bedroom",
+  two_bedroom: "2 bedroom",
+  three_bedroom_plus: "3+ bedroom",
+  maisonette: "Maisonette / duplex",
+  bungalow: "House / bungalow",
+  servant_quarter: "Annex",
+  shop: "Shop",
+  office: "Office",
+  warehouse: "Warehouse / depot",
+  restaurant: "Restaurant / bar",
+  salon: "Salon",
+  workshop: "Workshop",
+  showroom: "Showroom",
+  commercial_space: "Commercial space",
+  house: "House",
+  villa: "Villa",
+  bungalow_sale: "Bungalow",
+  maisonette_sale: "Maisonette / duplex",
+  apartment_sale: "Apartment",
+  residential_plot: "Plot (residential)",
+  commercial_plot: "Plot (commercial)",
+  farmland: "Farmland",
+  mixed_use_plot: "Plot (mixed-use)",
+  room: "Single room",
+  apartment: "Self-contained",
+};
+
+export function propertyLabel(type: string, _lang?: "en" | "fr", subtype?: string): string {
+  const key = (subtype || type || "").trim();
+  return PROPERTY_LABELS[key] ?? key.replace(/_/g, " ");
 }

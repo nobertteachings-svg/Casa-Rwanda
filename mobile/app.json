@@ -9,6 +9,7 @@
     "scheme": "casarw",
     "ios": {
       "supportsTablet": true,
+      "icon": "./assets/icon.png",
       "bundleIdentifier": "com.casahomesrwanda.app",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Casa uses your location to find homes near you.",
@@ -108,7 +109,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "REPLACE_WITH_NEW_EXPO_PROJECT_ID"
+        "projectId": "2cb150cb-8ff8-41be-ae7c-dd21335a19c8"
       }
     },
     "owner": "ekfuingei"

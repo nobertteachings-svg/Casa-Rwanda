@@ -51,6 +51,7 @@ export interface ListingDetail {
 export interface LandlordListingSummary {
   houseId: string;
   type: string;
+  propertyCategory: string;
   rent: number;
   location: string;
   status: string;
@@ -139,6 +140,7 @@ export function houseToLandlordSummary(house: House, lang: Language = "en"): Lan
   return {
     houseId: house.house_id,
     type: formatResidentialTypeLabel(house, lang),
+    propertyCategory: house.property_category ?? "residential",
     rent: house.rent,
     location: formatLocation(house.neighbourhood, house.city ?? null, house.town ?? null),
     status: house.status,
@@ -190,12 +192,12 @@ export interface LandlordListingUpdate {
 export function amenityLabels(lang: Language, amenities: ListingAmenities): string[] {
   const fr = lang === "fr";
   const out: string[] = [];
-  if (amenities.water) out.push(fr ? "Eau fiable" : "Water supply");
+  if (amenities.water) out.push(fr ? "Eau courante (WASAC)" : "Running water (WASAC)");
   if (amenities.parking) out.push("Parking");
   if (amenities.fenced) out.push(fr ? "Clôturé / sécurisé" : "Gated / fenced");
-  if (amenities.borehole) out.push(fr ? "Forage / réservoir" : "Borehole / tank");
+  if (amenities.borehole) out.push(fr ? "Citerne / forage" : "Water tank / borehole");
   if (amenities.furnished) out.push(fr ? "Meublé" : "Furnished");
-  if (amenities.security) out.push(fr ? "Sécurité / askari" : "Security / askari");
+  if (amenities.security) out.push(fr ? "Gardien" : "Security guard");
   if (amenities.standbyGenerator) out.push(fr ? "Alim. de secours" : "Backup power");
   return out;
 }

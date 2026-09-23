@@ -39,7 +39,7 @@ export default function LiveStats({ lang }: { lang: Lang }) {
     ? [
         { value: formatCount(listings!.available), label: c.stats.available },
         { value: formatCount(listings!.residential), label: c.stats.residential },
-        { value: formatCount(listings!.commercial), label: c.stats.commercial },
+        { value: formatCount(listings!.forSale ?? listings!.commercial), label: c.stats.forSale },
         { value: formatCount(users!.tenants), label: c.stats.tenants },
         { value: formatCount(users!.landlords), label: c.stats.landlords },
         { value: formatCount(users!.newThisWeek), label: c.stats.newThisWeek },
@@ -58,7 +58,7 @@ export default function LiveStats({ lang }: { lang: Lang }) {
           {stats && (
             <time className="metrics__time" dateTime={stats.updatedAt}>
               {c.stats.updated}{" "}
-              {new Date(stats.updatedAt).toLocaleTimeString(lang === "fr" ? "fr-FR" : "en-GB", {
+              {new Date(stats.updatedAt).toLocaleTimeString("en-RW", {
                 hour: "2-digit",
                 minute: "2-digit",
               })}

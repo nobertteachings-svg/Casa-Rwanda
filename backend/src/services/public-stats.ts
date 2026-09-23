@@ -5,6 +5,7 @@ export interface PublicStats {
     available: number;
     residential: number;
     commercial: number;
+    forSale: number;
     total: number;
   };
   users: {
@@ -22,12 +23,14 @@ export async function getPublicStats(): Promise<PublicStats> {
       available: string;
       residential: string;
       commercial: string;
+      for_sale: string;
       total: string;
     }>(`
       SELECT
         COUNT(*) FILTER (WHERE status = 'active')::text AS available,
         COUNT(*) FILTER (WHERE status = 'active' AND property_category = 'residential')::text AS residential,
         COUNT(*) FILTER (WHERE status = 'active' AND property_category = 'commercial')::text AS commercial,
+        COUNT(*) FILTER (WHERE status = 'active' AND property_category IN ('house_sale', 'land'))::text AS for_sale,
         COUNT(*)::text AS total
       FROM houses
     `),
@@ -55,6 +58,7 @@ export async function getPublicStats(): Promise<PublicStats> {
       available: parseInt(l?.available ?? "0", 10),
       residential: parseInt(l?.residential ?? "0", 10),
       commercial: parseInt(l?.commercial ?? "0", 10),
+      forSale: parseInt(l?.for_sale ?? "0", 10),
       total: parseInt(l?.total ?? "0", 10),
     },
     users: {

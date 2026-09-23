@@ -15,7 +15,7 @@ describe("WhatsApp webhook parsing", () => {
           changes: [
             {
               value: {
-                contacts: [{ wa_id: "2508000000001", profile: { name: "Ada" } }],
+                contacts: [{ wa_id: "2508000000001", profile: { name: "Keza" } }],
                 messages: [
                   {
                     from: "2508000000001",
@@ -37,7 +37,7 @@ describe("WhatsApp webhook parsing", () => {
       from: "2508000000001",
       type: "text",
       text: "hello casa",
-      name: "Ada",
+      name: "Keza",
     });
   });
 
@@ -54,7 +54,7 @@ describe("WhatsApp webhook parsing", () => {
                     id: "loc-1",
                     timestamp: "456",
                     type: "location",
-                    location: { latitude: 3.848, longitude: 11.5021 },
+                    location: { latitude: -1.9441, longitude: 30.0619 },
                   },
                 ],
               },
@@ -66,8 +66,8 @@ describe("WhatsApp webhook parsing", () => {
 
     expect(messages[0]).toMatchObject({
       type: "location",
-      latitude: 3.848,
-      longitude: 11.5021,
+      latitude: -1.9441,
+      longitude: 30.0619,
     });
   });
 

@@ -136,16 +136,23 @@ a {
 .logo-link {
   display: inline-flex;
   align-items: center;
+  gap: 0.65rem;
   flex-shrink: 0;
   min-height: 42px;
 }
 
-.logo {
-  /* Match header WhatsApp control height (~ghost btn / menu toggle). */
+.logo-mark {
   height: 42px;
-  width: auto;
-  /* Keep brand green visible — lockup already has a dark ground. */
-  filter: none;
+  width: 42px;
+  object-fit: contain;
+}
+
+.logo-word {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  color: #fff;
 }
 
 .nav--desktop {
@@ -334,7 +341,7 @@ a {
   inset: 0;
   background:
     linear-gradient(120deg, rgba(9, 28, 22, 0.2), transparent 40%),
-    url("/casa_og.png") center / cover no-repeat;
+    url("/casa_feature_graphic_1024x500.png") center / cover no-repeat;
   transform: scale(1.06);
   animation: hero-drift 18s ease-in-out infinite alternate;
 }
@@ -391,6 +398,14 @@ a {
   letter-spacing: -0.05em;
   line-height: 0.95;
   max-width: 12ch;
+  margin-bottom: 0.45rem;
+}
+
+.hero__welcome {
+  font-size: 0.95rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
   margin-bottom: 1.1rem;
 }
 
@@ -417,6 +432,10 @@ a {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
+}
+
+.hero__actions--secondary {
+  margin-top: 0.85rem;
 }
 
 /* Showcase */
@@ -825,13 +844,26 @@ a {
   color: transparent;
 }
 
+.city-rail-label {
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 1.5rem 0 0.75rem;
+}
+
+.city-rail-label:first-of-type {
+  margin-top: 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
 .city-rail {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
   gap: 0.65rem 1.25rem;
-  border-top: 1px solid var(--line);
-  padding-top: 1.5rem;
 }
 
 .city-rail li {
@@ -912,6 +944,16 @@ a {
   max-width: 28rem;
 }
 
+.cta-band__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.eyebrow--on-dark {
+  color: rgba(255, 255, 255, 0.55);
+}
+
 .help__grid {
   display: grid;
   gap: 0.75rem;
@@ -957,11 +999,22 @@ a {
   gap: 2.5rem;
 }
 
-.footer__logo {
-  height: 26px;
+.footer__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   margin-bottom: 0.9rem;
-  filter: brightness(0) invert(1);
-  opacity: 0.92;
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+}
+
+.footer__mark {
+  height: 32px;
+  width: 32px;
+  object-fit: contain;
 }
 
 .footer__tagline {

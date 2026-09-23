@@ -31,6 +31,7 @@ import TrustBadge from "./TrustBadge";
 import MediaGalleryModal from "./MediaGalleryModal";
 import ConciergeSheet from "./ConciergeSheet";
 import { t } from "../i18n/strings";
+import { listingPriceLabel } from "../utils/listing-price";
 import { callPhone, openDirections, openWhatsApp } from "../utils/contact";
 import { hapticMedium } from "../utils/haptics";
 import { shareListing, shareText } from "../utils/share-listing";
@@ -104,7 +105,7 @@ export default function ListingDetailModal({
   preview,
   lowDataMode = false,
 }: Props) {
-  const lang = "en" as const;
+  const lang = uiLanguage;
   const m = t(lang);
   const { colors, gradient } = useCasaTheme();
   const styles = useMemo(() => makeDetailStyles(colors), [colors]);
@@ -233,7 +234,7 @@ export default function ListingDetailModal({
 
   async function onShare() {
     if (!listing) return;
-    await shareListing(listing.houseId, listing.type, listing.rent, lang);
+    await shareListing(listing.houseId, listing.type, listing.rent, lang, listing.propertyCategory);
   }
 
   async function onLease() {
@@ -364,7 +365,7 @@ export default function ListingDetailModal({
                 language={lang}
               />
               <Text style={styles.location}>{listing.location}</Text>
-              <Text style={styles.rent}>{m.browseRent(listing.rent)}</Text>
+              <Text style={styles.rent}>{listingPriceLabel(listing.rent, listing.propertyCategory, m)}</Text>
               <ListingStatsRow
                 items={[
                   ...(listing.bedroomCount != null

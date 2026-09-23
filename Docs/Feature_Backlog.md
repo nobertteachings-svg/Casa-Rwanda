@@ -204,7 +204,7 @@ CREATE TABLE listing_views (
 
 ### 11. Tenant Trust Badge
 
-**What:** Light verification (ID photo or Paystack-linked KYC). Landlords see "✅ Verified tenant" before engaging.
+**What:** Light verification (ID photo or Mobile Money / bank KYC). Landlords see "✅ Verified tenant" before engaging.
 
 **Why:** Cuts scam risk both ways; landlords more willing to respond.
 
@@ -349,7 +349,7 @@ flowchart TD
 ```
 
 **Hard blockers before any Wave 1+ feature:**
-1. Payment verification (Paystack/Flutterwave)
+1. Payment verification (MTN MoMo / Airtel Money)
 2. `unlocks` table populated on real payment
 3. Cloudinary photo pipeline (for trust features)
 

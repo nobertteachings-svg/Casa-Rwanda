@@ -84,6 +84,7 @@ export interface ListingDetail {
 export interface LandlordListingSummary {
   houseId: string;
   type: string;
+  propertyCategory?: string;
   rent: number;
   location: string;
   status: string;
@@ -160,6 +161,7 @@ export async function requestLoginCode(
   delivery?: "whatsapp_template" | "whatsapp_click" | "review_bypass" | "existing_user";
   whatsappUrl?: string;
   token?: string;
+  phone?: string;
   needsSignup?: boolean;
   user?: CasaUser | null;
 }> {
@@ -172,7 +174,7 @@ export async function requestLoginCode(
 export async function verifyLoginCode(
   phone: string,
   code: string
-): Promise<{ token: string; needsSignup: boolean; user: CasaUser | null }> {
+): Promise<{ token: string; needsSignup: boolean; user: CasaUser | null; phone?: string }> {
   return request("/api/app/auth/verify-code", {
     method: "POST",
     body: JSON.stringify({ phone: normalizePhone(phone), code: code.trim() }),
@@ -256,7 +258,7 @@ export interface GpsSearchParams {
   radius?: number;
   maxRent?: number;
   minRent?: number;
-  propertyCategory?: "residential" | "commercial" | "either";
+  propertyCategory?: "residential" | "commercial" | "house_sale" | "land" | "either";
   propertySubtype?: string;
   minBedrooms?: number;
   minToilets?: number;
@@ -279,7 +281,7 @@ export interface ManualSearchParams {
   place?: string;
   minRent?: number;
   maxRent?: number;
-  propertyCategory?: "residential" | "commercial" | "either";
+  propertyCategory?: "residential" | "commercial" | "house_sale" | "land" | "either";
   propertySubtype?: string;
   minBedrooms?: number;
   minToilets?: number;
@@ -518,6 +520,7 @@ export async function sendAppMessage(
 export interface ShortlistItem {
   houseId: string;
   type: string;
+  propertyCategory?: string;
   rent: number;
   location: string;
   trustTier: string;
@@ -531,6 +534,7 @@ export interface ShortlistItem {
 export interface CompareListingRow {
   houseId: string;
   type: string;
+  propertyCategory?: string;
   rent: number;
   monthsUpfront: number;
   bedroomCount?: number;

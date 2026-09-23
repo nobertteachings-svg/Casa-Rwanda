@@ -19,7 +19,7 @@ export interface FilterValues {
   water: boolean;
   fenced: boolean;
   standbyGenerator: boolean;
-  propertyCategory: "either" | "residential" | "commercial";
+  propertyCategory: "either" | "residential" | "commercial" | "house_sale" | "land";
   sort: SearchSort;
   propertySubtype: string;
   minBedrooms: string;
@@ -126,16 +126,34 @@ export default function FilterSheet({
             <Chip label={m.searchAnyType} active={values.propertyCategory === "either"} onPress={() => patch({ propertyCategory: "either" })} styles={styles} />
             <Chip label={m.searchResidential} active={values.propertyCategory === "residential"} onPress={() => patch({ propertyCategory: "residential" })} styles={styles} />
             <Chip label={m.searchCommercial} active={values.propertyCategory === "commercial"} onPress={() => patch({ propertyCategory: "commercial" })} styles={styles} />
+            <Chip label={m.searchHouseSale} active={values.propertyCategory === "house_sale"} onPress={() => patch({ propertyCategory: "house_sale" })} styles={styles} />
+            <Chip label={m.searchLand} active={values.propertyCategory === "land"} onPress={() => patch({ propertyCategory: "land" })} styles={styles} />
           </View>
 
           <Text style={styles.label}>{m.searchPropertyType}</Text>
           <View style={styles.wrap}>
-            {([
-              ["", m.searchAnyType],
-              ["bedsitter", m.searchSubtypeStudio],
-              ["two_bedroom", m.searchSubtypeApartment],
-              ["bungalow", m.searchSubtypeHouse],
-            ] as const).map(([id, label]) => (
+            {(
+              values.propertyCategory === "house_sale"
+                ? ([
+                    ["", m.searchAnyType],
+                    ["house", m.searchHouseSale],
+                    ["villa", "Villa"],
+                    ["apartment_sale", m.searchSubtypeApartment],
+                  ] as const)
+                : values.propertyCategory === "land"
+                  ? ([
+                      ["", m.searchAnyType],
+                      ["residential_plot", m.searchLand],
+                      ["commercial_plot", m.searchCommercial],
+                      ["farmland", "Farmland"],
+                    ] as const)
+                  : ([
+                      ["", m.searchAnyType],
+                      ["studio", m.searchSubtypeStudio],
+                      ["two_bedroom", m.searchSubtypeApartment],
+                      ["bungalow", m.searchSubtypeHouse],
+                    ] as const)
+            ).map(([id, label]) => (
               <Chip key={id || "any"} label={label} active={values.propertySubtype === id} onPress={() => patch({ propertySubtype: id })} styles={styles} />
             ))}
           </View>

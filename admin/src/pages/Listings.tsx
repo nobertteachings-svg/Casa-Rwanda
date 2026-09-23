@@ -5,7 +5,7 @@ import { Drawer } from "../components/Drawer";
 import { MediaImage } from "../components/MediaImage";
 import { RiskBadge } from "../components/RiskBadge";
 import type { HouseDetail, HouseRow, ListingAiReview } from "../types";
-import { formatRwf, statusClass } from "../utils";
+import { formatListingPrice, statusClass } from "../utils";
 
 export default function Listings() {
   const [searchParams] = useSearchParams();
@@ -145,6 +145,8 @@ export default function Listings() {
             <option value="">All types</option>
             <option value="residential">Residential</option>
             <option value="commercial">Commercial</option>
+            <option value="house_sale">House for sale</option>
+            <option value="land">Land for sale</option>
           </select>
           <button type="button" onClick={() => { setPage(1); load(); }}>Apply</button>
           <button type="button" onClick={() => api.exportCsv("houses")}>Export</button>
@@ -163,7 +165,7 @@ export default function Listings() {
                   <th>ID</th>
                   <th>Landlord</th>
                   <th>Type</th>
-                  <th>Rent</th>
+                  <th>Price</th>
                   <th>Area</th>
                   <th>Status</th>
                   <th>Reviews</th>
@@ -176,7 +178,7 @@ export default function Listings() {
                     <td><code>{house.house_id}</code></td>
                     <td>{house.landlord_phone}</td>
                     <td>{house.property_subtype?.replace(/_/g, " ") ?? house.type}</td>
-                    <td>{formatRwf(house.rent)}</td>
+                    <td>{formatListingPrice(house.rent, house.property_category)}</td>
                     <td>{house.neighbourhood ?? house.city ?? "—"}</td>
                     <td><span className={statusClass(house.status)}>{house.status.replace("_", " ")}</span></td>
                     <td>{house.review_count > 0 ? house.review_count : "—"}</td>
@@ -200,7 +202,7 @@ export default function Listings() {
         {selected && h && (
           <div className="house-detail">
             {selected.risk && <RiskBadge risk={selected.risk} />}
-            <p><strong>{formatRwf(h.rent)}</strong>/mo · {h.property_category} / {h.property_subtype?.replace(/_/g, " ")}</p>
+            <p><strong>{formatListingPrice(h.rent, h.property_category)}</strong> · {h.property_category} / {h.property_subtype?.replace(/_/g, " ")}</p>
             <p>{h.region} → {h.town ?? h.city} → {h.neighbourhood}</p>
             <p>Electricity: {h.electricity_meter ?? "—"} · Trust: {h.trust_tier ?? "standard"}</p>
             <p>

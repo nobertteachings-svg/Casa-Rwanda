@@ -1,4 +1,5 @@
 import { env, isWhatsAppConfigured } from "../config/env.js";
+import { logger } from "../lib/logger.js";
 
 const GRAPH_API = "https://graph.facebook.com/v21.0";
 const API_TIMEOUT_MS = 10_000;
@@ -111,14 +112,114 @@ export async function sendVideoLink(
   return sendWhatsAppPayload(to, { type: "video", video });
 }
 
-/** Returns false so the app falls back to click-to-chat OTP (no Meta auth template required). */
+type TemplateComponent = Record<string, unknown>;
+
+export function authOtpLanguageFallbacks(lang: "en" | "fr"): string[] {
+  const preferred =
+    lang === "fr" ? env.WHATSAPP_OTP_TEMPLATE_LANG_FR : env.WHATSAPP_OTP_TEMPLATE_LANG_EN;
+  const extras = lang === "fr" ? ["fr", "fr_FR", "en", "en_US"] : ["en", "en_US", "en_GB", "fr", "fr_FR"];
+  return [...new Set([preferred, ...extras].map((c) => c.trim()).filter(Boolean))];
+}
+
+export function authOtpTemplateNames(): string[] {
+  const named = env.WHATSAPP_OTP_TEMPLATE_NAME?.trim();
+  return [...new Set([named, "casa_login_code"].filter((n): n is string => Boolean(n)))];
+}
+
+export function authOtpComponentVariants(code: string): TemplateComponent[][] {
+  const bodyParam = { type: "text", text: code };
+  return [
+    [
+      { type: "body", parameters: [bodyParam] },
+      { type: "button", sub_type: "url", index: "0", parameters: [bodyParam] },
+    ],
+    [{ type: "body", parameters: [bodyParam] }],
+  ];
+}
+
+interface WaTemplateInfo {
+  name: string;
+  language: string;
+  status: string;
+  category: string;
+}
+
+let templateCache: { at: number; items: WaTemplateInfo[] } | null = null;
+const TEMPLATE_CACHE_MS = 5 * 60 * 1000;
+
+async function listWabaTemplates(): Promise<WaTemplateInfo[]> {
+  if (!isWhatsAppConfigured || !env.WHATSAPP_BUSINESS_ACCOUNT_ID) return [];
+  if (templateCache && Date.now() - templateCache.at < TEMPLATE_CACHE_MS) {
+    return templateCache.items;
+  }
+
+  const url = `${GRAPH_API}/${env.WHATSAPP_BUSINESS_ACCOUNT_ID}/message_templates?limit=100&fields=name,status,category,language`;
+  const response = await fetchWithTimeout(url, {
+    headers: { Authorization: `Bearer ${env.WHATSAPP_TOKEN}` },
+  });
+  if (!response.ok) {
+    logger.warn("WhatsApp template list failed", { status: response.status });
+    return templateCache?.items ?? [];
+  }
+  const json = (await response.json()) as { data?: WaTemplateInfo[] };
+  const items = json.data ?? [];
+  templateCache = { at: Date.now(), items };
+  return items;
+}
+
+/**
+ * Send login OTP via a Meta authentication/utility template so it arrives
+ * even if the user has never messaged Casa (outside the 24h session window).
+ */
 export async function sendAuthenticationOtp(
-  _to: string,
-  _code: string,
-  _lang: "en" | "fr" = "en",
-  _options?: { discover?: boolean }
+  to: string,
+  code: string,
+  lang: "en" | "fr" = "en",
+  options?: { discover?: boolean }
 ): Promise<boolean> {
-  return false;
+  if (!isWhatsAppConfigured) return false;
+
+  try {
+    const languages = authOtpLanguageFallbacks(lang);
+    const names = authOtpTemplateNames();
+    const componentsList = authOtpComponentVariants(code);
+
+    const tryName = async (name: string, langs: string[]): Promise<boolean> => {
+      for (const language of langs) {
+        for (const components of componentsList) {
+          const ok = await sendWhatsAppPayload(to, {
+            type: "template",
+            template: { name, language: { code: language }, components },
+          });
+          if (ok) {
+            logger.info("WhatsApp OTP template sent", { name, language });
+            return true;
+          }
+        }
+      }
+      return false;
+    };
+
+    for (const name of names) {
+      if (await tryName(name, languages)) return true;
+    }
+
+    if (options?.discover === false) return false;
+
+    const listed = await listWabaTemplates();
+    const approvedAuth = listed.filter(
+      (t) => t.status === "APPROVED" && (t.category === "AUTHENTICATION" || t.category === "UTILITY")
+    );
+    const preferred = approvedAuth.filter((t) => languages.includes(t.language));
+    for (const t of [...preferred, ...approvedAuth]) {
+      if (await tryName(t.name, [t.language])) return true;
+    }
+
+    return false;
+  } catch (err) {
+    logger.warn("WhatsApp OTP template send failed", { err: String(err) });
+    return false;
+  }
 }
 
 export async function sendTextMessage(to: string, body: string): Promise<void> {

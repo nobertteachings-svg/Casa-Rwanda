@@ -33,6 +33,7 @@ import ScreenHeader from "../components/ScreenHeader";
 import ScreenLoader from "../components/ScreenLoader";
 import { shareText } from "../utils/share-listing";
 import { t } from "../i18n/strings";
+import { listingPriceLabel } from "../utils/listing-price";
 import { radii, spacing, type ColorTokens } from "../theme/casa";
 import { screenInsets } from "../theme/insets";
 import { useCasaTheme } from "../theme/ThemeContext";
@@ -379,7 +380,7 @@ export default function LandlordListingsScreen({
                     </Pressable>
                   </View>
                   <Text style={styles.cardLoc}>{item.type}</Text>
-                  <Text style={styles.cardRent}>{m.browseRent(item.rent)}</Text>
+                  <Text style={styles.cardRent}>{listingPriceLabel(item.rent, item.propertyCategory, m)}</Text>
                   {cardStats[item.houseId] ? (
                     <Text style={styles.cardStats}>
                       {m.landlordViewsUnlocks(cardStats[item.houseId].views, cardStats[item.houseId].unlocks)}

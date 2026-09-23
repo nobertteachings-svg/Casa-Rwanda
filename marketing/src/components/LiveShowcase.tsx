@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
+  categoryLabel,
   fetchPublicListings,
-  formatRent,
+  formatListingPrice,
+  isSaleListing,
   mediaSrc,
   mediaThumb,
   propertyLabel,
@@ -166,15 +168,22 @@ export default function LiveShowcase({
               <div className="showcase__meta">
                 <span className="showcase__id">{current.listing.houseId}</span>
                 <span className="showcase__type">
-                  {propertyLabel(current.listing.type, lang)}
-                  {current.listing.propertyCategory === "commercial"
-                    ? ` · ${lang === "fr" ? "Commercial" : "Commercial"}`
-                    : ""}
+                  {propertyLabel(
+                    current.listing.type,
+                    lang,
+                    current.listing.propertySubtype
+                  )}
+                  {` · ${categoryLabel(current.listing.propertyCategory)}`}
                 </span>
                 <p className="showcase__location">{current.listing.location}</p>
                 <p className="showcase__rent">
-                  {formatRent(current.listing.rent, lang)}
-                  <span> / {lang === "fr" ? "mois" : "month"}</span>
+                  {formatListingPrice(current.listing.rent, current.listing.propertyCategory)}
+                  <span>
+                    {" "}
+                    {isSaleListing(current.listing.propertyCategory)
+                      ? c.showcase.asking
+                      : c.showcase.perMonth}
+                  </span>
                 </p>
               </div>
               <a

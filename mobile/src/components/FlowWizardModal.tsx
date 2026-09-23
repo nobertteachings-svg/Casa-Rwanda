@@ -22,13 +22,16 @@ import {
   MAJOR_TOWNS,
   MONTHS_UPFRONT_OPTIONS,
   RENT_PRESETS,
+  SALE_PRICE_PRESETS,
   neighbourhoodsForTown,
 } from "../constants/cities";
 import {
-  COMMERCIAL_SUBTYPES,
   ELECTRICITY_OPTIONS,
-  RESIDENTIAL_SUBTYPES,
+  categoryMenuId,
+  isSaleCategory,
   residentialSubtypeNeedsCounts,
+  subtypesForCategory,
+  type PropertyCategory,
 } from "../constants/property-types";
 import { mediaUrl } from "../config";
 import { t } from "../i18n/strings";
@@ -127,7 +130,7 @@ export default function FlowWizardModal({
   onUserUpdate,
   onComplete,
 }: Props) {
-  const lang = "en" as const;
+  const lang = uiLanguage;
   const m = t(lang);
   const { colors, gradient } = useCasaTheme();
   const styles = useMemo(() => makeWizardStyles(colors), [colors]);
@@ -153,8 +156,8 @@ export default function FlowWizardModal({
     security: false,
   });
   const [whatForm, setWhatForm] = useState({
-    category: "residential" as "residential" | "commercial",
-    subtypeId: "5",
+    category: "residential" as PropertyCategory,
+    subtypeId: "3",
     bedrooms: 2,
     toilets: 1,
     rent: 50000,
@@ -298,15 +301,17 @@ export default function FlowWizardModal({
   }
 
   async function submitWhat() {
-    const catId = whatForm.category === "residential" ? "1" : "2";
-    const list = whatForm.category === "commercial" ? COMMERCIAL_SUBTYPES : RESIDENTIAL_SUBTYPES;
+    const sale = isSaleCategory(whatForm.category);
+    const catId = categoryMenuId(whatForm.category);
+    const list = subtypesForCategory(whatForm.category);
     const sub = list.find((s) => s.id === whatForm.subtypeId) ?? list[0];
     const needsCounts =
-      whatForm.category === "residential" && residentialSubtypeNeedsCounts(sub.key);
+      (whatForm.category === "residential" || whatForm.category === "house_sale") &&
+      residentialSubtypeNeedsCounts(sub.key);
     const afterSubtype = [
       ...(needsCounts ? [String(whatForm.bedrooms), String(whatForm.toilets)] : []),
       String(whatForm.rent),
-      String(whatForm.months),
+      ...(sale ? [] : [String(whatForm.months)]),
     ];
     if (step === "category") {
       await replayTexts([catId, sub.id, ...afterSubtype]);
@@ -321,16 +326,20 @@ export default function FlowWizardModal({
         String(whatForm.bedrooms),
         String(whatForm.toilets),
         String(whatForm.rent),
-        String(whatForm.months),
+        ...(sale ? [] : [String(whatForm.months)]),
       ]);
       return;
     }
     if (step === "toilet_count") {
-      await replayTexts([String(whatForm.toilets), String(whatForm.rent), String(whatForm.months)]);
+      await replayTexts([
+        String(whatForm.toilets),
+        String(whatForm.rent),
+        ...(sale ? [] : [String(whatForm.months)]),
+      ]);
       return;
     }
     if (step === "rent") {
-      await replayTexts([String(whatForm.rent), String(whatForm.months)]);
+      await replayTexts([String(whatForm.rent), ...(sale ? [] : [String(whatForm.months)])]);
       return;
     }
     if (step === "months_upfront") {
@@ -466,30 +475,44 @@ export default function FlowWizardModal({
 
     if (flow === "landlord_listing") {
       if (step && listingStage(step) === 1 && step !== "ai_description") {
-        const list = whatForm.category === "commercial" ? COMMERCIAL_SUBTYPES : RESIDENTIAL_SUBTYPES;
+        const list = subtypesForCategory(whatForm.category);
         const sub = list.find((s) => s.id === whatForm.subtypeId);
+        const sale = isSaleCategory(whatForm.category);
         const needsCounts =
-          whatForm.category === "residential" && sub ? residentialSubtypeNeedsCounts(sub.key) : false;
+          (whatForm.category === "residential" || whatForm.category === "house_sale") &&
+          sub
+            ? residentialSubtypeNeedsCounts(sub.key)
+            : false;
+        const pricePresets = sale ? SALE_PRICE_PRESETS : RENT_PRESETS;
         return (
           <View style={styles.block}>
             <Text style={styles.blockLabel}>{m.searchCategory}</Text>
             <View style={styles.amenityRow}>
-              <Pressable
-                style={[styles.meterChip, whatForm.category === "residential" && styles.meterChipOn]}
-                onPress={() => setWhatForm((s) => ({ ...s, category: "residential", subtypeId: "5" }))}
-              >
-                <Text style={[styles.meterChipText, whatForm.category === "residential" && styles.meterChipTextOn]}>
-                  {m.searchResidential}
-                </Text>
-              </Pressable>
-              <Pressable
-                style={[styles.meterChip, whatForm.category === "commercial" && styles.meterChipOn]}
-                onPress={() => setWhatForm((s) => ({ ...s, category: "commercial", subtypeId: "1" }))}
-              >
-                <Text style={[styles.meterChipText, whatForm.category === "commercial" && styles.meterChipTextOn]}>
-                  {m.searchCommercial}
-                </Text>
-              </Pressable>
+              {(
+                [
+                  ["residential", "3", m.searchResidential],
+                  ["commercial", "1", m.searchCommercial],
+                  ["house_sale", "1", m.searchHouseSale],
+                  ["land", "1", m.searchLand],
+                ] as const
+              ).map(([cat, subtypeId, label]) => (
+                <Pressable
+                  key={cat}
+                  style={[styles.meterChip, whatForm.category === cat && styles.meterChipOn]}
+                  onPress={() =>
+                    setWhatForm((s) => ({
+                      ...s,
+                      category: cat,
+                      subtypeId,
+                      rent: cat === "house_sale" || cat === "land" ? 40000000 : s.rent < 10000000 ? s.rent : 50000,
+                    }))
+                  }
+                >
+                  <Text style={[styles.meterChipText, whatForm.category === cat && styles.meterChipTextOn]}>
+                    {label}
+                  </Text>
+                </Pressable>
+              ))}
             </View>
             <Text style={styles.blockLabel}>{m.searchPropertyType}</Text>
             <OptionGrid
@@ -522,22 +545,40 @@ export default function FlowWizardModal({
                 </View>
               </>
             ) : null}
-            <Text style={styles.blockLabel}>{m.flowPickRent}</Text>
+            <Text style={styles.blockLabel}>{sale ? m.flowPickSalePrice : m.flowPickRent}</Text>
             <ChipRow
               disabled={locked}
               selectedId={String(whatForm.rent)}
-              items={RENT_PRESETS.map((n) => ({ id: String(n), label: `${(n / 1000).toFixed(0)}k` }))}
+              items={pricePresets.map((n) => ({
+                id: String(n),
+                label: n >= 1000000 ? `${(n / 1000000).toFixed(0)}m` : `${(n / 1000).toFixed(0)}k`,
+              }))}
               onSelect={(id) => setWhatForm((s) => ({ ...s, rent: Number(id) }))}
             />
             <View style={styles.stepperRow}>
-              <Pressable style={styles.stepperBtn} onPress={() => setWhatForm((s) => ({ ...s, rent: Math.max(10000, s.rent - 5000) }))}>
+              <Pressable
+                style={styles.stepperBtn}
+                onPress={() =>
+                  setWhatForm((s) => ({
+                    ...s,
+                    rent: Math.max(10000, s.rent - (sale ? 1000000 : 5000)),
+                  }))
+                }
+              >
                 <Text style={styles.stepperBtnText}>−</Text>
               </Pressable>
               <Text style={styles.stepperVal}>{whatForm.rent.toLocaleString()} RWF</Text>
-              <Pressable style={styles.stepperBtn} onPress={() => setWhatForm((s) => ({ ...s, rent: s.rent + 5000 }))}>
+              <Pressable
+                style={styles.stepperBtn}
+                onPress={() =>
+                  setWhatForm((s) => ({ ...s, rent: s.rent + (sale ? 1000000 : 5000) }))
+                }
+              >
                 <Text style={styles.stepperBtnText}>+</Text>
               </Pressable>
             </View>
+            {sale ? null : (
+              <>
             <Text style={styles.blockLabel}>{m.cardMonths(whatForm.months)}</Text>
             <ChipRow
               disabled={locked}
@@ -545,6 +586,8 @@ export default function FlowWizardModal({
               items={MONTHS_UPFRONT_OPTIONS.map((n) => ({ id: String(n), label: String(n) }))}
               onSelect={(id) => setWhatForm((s) => ({ ...s, months: Number(id) }))}
             />
+              </>
+            )}
             <Pressable style={[styles.primaryBtn, locked && styles.btnDisabled]} disabled={locked} onPress={() => void submitWhat()}>
               <Text style={styles.primaryBtnText}>{m.listAmenitiesNext}</Text>
             </Pressable>
@@ -642,24 +685,37 @@ export default function FlowWizardModal({
         );
       }
       if (step === "rent") {
+        const sale = isSaleCategory(sessionData?.property_category);
+        const presets = sale ? SALE_PRICE_PRESETS : RENT_PRESETS;
         return (
           <View style={styles.block}>
-            <Text style={styles.blockLabel}>{m.flowPickRent}</Text>
+            <Text style={styles.blockLabel}>{sale ? m.flowPickSalePrice : m.flowPickRent}</Text>
             <ChipRow
               disabled={locked}
               selectedId={String(rentPick)}
-              items={RENT_PRESETS.map((n) => ({ id: String(n), label: `${(n / 1000).toFixed(0)}k` }))}
+              items={presets.map((n) => ({
+                id: String(n),
+                label: n >= 1000000 ? `${(n / 1000000).toFixed(0)}m` : `${(n / 1000).toFixed(0)}k`,
+              }))}
               onSelect={(id) => {
                 setRentPick(Number(id));
                 void pickChoice(id);
               }}
             />
             <View style={styles.stepperRow}>
-              <Pressable style={styles.stepperBtn} disabled={locked} onPress={() => setRentPick((r) => Math.max(10000, r - 5000))}>
+              <Pressable
+                style={styles.stepperBtn}
+                disabled={locked}
+                onPress={() => setRentPick((r) => Math.max(10000, r - (sale ? 1000000 : 5000)))}
+              >
                 <Text style={styles.stepperBtnText}>−</Text>
               </Pressable>
               <Text style={styles.stepperVal}>{rentPick.toLocaleString()} RWF</Text>
-              <Pressable style={styles.stepperBtn} disabled={locked} onPress={() => setRentPick((r) => r + 5000)}>
+              <Pressable
+                style={styles.stepperBtn}
+                disabled={locked}
+                onPress={() => setRentPick((r) => r + (sale ? 1000000 : 5000))}
+              >
                 <Text style={styles.stepperBtnText}>+</Text>
               </Pressable>
               <Pressable style={styles.confirmBtn} disabled={locked} onPress={() => void pickChoice(String(rentPick))}>
@@ -770,8 +826,11 @@ export default function FlowWizardModal({
         return null;
       }
       if (step === "subtype") {
-        const cat = category === "commercial" ? "commercial" : "residential";
-        const list = cat === "commercial" ? COMMERCIAL_SUBTYPES : RESIDENTIAL_SUBTYPES;
+        const cat: PropertyCategory =
+          category === "commercial" || category === "house_sale" || category === "land"
+            ? category
+            : "residential";
+        const list = subtypesForCategory(cat);
         return (
           <OptionGrid
             disabled={locked}

@@ -1,8 +1,10 @@
+import { casaWhatsAppUrl } from "../whatsapp";
+
 const SOCIAL_LINKS = [
   {
     id: "whatsapp",
     label: "WhatsApp",
-    href: "https://wa.me/250700000000",
+    href: casaWhatsAppUrl(),
   },
   {
     id: "instagram",

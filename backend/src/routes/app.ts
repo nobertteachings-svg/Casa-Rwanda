@@ -5,7 +5,7 @@
 import { Router, type Request, type Response, type NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { env } from "../config/env.js";
-import { redis, getSession, setSession } from "../redis/client.js";
+import { getSession, setSession } from "../redis/client.js";
 import { logger } from "../lib/logger.js";
 import { createRateLimiter } from "../middleware/rate-limit.js";
 import { findUser, createUser, isUserSuspended, updateUserLanguage } from "../services/users.js";
@@ -13,9 +13,14 @@ import { sendAuthenticationOtp, sendTextMessage } from "../services/whatsapp.js"
 import {
   APP_OTP_TTL_SEC,
   appLoginWhatsAppUrl,
+  canonicalPhone,
+  consumeLoginOtp,
   generateOTP,
   loginOtpMessage,
-  otpKey,
+  peekLoginOtp,
+  phoneAliases,
+  rememberOtpRequest,
+  storeLoginOtp,
 } from "../services/app-otp.js";
 import { upsertDeviceToken, deactivateAllDeviceTokens } from "../services/device-tokens.js";
 import { runWithAppTransport, type UIAction } from "../services/transport.js";
@@ -173,16 +178,23 @@ function sessionPayload(session: Awaited<ReturnType<typeof getSession>>) {
 // ---------------------------------------------------------------------------
 
 appRouter.post("/auth/request-code", otpRequestLimiter, async (req: Request, res: Response) => {
-  const rawPhone = String(req.body?.phone ?? "").replace(/\D/g, "");
+  const rawPhone = canonicalPhone(String(req.body?.phone ?? ""));
   if (!rawPhone || rawPhone.length < 7) {
     res.status(400).json({ error: "Valid phone number required" });
     return;
   }
 
   const lang = parseAppLanguage(req.body?.language) ?? "en";
-  const existing = isAppReviewPhone(rawPhone) ? null : await findUser(rawPhone);
+  const reviewPhone = phoneAliases(rawPhone).some((p) => isAppReviewPhone(p));
+  let existing = null;
+  if (!reviewPhone) {
+    for (const p of phoneAliases(rawPhone)) {
+      existing = await findUser(p);
+      if (existing) break;
+    }
+  }
   if (existing) {
-    if (await isUserSuspended(rawPhone)) {
+    if (await isUserSuspended(existing.phone)) {
       res.status(403).json({
         error:
           lang === "fr"
@@ -191,24 +203,30 @@ appRouter.post("/auth/request-code", otpRequestLimiter, async (req: Request, res
       });
       return;
     }
-    const token = signToken(rawPhone);
-    logger.info("App login without OTP", { phone: rawPhone });
+    const token = signToken(existing.phone);
+    logger.info("App login without OTP", { phone: existing.phone });
     res.json({
       ok: true,
       delivery: "existing_user",
       expiresIn: OTP_TTL,
       token,
+      phone: existing.phone,
       needsSignup: false,
       user: await userPayload(existing),
     });
     return;
   }
 
-  const reviewOtp = appReviewOtpForPhone(rawPhone);
-  const otp = reviewOtp ?? generateOTP();
+  const reviewOtp =
+    appReviewOtpForPhone(rawPhone) ??
+    phoneAliases(rawPhone).map(appReviewOtpForPhone).find(Boolean) ??
+    null;
+  const existingOtp = reviewOtp ? null : await peekLoginOtp(rawPhone);
+  const otp = reviewOtp ?? existingOtp ?? generateOTP();
 
   try {
-    await redis.set(otpKey(rawPhone), otp, "EX", OTP_TTL);
+    await storeLoginOtp(rawPhone, otp);
+    await rememberOtpRequest(rawPhone).catch(() => undefined);
   } catch (err) {
     logger.error("OTP store failed", { err: String(err) });
     res.status(503).json({ error: "Service unavailable, try again shortly" });
@@ -219,15 +237,13 @@ appRouter.post("/auth/request-code", otpRequestLimiter, async (req: Request, res
   const whatsappUrl = appLoginWhatsAppUrl(otpLang);
   let delivery: "whatsapp_template" | "whatsapp_click" | "review_bypass" = "whatsapp_click";
 
-  if (isAppReviewPhone(rawPhone)) {
+  if (reviewPhone) {
     delivery = "review_bypass";
   } else {
     const templated = await sendAuthenticationOtp(rawPhone, otp, otpLang, { discover: false });
     if (templated) {
       delivery = "whatsapp_template";
     } else {
-      // Best-effort session text for people who already wrote Casa.
-      // New users still need the click-to-chat URL — Meta drops silent text.
       try {
         await sendTextMessage(rawPhone, loginOtpMessage(otp, otpLang));
       } catch {
@@ -238,7 +254,7 @@ appRouter.post("/auth/request-code", otpRequestLimiter, async (req: Request, res
     }
   }
 
-  logger.info("App OTP stored", { phone: rawPhone, delivery });
+  logger.info("App OTP stored", { phone: rawPhone, delivery, reused: Boolean(existingOtp) });
   res.json({ ok: true, expiresIn: OTP_TTL, delivery, whatsappUrl });
 });
 
@@ -247,45 +263,53 @@ appRouter.post("/auth/request-code", otpRequestLimiter, async (req: Request, res
 // ---------------------------------------------------------------------------
 
 appRouter.post("/auth/verify-code", otpVerifyLimiter, async (req: Request, res: Response) => {
-  const rawPhone = String(req.body?.phone ?? "").replace(/\D/g, "");
-  const code = String(req.body?.code ?? "").trim();
+  let rawPhone = canonicalPhone(String(req.body?.phone ?? ""));
+  const code = String(req.body?.code ?? "").replace(/\D/g, "");
 
   if (!rawPhone || !code) {
     res.status(400).json({ error: "phone and code required" });
     return;
   }
 
-  const reviewBypass = isAppReviewBypass(rawPhone, code);
+  const reviewBypass = phoneAliases(rawPhone).some((p) => isAppReviewBypass(p, code));
 
   if (!reviewBypass) {
-    let stored: string | null = null;
+    let consumed: Awaited<ReturnType<typeof consumeLoginOtp>>;
     try {
-      stored = await redis.get(otpKey(rawPhone));
+      consumed = await consumeLoginOtp(rawPhone, code);
     } catch (err) {
       logger.error("OTP fetch failed", { err: String(err) });
       res.status(503).json({ error: "Service unavailable" });
       return;
     }
 
-    if (!stored) {
+    if (consumed.status === "missing") {
       res.status(401).json({ error: "Code expired or not requested" });
       return;
     }
 
-    if (stored !== code) {
+    if (consumed.status === "mismatch") {
       res.status(401).json({ error: "Incorrect code" });
       return;
     }
 
-    await redis.del(otpKey(rawPhone)).catch(() => undefined);
+    if (consumed.phone) {
+      rawPhone = consumed.phone;
+    }
   }
 
-  const user = await findUser(rawPhone);
-  const token = signToken(rawPhone);
-  logger.info("App login success", { phone: rawPhone, newUser: !user });
+  let user = null;
+  for (const p of phoneAliases(rawPhone)) {
+    user = await findUser(p);
+    if (user) break;
+  }
+  const accountPhone = user?.phone ?? rawPhone;
+  const token = signToken(accountPhone);
+  logger.info("App login success", { phone: accountPhone, newUser: !user });
 
   res.json({
     token,
+    phone: accountPhone,
     expiresIn: JWT_EXPIRY,
     needsSignup: !user,
     user: await userPayload(user),

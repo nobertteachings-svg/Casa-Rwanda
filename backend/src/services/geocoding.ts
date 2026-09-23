@@ -114,7 +114,7 @@ export async function forwardGeocode(
     q: normalized.includes("Rwanda") ? normalized : `${normalized}, Rwanda`,
     format: "json",
     limit: "1",
-    countrycodes: options?.countryCode ?? "ug",
+    countrycodes: options?.countryCode ?? "rw",
   });
 
   const response = await fetch(`${NOMINATIM_SEARCH}?${params}`, {

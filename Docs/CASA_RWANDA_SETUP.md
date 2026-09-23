@@ -5,6 +5,7 @@ Casa Rwanda is a **separate codebase and deployment** from Casa Nigeria, Kenya, 
 | | Casa Uganda | Casa Rwanda |
 |---|---|---|
 | Directory | `Desktop/Casa Uganda` | `Desktop/Casa Rwanda` |
+| GitHub | own country repo | **`nobertteachings-svg/Casa-Rwanda`** (own repo, like Cameroon / Nigeria) |
 | Currency | UGX | **RWF** |
 | Phone country | +256 | **+250** |
 | Locations | Major districts | **30 districts** (Gasabo, Kicukiro, Nyarugenge, …) |
@@ -29,7 +30,7 @@ Casa Rwanda is a **separate codebase and deployment** from Casa Nigeria, Kenya, 
 - Landlord ID: **Rwandan National ID (NID)** or passport
 - Electricity: **REG** token / postpaid wording
 - Water: **WASAC** where relevant
-- Housing types: single/double room, bedsitter, **self-contained**, studio, 1/2/3+ BR, maisonette, bungalow, servant quarter
+- Housing types: single/double room, studio room, **self-contained**, studio, 1/2/3+ BR, maisonette/duplex, bungalow, annex
 
 ## Local smoke
 

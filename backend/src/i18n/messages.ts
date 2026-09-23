@@ -58,6 +58,6 @@ export const fr: Messages = {
   invalidChoice: "Appuyez sur une option ci-dessus, ou répondez avec un numéro valide.",
   help:
     "Casa Rwanda aide propriétaires et locataires sur WhatsApp.\n\n*Locataires :* Recherche, alertes, comparaison, mode diaspora, carte des loyers.\n*Propriétaires :* Annonce IA, stats, gestion groupée, contrats de bail.\n*Confiance :* Badges vérifiés, signalements communautaires.\n*Croissance :* Parrainez des amis pour des crédits gratuits.\n\nSupport : répondez AIDE.",
-  changeLanguage: "Casa Rwanda utilise l'anglais en Orwanda.",
+  changeLanguage: "Casa Rwanda utilise l'anglais au Rwanda.",
   registered: "Votre compte Casa Rwanda est prêt. Voici ce que vous pouvez faire :",
 };

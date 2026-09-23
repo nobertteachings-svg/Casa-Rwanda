@@ -22,6 +22,7 @@ describe("getPublicStats", () => {
             available: "12",
             residential: "9",
             commercial: "3",
+            for_sale: "4",
             total: "20",
           },
         ],
@@ -51,6 +52,7 @@ describe("getPublicStats", () => {
       available: 12,
       residential: 9,
       commercial: 3,
+      forSale: 4,
       total: 20,
     });
     expect(stats.users).toEqual({

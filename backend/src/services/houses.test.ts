@@ -39,16 +39,16 @@ describe("houses service", () => {
   });
 
   it("computes haversine distance between two GPS points", () => {
-    const kimironko = { lat: 0.3476, lon: 32.5825 };
-    const nearby = haversineKm(kimironko.lat, kimironko.lon, 0.35, 32.59);
-    const far = haversineKm(kimironko.lat, kimironko.lon, 2.7746, 32.299); // Nyagatare-ish
+    const kimironko = { lat: -1.95, lon: 30.125 };
+    const nearby = haversineKm(kimironko.lat, kimironko.lon, -1.953, 30.132);
+    const far = haversineKm(kimironko.lat, kimironko.lon, -2.4846, 28.9076); // Rusizi
     expect(nearby).toBeLessThan(2);
-    expect(far).toBeGreaterThan(150);
+    expect(far).toBeGreaterThan(120);
   });
 
   it("builds Google Maps link from coordinates", () => {
-    expect(googleMapsLink(9.0765, 7.3986)).toBe(
-      "https://maps.google.com/?q=9.0765,7.3986"
+    expect(googleMapsLink(-1.9441, 30.0619)).toBe(
+      "https://maps.google.com/?q=-1.9441,30.0619"
     );
   });
 
@@ -86,14 +86,31 @@ describe("houses service", () => {
     expect(summary).toContain("Kimironko");
   });
 
+  it("formats house-for-sale price without monthly rent wording", () => {
+    const summary = formatHouseSummary(
+      makeHouse({
+        property_category: "house_sale",
+        property_subtype: "villa",
+        rent: 85000000,
+        months_upfront: 0,
+      }),
+      "en"
+    );
+    expect(summary).toContain("House for sale");
+    expect(summary).toContain("Villa");
+    expect(summary).toContain("85,000,000");
+    expect(summary).not.toContain("RWF/month");
+    expect(summary).not.toContain("months upfront");
+  });
+
   it("filters search results by category, subtype, rent, and electricity meter", async () => {
     const residential = makeHouse({ house_id: "CASA-1", distance_km: 0.2 });
     const commercial = makeHouse({
       house_id: "CASA-2",
       property_category: "commercial",
       property_subtype: "office",
-      latitude: 3.849,
-      longitude: 11.503,
+      latitude: -1.946,
+      longitude: 30.065,
       rent: 200000,
       electricity_meter: "postpaid",
       distance_km: 0.3,
@@ -108,7 +125,7 @@ describe("houses service", () => {
       fields: [],
     });
 
-    const commercialOnly = await searchNearbyHouses(9.0765, 7.3986, 5, {
+    const commercialOnly = await searchNearbyHouses(-1.9441, 30.0619, 5, {
       property_category: "commercial",
     });
     expect(commercialOnly).toHaveLength(1);
@@ -122,7 +139,7 @@ describe("houses service", () => {
       fields: [],
     });
 
-    const prepaidOnly = await searchNearbyHouses(9.0765, 7.3986, 5, {
+    const prepaidOnly = await searchNearbyHouses(-1.9441, 30.0619, 5, {
       electricity_meter: "prepaid",
     });
     expect(prepaidOnly).toHaveLength(1);
@@ -136,7 +153,7 @@ describe("houses service", () => {
       fields: [],
     });
 
-    const maxRent = await searchNearbyHouses(9.0765, 7.3986, 5, {
+    const maxRent = await searchNearbyHouses(-1.9441, 30.0619, 5, {
       maxRent: 100000,
     });
     expect(maxRent.map((h) => h.house_id)).toEqual(["CASA-1"]);
@@ -145,14 +162,14 @@ describe("houses service", () => {
   it("sorts search results by distance ascending", async () => {
     const near = makeHouse({
       house_id: "NEAR",
-      latitude: 9.0770,
-      longitude: 7.3990,
+      latitude: -1.945,
+      longitude: 30.063,
       distance_km: 0.06,
     });
     const mid = makeHouse({
       house_id: "MID",
-      latitude: 3.86,
-      longitude: 11.51,
+      latitude: -1.96,
+      longitude: 30.13,
       distance_km: 1.4,
     });
     mockPostgisUnavailable();
@@ -164,7 +181,7 @@ describe("houses service", () => {
       fields: [],
     });
 
-    const results = await searchNearbyHouses(9.0765, 7.3986, 10);
+    const results = await searchNearbyHouses(-1.9441, 30.0619, 10);
     expect(results[0].house_id).toBe("NEAR");
     expect(results[0].distance_km).toBeLessThan(results[1].distance_km);
   });
@@ -180,8 +197,8 @@ describe("houses service", () => {
         town: "Kigali",
         rent: 50000,
         months_upfront: 1,
-        latitude: 9.0765,
-        longitude: 7.3986,
+        latitude: -1.9441,
+        longitude: 30.0619,
         neighbourhood: "Kimironko",
         videos: [],
       })
@@ -214,8 +231,8 @@ describe("houses service", () => {
       town: "Kigali",
       rent: 150000,
       months_upfront: 2,
-      latitude: 0.3476,
-      longitude: 32.5825,
+      latitude: -1.95,
+      longitude: 30.125,
       neighbourhood: "Kimironko",
       electricity_meter: "prepaid",
       videos: ["wa-media:video1"],

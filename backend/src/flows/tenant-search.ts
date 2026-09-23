@@ -119,7 +119,12 @@ function buildListingDetails(
 ): Promise<string> {
   return Promise.all([isVerified(phone), isLandlordVerified(house.landlord_phone)]).then(
     ([verified, landlordVerified]) => {
-      const costBlock = formatMoveInCost(house.rent, house.months_upfront, lang);
+      const costBlock = formatMoveInCost(
+        house.rent,
+        house.months_upfront,
+        lang,
+        house.property_category
+      );
       const creditNote =
         isPaymentsEnabled && credits > 0
           ? lang === "fr"
@@ -177,7 +182,13 @@ export async function handleTenantSearch(
   switch (session.step) {
     case "category": {
       const cat = parseCategoryChoice(choice);
-      if (choice === "3" || choice.toLowerCase().includes("either") || choice.toLowerCase().includes("les deux") || choice.toLowerCase().includes("tout")) {
+      if (
+        choice === "5" ||
+        choice.toLowerCase().includes("either") ||
+        choice.toLowerCase().includes("anything") ||
+        choice.toLowerCase().includes("les deux") ||
+        choice.toLowerCase().includes("tout")
+      ) {
         data.property_category = "either";
       } else if (cat) {
         data.property_category = cat;

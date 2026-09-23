@@ -79,7 +79,7 @@ export async function handleTenantExtras(
         await sendTextMessage(
           phone,
           lang === "fr"
-            ? "Entrez le numéro WhatsApp du membre de votre famille en Orwanda (ex: 2507...):"
+            ? "Entrez le numéro WhatsApp du membre de votre famille au Rwanda (ex: 2507...):"
             : "Enter your family member's WhatsApp number in Rwanda (e.g. 2507...):"
         );
         return;

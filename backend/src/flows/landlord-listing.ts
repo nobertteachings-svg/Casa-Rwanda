@@ -6,7 +6,9 @@ import {
   formatFacilitiesSummary,
   formatRegionMenu,
   formatSubtypeMenu,
+  isSaleCategory,
   legacyTypeFromSubtype,
+  listingPriceSuffix,
   parseCategoryChoice,
   parseElectricityMeterChoice,
   parseRegionChoice,
@@ -78,10 +80,10 @@ const FACILITY_PROMPTS: Record<string, { en: string; fr: string }> = {
     en: "Backup power / generator? YES or NO",
     fr: "Alimentation de secours / générateur ? OUI ou NON",
   },
-  borehole: { en: "Borehole or water tank? YES or NO", fr: "Forage ou réservoir d'eau ? OUI ou NON" },
-  water: { en: "Reliable water supply? YES or NO", fr: "Eau fiable ? OUI ou NON" },
+  borehole: { en: "Water tank or borehole? YES or NO", fr: "Citerne ou forage ? OUI ou NON" },
+  water: { en: "Running water (WASAC)? YES or NO", fr: "Eau courante (WASAC) ? OUI ou NON" },
   furnished: { en: "Furnished? YES or NO", fr: "Meublé ? OUI ou NON" },
-  security: { en: "Security / askari on site? YES or NO", fr: "Sécurité / askari ? OUI ou NON" },
+  security: { en: "Security guard on site? YES or NO", fr: "Gardien sur place ? OUI ou NON" },
 };
 
 function parseYesNo(input: string): boolean | null {
@@ -105,16 +107,23 @@ function formatDraftSummary(draft: ListingDraft, lang: Language): string {
         : `Type: ${subtypeLabel(draft.property_subtype, lang)}`
     );
   }
+  const sale = isSaleCategory(draft.property_category);
   lines.push(
-    lang === "fr"
-      ? `Loyer: ${draft.rent?.toLocaleString() ?? "?"} RWF/mois`
-      : `Rent: ${draft.rent?.toLocaleString() ?? "?"} RWF/month`
+    sale
+      ? lang === "fr"
+        ? `Prix: ${draft.rent?.toLocaleString() ?? "?"} ${listingPriceSuffix(draft.property_category, lang)}`
+        : `Price: ${draft.rent?.toLocaleString() ?? "?"} ${listingPriceSuffix(draft.property_category, lang)}`
+      : lang === "fr"
+        ? `Loyer: ${draft.rent?.toLocaleString() ?? "?"} RWF/mois`
+        : `Rent: ${draft.rent?.toLocaleString() ?? "?"} RWF/month`
   );
-  lines.push(
-    lang === "fr"
-      ? `Avance: ${draft.months_upfront ?? "?"} mois`
-      : `Upfront: ${draft.months_upfront ?? "?"} months`
-  );
+  if (!sale) {
+    lines.push(
+      lang === "fr"
+        ? `Avance: ${draft.months_upfront ?? "?"} mois`
+        : `Upfront: ${draft.months_upfront ?? "?"} months`
+    );
+  }
   const locationParts = [draft.neighbourhood, draft.town, draft.region ? regionLabel(draft.region, lang) : null]
     .filter(Boolean)
     .join(", ");
@@ -162,8 +171,8 @@ async function promptAddressStep(
     await sendTextMessage(
       phone,
       lang === "fr"
-        ? "Tapez le nom de la ville (ex: Kigali, Musanze, Huye, Nakuru)."
-        : "Type the town name (e.g. Kigali, Musanze, Huye, Nakuru)."
+        ? "Tapez le nom de la ville (ex: Kigali, Musanze, Huye, Rubavu)."
+        : "Type the town name (e.g. Kigali, Musanze, Huye, Rubavu)."
     );
     return;
   }
@@ -172,15 +181,15 @@ async function promptAddressStep(
       phone,
       lang === "fr"
         ? "Tapez le nom du quartier (ex: Kimironko, Remera, Kacyiru)."
-        : "Type the quarter/neighbourhood name (e.g. Kimironko, Remera, Kacyiru)."
+        : "Type the neighbourhood name (e.g. Kimironko, Remera, Kacyiru)."
     );
     return;
   }
   await sendTextMessage(
     phone,
     lang === "fr"
-      ? "Maintenant, épinglez la position WhatsApp 📍 du bien (après région, ville et quartier)."
-      : "Now pin the WhatsApp location 📍 of the property (after region, town, and quarter)."
+      ? "Maintenant, épinglez la position WhatsApp 📍 du bien (après district, ville et quartier)."
+      : "Now pin the WhatsApp location 📍 of the property (after district, town, and neighbourhood)."
   );
 }
 
@@ -212,8 +221,8 @@ export async function handleLandlordListing(
         });
         const prompt =
           lang === "fr"
-            ? "Décrivez votre bien librement (résidentiel ou commercial, type, région, ville, quartier, loyer, facilités...)"
-            : "Describe your property freely (residential or commercial, type, region, town, quarter, rent, facilities...)";
+            ? "Décrivez votre bien librement (location, maison à vendre ou terrain, type, district, ville, quartier, prix, facilités...)"
+            : "Describe your property freely (rent, house for sale or land, type, district, town, neighbourhood, price, facilities...)";
         await sendTextMessage(phone, prompt);
         return;
       }
@@ -245,8 +254,8 @@ export async function handleLandlordListing(
         await sendTextMessage(
           phone,
           lang === "fr"
-            ? "Je n'ai pas pu analyser. Réessayez avec plus de détails (catégorie, type, région, ville, quartier, loyer)."
-            : "Couldn't parse that. Try again with category, type, region, town, quarter, and rent."
+            ? "Je n'ai pas pu analyser. Réessayez avec plus de détails (catégorie, type, district, ville, quartier, loyer)."
+            : "Couldn't parse that. Try again with category, type, district, town, neighbourhood, and price."
         );
         return;
       }
@@ -258,7 +267,7 @@ export async function handleLandlordListing(
         region: parsed.region,
         town: parsed.town,
         rent: parsed.rent,
-        months_upfront: parsed.months_upfront,
+        months_upfront: isSaleCategory(parsed.property_category) ? 0 : parsed.months_upfront,
         neighbourhood: parsed.neighbourhood,
         city: parsed.town ?? parsed.city,
         fenced: parsed.fenced,
@@ -317,7 +326,13 @@ export async function handleLandlordListing(
       });
       await sendTextMessage(
         phone,
-        lang === "fr" ? "Loyer mensuel en RWF ?" : "Monthly rent in RWF?"
+        isSaleCategory(category)
+          ? lang === "fr"
+            ? "Prix demandé en RWF ?"
+            : "Asking price in RWF?"
+          : lang === "fr"
+            ? "Loyer mensuel en RWF ?"
+            : "Monthly rent in RWF?"
       );
       return;
     }
@@ -329,6 +344,11 @@ export async function handleLandlordListing(
         return;
       }
       draft.rent = rent;
+      if (isSaleCategory(draft.property_category)) {
+        draft.months_upfront = 0;
+        await promptAddressStep(phone, draft, lang, "region");
+        return;
+      }
       await setSession(phone, {
         flow: "landlord_listing",
         step: "months_upfront",
@@ -685,7 +705,9 @@ export async function handleLandlordListing(
         region: draft.region,
         town: draft.town,
         rent: draft.rent,
-        months_upfront: draft.months_upfront ?? 1,
+        months_upfront: isSaleCategory(draft.property_category)
+          ? 0
+          : draft.months_upfront ?? 1,
         latitude: draft.latitude,
         longitude: draft.longitude,
         neighbourhood: draft.neighbourhood,

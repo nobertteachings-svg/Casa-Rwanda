@@ -19,12 +19,34 @@ export function calculateMoveInCost(rent: number, monthsUpfront: number): {
 export function formatMoveInCost(
   rent: number,
   monthsUpfront: number,
-  lang: "en" | "fr"
+  lang: "en" | "fr",
+  category?: string
 ): string {
+  const sale = category === "house_sale" || category === "land";
   const { upfrontTotal, unlockFee, grandTotal } = calculateMoveInCost(
     rent,
-    monthsUpfront
+    sale ? 0 : monthsUpfront
   );
+  if (sale) {
+    const feeLine =
+      unlockFee > 0
+        ? lang === "fr"
+          ? `• Frais de déblocage Casa: ${unlockFee.toLocaleString()} RWF\n`
+          : `• Casa unlock fee: ${unlockFee.toLocaleString()} RWF\n`
+        : "";
+    const total = rent + unlockFee;
+    return lang === "fr"
+      ? `💰 *Prix demandé:*\n` +
+          `• Prix: ${rent.toLocaleString()} RWF\n` +
+          feeLine +
+          `━━━━━━━━━━━━━━━━\n` +
+          `*Total: ${total.toLocaleString()} RWF*`
+      : `💰 *Asking price:*\n` +
+          `• Price: ${rent.toLocaleString()} RWF\n` +
+          feeLine +
+          `━━━━━━━━━━━━━━━━\n` +
+          `*Total: ${total.toLocaleString()} RWF*`;
+  }
   if (lang === "fr") {
     const feeLine = isPaymentsEnabled
       ? `• Frais de déblocage Casa: ${unlockFee.toLocaleString()} RWF\n`

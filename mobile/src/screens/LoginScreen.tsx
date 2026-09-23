@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { requestLoginCode, verifyLoginCode, bootstrapSession } from "../api/client";
+import { requestLoginCode, verifyLoginCode, bootstrapSession, normalizePhone } from "../api/client";
 import { saveAuth } from "../storage/auth";
 import type { CasaUser, Language } from "../api/client";
 import { loginT } from "../i18n/strings";
@@ -21,7 +21,7 @@ import { radii, spacing, type ColorTokens } from "../theme/casa";
 import { screenInsets } from "../theme/insets";
 import { useCasaTheme } from "../theme/ThemeContext";
 
-const WHATSAPP_SIGNUP = "https://wa.me/250700000000?text=Hi%20Casa!%20I%20want%20to%20sign%20up.";
+const WHATSAPP_SIGNUP = "https://wa.me/250735496786?text=Hi%20Casa!%20I%20want%20to%20sign%20up.";
 const OTP_LEN = 6;
 
 interface Props {
@@ -57,10 +57,10 @@ export default function LoginScreen({ onLoggedIn, onDismiss }: Props) {
       const lang = "en" as const;
       const res = await requestLoginCode(phone, lang);
       if (res.delivery === "existing_user" && res.token) {
-        const normalized = phone.replace(/\D/g, "");
-        await saveAuth(res.token, normalized);
+        const accountPhone = res.phone || normalizePhone(phone);
+        await saveAuth(res.token, accountPhone);
         await bootstrapSession(res.token, lang);
-        onLoggedIn(res.token, res.user ?? null, res.needsSignup ?? false, normalized, lang);
+        onLoggedIn(res.token, res.user ?? null, res.needsSignup ?? false, accountPhone, lang);
         return;
       }
       const mins = Math.round(res.expiresIn / 60);
@@ -86,12 +86,12 @@ export default function LoginScreen({ onLoggedIn, onDismiss }: Props) {
     setBusy(true);
     setError("");
     try {
-      const normalized = phone.replace(/\D/g, "");
       const lang = "en" as const;
       const res = await verifyLoginCode(phone, codeValue);
-      await saveAuth(res.token, normalized);
+      const accountPhone = res.phone || normalizePhone(phone);
+      await saveAuth(res.token, accountPhone);
       await bootstrapSession(res.token, lang);
-      onLoggedIn(res.token, res.user, res.needsSignup, normalized, lang);
+      onLoggedIn(res.token, res.user, res.needsSignup, accountPhone, lang);
     } catch (e) {
       setError(e instanceof Error ? e.message : m.errorGeneric);
     } finally {
@@ -150,7 +150,7 @@ export default function LoginScreen({ onLoggedIn, onDismiss }: Props) {
                 value={phone}
                 onChangeText={setPhone}
                 keyboardType="phone-pad"
-                placeholder="250700000000"
+                placeholder="250735496786"
                 placeholderTextColor={colors.mutedLight}
               />
               <Text style={styles.note}>{m.phoneNote}</Text>

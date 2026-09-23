@@ -29,7 +29,7 @@ In **casa-marketing** → **Variables**, add:
 | Variable | Example | Notes |
 |----------|---------|--------|
 | `VITE_API_URL` | `https://api.casahomesrwanda.com` | Backend custom domain (no trailing slash) |
-| `VITE_WHATSAPP_PHONE` | `15556677919` | Digits only, country code included |
+| `VITE_WHATSAPP_PHONE` | `250735496786` | Digits only, country code included |
 | `VITE_CONTACT_EMAIL` | `hello@casahomesrwanda.com` | Footer contact |
 
 `VITE_*` variables are baked in at **build time**. After changing them, **redeploy** the marketing service.

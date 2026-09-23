@@ -86,6 +86,6 @@ export function momoPaymentInstructions(
   feeRwf: number,
   _lang: Language
 ): string {
-  return `Pay RWF ${feeRwf.toLocaleString()} via Mobile Money / Paystack with reference ${houseId}, then tap "I've paid".`;
+  return `Pay RWF ${feeRwf.toLocaleString()} via MTN MoMo (*182#) or Airtel Money with reference ${houseId}, then tap "I've paid".`;
 }
 

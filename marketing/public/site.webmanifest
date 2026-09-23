@@ -1,7 +1,7 @@
 {
   "name": "Casa Rwanda",
   "short_name": "Casa Rwanda",
-  "description": "Find your home on WhatsApp — housing across Rwanda.",
+  "description": "Find a rental, house, or plot on WhatsApp, iOS, and Android — housing across Rwanda.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f2f24",

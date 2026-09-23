@@ -21,6 +21,14 @@ describe("move-in cost calculator", () => {
     expect(text).toContain("*Total: 60,000 RWF*");
   });
 
+  it("formats sale asking price without monthly rent", () => {
+    const text = formatMoveInCost(85000000, 0, "en", "house_sale");
+    expect(text).toContain("Asking price");
+    expect(text).toContain("85,000,000");
+    expect(text).not.toContain("RWF/month");
+    expect(text).not.toContain("move in");
+  });
+
   it("formats French cost breakdown without Casa fee", () => {
     const text = formatMoveInCost(60000, 2, "fr");
     expect(text).toContain("Coût total pour emménager");

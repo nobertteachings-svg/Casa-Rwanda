@@ -32,12 +32,12 @@ router.get("/privacy", (_req: Request, res: Response) => {
         "Privacy Policy",
         `
   <h1>Privacy Policy</h1>
-  <p class="muted">Last updated: 28 July 2026</p>
-  <p>Casa Rwanda (“Casa”, “we”) provides a WhatsApp-based housing marketplace for Rwanda. This policy explains what data we collect and how we use it.</p>
+  <p class="muted">Last updated: 23 September 2026</p>
+  <p>Casa Rwanda (“Casa”, “we”) provides a housing marketplace for Rwanda on WhatsApp, iOS, and Android. This policy explains what data we collect and how we use it.</p>
 
   <h2>Information we collect</h2>
   <ul>
-    <li>WhatsApp phone number and display name when you message Casa</li>
+    <li>Phone number and display name when you use the Casa app or message Casa on WhatsApp</li>
     <li>Messages you send (search preferences, listing details, photos/videos you upload)</li>
     <li>Location pins you choose to share for nearby search</li>
     <li>Landlord identity documents submitted for verification (e.g. National ID / passport images)</li>
@@ -82,11 +82,11 @@ router.get("/terms", (_req: Request, res: Response) => {
         "Terms of Service",
         `
   <h1>Terms of Service</h1>
-  <p class="muted">Last updated: 28 July 2026</p>
-  <p>By using Casa Rwanda on WhatsApp or our website, you agree to these terms.</p>
+  <p class="muted">Last updated: 23 September 2026</p>
+  <p>By using Casa Rwanda on WhatsApp, the iOS or Android app, or our website, you agree to these terms.</p>
 
   <h2>What Casa is</h2>
-  <p>Casa Rwanda helps landlords list rental properties and tenants discover homes via WhatsApp. Casa is a technology platform. We are not a landlord, agent, or party to your rental agreement.</p>
+  <p>Casa Rwanda helps landlords list rentals, houses for sale, and land, and helps tenants and buyers discover homes via the Casa app or WhatsApp. Casa is a technology platform. We are not a landlord, agent, or party to your rental or sale agreement.</p>
 
   <h2>Your responsibilities</h2>
   <ul>

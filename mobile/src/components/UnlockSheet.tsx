@@ -43,7 +43,7 @@ export default function UnlockSheet({
   onClose,
   onUnlocked,
 }: Props) {
-  const lang = "en" as const;
+  const lang = uiLanguage;
   const m = t(lang);
   const { colors } = useCasaTheme();
   const styles = useMemo(() => makeStyles(colors), [colors]);

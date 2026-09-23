@@ -30,14 +30,18 @@ export function mainMenuOptions(role: UserRole, _lang: Language = "en"): MenuOpt
 export function categoryMenuOptions(lang: Language): MenuOption[] {
   return lang === "fr"
     ? [
-        { id: "1", title: "Résidentiel", description: "Logement" },
+        { id: "1", title: "Résidentiel", description: "Location" },
         { id: "2", title: "Commercial", description: "Boutique, bureau..." },
-        { id: "3", title: "Les deux" },
+        { id: "3", title: "Maison à vendre" },
+        { id: "4", title: "Terrain à vendre" },
+        { id: "5", title: "Tout" },
       ]
     : [
-        { id: "1", title: "Residential", description: "Housing" },
+        { id: "1", title: "Residential", description: "For rent" },
         { id: "2", title: "Commercial", description: "Shop, office..." },
-        { id: "3", title: "Either" },
+        { id: "3", title: "House for sale" },
+        { id: "4", title: "Land for sale" },
+        { id: "5", title: "Anything" },
       ];
 }
 
@@ -58,12 +62,16 @@ export function listingModeMenuOptions(lang: Language): MenuOption[] {
 export function propertyCategoryMenuOptions(lang: Language): MenuOption[] {
   return lang === "fr"
     ? [
-        { id: "1", title: "Résidentiel", description: "Logement" },
+        { id: "1", title: "Résidentiel", description: "Location" },
         { id: "2", title: "Commercial", description: "Boutique, bureau..." },
+        { id: "3", title: "Maison à vendre" },
+        { id: "4", title: "Terrain à vendre" },
       ]
     : [
-        { id: "1", title: "Residential", description: "Housing" },
+        { id: "1", title: "Residential", description: "For rent" },
         { id: "2", title: "Commercial", description: "Shop, office..." },
+        { id: "3", title: "House for sale" },
+        { id: "4", title: "Land for sale" },
       ];
 }
 

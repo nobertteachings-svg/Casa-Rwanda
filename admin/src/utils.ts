@@ -1,13 +1,20 @@
 export function formatMoney(amount: number): string {
-  return `RWF ${amount.toLocaleString("en-UG")}`;
+  return `RWF ${amount.toLocaleString("en-RW")}`;
 }
 
-/** @deprecated Use formatMoney */
-export const formatNgn = formatMoney;
 export const formatRwf = formatMoney;
 
+export function isSaleCategory(category?: string | null): boolean {
+  return category === "house_sale" || category === "land";
+}
+
+export function formatListingPrice(amount: number, category?: string | null): string {
+  const price = formatRwf(amount);
+  return isSaleCategory(category) ? price : `${price}/mo`;
+}
+
 export function formatDate(iso: string): string {
-  return new Date(iso).toLocaleString("en-UG", {
+  return new Date(iso).toLocaleString("en-RW", {
     day: "numeric",
     month: "short",
     year: "numeric",

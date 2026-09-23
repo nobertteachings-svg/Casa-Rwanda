@@ -3,17 +3,21 @@ import LiveShowcase from "./components/LiveShowcase";
 import LiveStats from "./components/LiveStats";
 import SocialLinks from "./components/SocialLinks";
 import { type Lang, t } from "./i18n";
+import { casaWhatsAppDisplay, casaWhatsAppPhone, casaWhatsAppUrl } from "./whatsapp";
 
-const WHATSAPP_PHONE = (import.meta.env.VITE_WHATSAPP_PHONE ?? "250700000000").replace(/\D/g, "");
+const WHATSAPP_PHONE = casaWhatsAppPhone(import.meta.env.VITE_WHATSAPP_PHONE);
 const CONTACT_EMAIL = import.meta.env.VITE_CONTACT_EMAIL ?? "hello@casahomesrwanda.com";
 const SUPPORT_EMAIL = import.meta.env.VITE_SUPPORT_EMAIL ?? "support@casahomesrwanda.com";
-const WHATSAPP_DIRECT = `https://wa.me/${WHATSAPP_PHONE}`;
-const WHATSAPP_DISPLAY = WHATSAPP_PHONE.startsWith("250") && WHATSAPP_PHONE.length >= 12
-  ? `+250 ${WHATSAPP_PHONE.slice(3, 6)} ${WHATSAPP_PHONE.slice(6, 9)} ${WHATSAPP_PHONE.slice(9)}`
-  : `+${WHATSAPP_PHONE}`;
+const IOS_APP_URL =
+  import.meta.env.VITE_IOS_APP_URL ?? "https://apps.apple.com/search?term=Casa%20Rwanda";
+const ANDROID_APP_URL =
+  import.meta.env.VITE_ANDROID_APP_URL ??
+  "https://play.google.com/store/apps/details?id=com.casahomesrwanda.app";
+const WHATSAPP_DIRECT = casaWhatsAppUrl();
+const WHATSAPP_DISPLAY = casaWhatsAppDisplay(WHATSAPP_PHONE);
 
 function whatsAppUrl(message: string): string {
-  return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
+  return casaWhatsAppUrl(message);
 }
 
 function WhatsAppIcon() {
@@ -117,7 +121,8 @@ export default function App() {
       >
         <div className="container header__inner">
           <a href="#" className="logo-link" onClick={() => setMenuOpen(false)}>
-            <img src="/casa_logo_lockup_horizontal.png" alt="Casa Rwanda" className="logo" />
+            <img src="/casa_logo_mark.png" alt="" className="logo-mark" />
+            <span className="logo-word">Casa Rwanda</span>
           </a>
 
           <nav className="nav nav--desktop" aria-label="Main">
@@ -129,9 +134,9 @@ export default function App() {
           </nav>
 
           <div className="header__actions">
-            <WaButton message={c.wa.tenant} className="header-cta" variant="ghost">
+            <a href="#apps" className="btn btn--ghost header-cta">
               {c.nav.cta}
-            </WaButton>
+            </a>
             <button
               type="button"
               className="menu-toggle"
@@ -153,9 +158,9 @@ export default function App() {
                 {link.label}
               </a>
             ))}
-            <WaButton message={c.wa.tenant} className="nav-mobile__cta">
+            <a href="#apps" className="btn btn--primary nav-mobile__cta" onClick={() => setMenuOpen(false)}>
               {c.nav.cta}
-            </WaButton>
+            </a>
           </nav>
         </div>
       </header>
@@ -169,11 +174,22 @@ export default function App() {
           </div>
           <div className="container hero__inner">
             <p className="hero__brand">Casa Rwanda</p>
+            <p className="hero__welcome">{c.hero.welcome}</p>
             <h1 className="hero__title">{c.hero.title}</h1>
             <p className="hero__lead">{c.hero.subtitle}</p>
             <div className="hero__actions">
-              <WaButton message={c.wa.tenant}>{c.hero.ctaTenant}</WaButton>
-              <WaButton message={c.wa.landlord} variant="secondary">
+              <a href={IOS_APP_URL} className="btn btn--primary" target="_blank" rel="noopener noreferrer">
+                {c.hero.ctaIos}
+              </a>
+              <a href={ANDROID_APP_URL} className="btn btn--secondary" target="_blank" rel="noopener noreferrer">
+                {c.hero.ctaAndroid}
+              </a>
+            </div>
+            <div className="hero__actions hero__actions--secondary">
+              <WaButton message={c.wa.tenant} variant="ghost">
+                {c.hero.ctaTenant}
+              </WaButton>
+              <WaButton message={c.wa.landlord} variant="ghost">
                 {c.hero.ctaLandlord}
               </WaButton>
             </div>
@@ -222,15 +238,15 @@ export default function App() {
                 <p className="audience__panel-label">{c.tenants.preview.label}</p>
                 <dl>
                   <div>
-                    <dt>Area</dt>
+                    <dt>{c.tenants.preview.areaLabel}</dt>
                     <dd>{c.tenants.preview.area}</dd>
                   </div>
                   <div>
-                    <dt>Budget</dt>
+                    <dt>{c.tenants.preview.budgetLabel}</dt>
                     <dd>{c.tenants.preview.budget}</dd>
                   </div>
                   <div>
-                    <dt>Result</dt>
+                    <dt>{c.tenants.preview.resultLabel}</dt>
                     <dd>{c.tenants.preview.result}</dd>
                   </div>
                 </dl>
@@ -281,6 +297,13 @@ export default function App() {
                 <h2>{c.cities.title}</h2>
                 <p className="section-desc">{c.cities.subtitle}</p>
               </header>
+              <p className="city-rail-label">{c.cities.kigaliLabel}</p>
+              <ul className="city-rail">
+                {c.cities.kigali.map((area) => (
+                  <li key={area}>{area}</li>
+                ))}
+              </ul>
+              <p className="city-rail-label">{c.cities.townsLabel}</p>
               <ul className="city-rail">
                 {c.cities.list.map((city) => (
                   <li key={city}>{city}</li>
@@ -309,13 +332,24 @@ export default function App() {
           </section>
         </Reveal>
 
-        <section className="cta-band">
+        <section id="apps" className="cta-band">
           <div className="container cta-band__inner">
             <div>
+              <p className="eyebrow eyebrow--on-dark">{c.apps.eyebrow}</p>
               <h2>{c.cta.title}</h2>
               <p>{c.cta.subtitle}</p>
             </div>
-            <WaButton message={c.wa.tenant}>{c.cta.button}</WaButton>
+            <div className="cta-band__actions">
+              <a href={IOS_APP_URL} className="btn btn--primary" target="_blank" rel="noopener noreferrer">
+                {c.apps.ios}
+              </a>
+              <a href={ANDROID_APP_URL} className="btn btn--secondary" target="_blank" rel="noopener noreferrer">
+                {c.apps.android}
+              </a>
+              <WaButton message={c.wa.tenant} variant="ghost">
+                {c.apps.whatsapp}
+              </WaButton>
+            </div>
           </div>
         </section>
 
@@ -347,7 +381,10 @@ export default function App() {
       <footer className="footer">
         <div className="container footer__grid">
           <div>
-            <img src="/casa_logo_lockup_horizontal.png" alt="Casa Rwanda" className="footer__logo" />
+            <a href="#" className="footer__brand">
+              <img src="/casa_logo_mark.png" alt="" className="footer__mark" />
+              <span>Casa Rwanda</span>
+            </a>
             <p className="footer__tagline">{c.footer.tagline}</p>
           </div>
           <div className="footer__meta">
@@ -357,6 +394,10 @@ export default function App() {
             </a>
             <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
             <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
+            <p className="footer__meta-label">{c.footer.legal}</p>
+            <a href="/privacy/">{c.footer.privacy}</a>
+            <a href="/terms/">{c.footer.terms}</a>
+            <a href="/delete-account/">{c.footer.deleteAccount}</a>
           </div>
           <div className="footer__social">
             <SocialLinks heading={c.footer.social} />

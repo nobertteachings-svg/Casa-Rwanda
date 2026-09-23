@@ -12,7 +12,7 @@ function getClient(): Anthropic {
 }
 
 export interface ParsedListing {
-  property_category: "residential" | "commercial";
+  property_category: "residential" | "commercial" | "house_sale" | "land";
   property_subtype: string;
   rent: number;
   months_upfront: number;
@@ -32,7 +32,7 @@ export interface ParsedListing {
 }
 
 export interface ParsedSearch {
-  property_category?: "residential" | "commercial";
+  property_category?: "residential" | "commercial" | "house_sale" | "land";
   property_subtype?: string;
   max_rent?: number;
   region?: string;
@@ -61,14 +61,14 @@ export async function parseListingFromText(
     messages: [
       {
         role: "user",
-        content: `Extract a Rwanda rental listing from this landlord message. Language: ${language}.
+        content: `Extract a Rwanda property listing from this landlord/seller message. Language: ${language}.
 Return ONLY valid JSON with keys:
-- property_category: "residential" or "commercial"
-- property_subtype: one of single_room, double_room, bedsitter, self_contained, studio, one_bedroom, two_bedroom, three_bedroom_plus, maisonette, bungalow, servant_quarter (residential) OR shop, office, warehouse, restaurant, salon, workshop, showroom, commercial_space (commercial)
-- rent (number RWF/month), months_upfront (number)
+- property_category: "residential" (rent), "commercial" (rent), "house_sale", or "land"
+- property_subtype: residential rent: single_room, double_room, self_contained, studio, one_bedroom, two_bedroom, three_bedroom_plus, maisonette, bungalow, servant_quarter (use studio for bedsitter/studio room; servant_quarter for annex). Commercial rent: shop, office, warehouse, restaurant, salon, workshop, showroom, commercial_space. House for sale: house, villa, bungalow_sale, maisonette_sale, apartment_sale. Land: residential_plot, commercial_plot, farmland, mixed_use_plot. Prefer Rwandan terms: self-contained, studio, annex, plot.
+- rent (number: monthly RWF for rentals, asking price RWF for sale), months_upfront (number; use 0 for sale listings)
 - region (Rwanda district id — one of: ${rwandaDistrictIdsForPrompt()}; e.g. gasabo, kicukiro, musanze)
-- town, neighbourhood (quarter)
-- fenced (gated), water, borehole (or water tank), parking, electricity_meter (none|prepaid/token|postpaid), furnished, security (askari), standby_generator/backup power (booleans except electricity_meter)
+- town, neighbourhood (e.g. Kimironko, Remera, Kacyiru)
+- fenced (gated), water (WASAC), borehole (or water tank), parking, electricity_meter (none|prepaid/token|postpaid), furnished, security (guard / watchman), standby_generator/backup power (booleans except electricity_meter)
 - description (professional paragraph)
 
 Message: "${text}"`,
@@ -101,12 +101,15 @@ export async function parseSearchFromText(
     messages: [
       {
         role: "user",
-        content: `Extract rental search filters from this tenant message in Rwanda. Language: ${language}.
-Return ONLY valid JSON with optional keys: property_category (residential|commercial), property_subtype, max_rent, region, town, neighbourhood, city, water, parking, electricity_meter (none|prepaid|postpaid), furnished, fenced, borehole, standby_generator, raw_query.
+        content: `Extract search filters from this tenant/buyer message in Rwanda. Language: ${language}.
+Return ONLY valid JSON with optional keys: property_category (residential|commercial|house_sale|land), property_subtype, max_rent, region, town, neighbourhood, city, water, parking, electricity_meter (none|prepaid|postpaid), furnished, fenced, borehole, standby_generator, raw_query.
 
 region must be a Rwanda district id when present (one of: ${rwandaDistrictIdsForPrompt()}; e.g. gasabo, kicukiro).
-Residential subtypes: single_room, double_room, bedsitter, self_contained, studio, one_bedroom, two_bedroom, three_bedroom_plus, maisonette, bungalow, servant_quarter. Prefer Rwandan terms (bedsitter, self-contained, maisonette).
-Commercial subtypes: shop, office, warehouse, restaurant, salon, workshop, showroom, commercial_space.
+Residential rent subtypes: single_room, double_room, self_contained, studio, one_bedroom, two_bedroom, three_bedroom_plus, maisonette, bungalow, servant_quarter. Map bedsitter/studio room → studio, annex/boys quarter → servant_quarter. Prefer self-contained, studio, annex, plot.
+Commercial rent subtypes: shop, office, warehouse, restaurant, salon, workshop, showroom, commercial_space.
+House for sale subtypes: house, villa, bungalow_sale, maisonette_sale, apartment_sale.
+Land subtypes: residential_plot, commercial_plot, farmland, mixed_use_plot.
+If they want to buy a house or land, use house_sale or land. max_rent is max monthly rent OR max asking price.
 
 Message: "${text}"`,
       },

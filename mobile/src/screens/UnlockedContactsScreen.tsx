@@ -28,7 +28,7 @@ interface Props {
 }
 
 export default function UnlockedContactsScreen({ token, user, uiLanguage, onGoToSearch, onNeedLogin }: Props) {
-  const lang = "en" as const;
+  const lang = uiLanguage;
   const m = t(lang);
   const { ui } = useCasaTheme();
   const [contacts, setContacts] = useState<UnlockedContact[]>([]);

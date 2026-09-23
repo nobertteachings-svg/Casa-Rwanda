@@ -15,14 +15,26 @@ export function listingAppDeepLink(houseId: string): string {
   return `casarw://listing/${houseId.toUpperCase()}`;
 }
 
-export async function shareListing(houseId: string, type: string, rent: number, lang: Language): Promise<void> {
+export async function shareListing(
+  houseId: string,
+  type: string,
+  rent: number,
+  lang: Language,
+  category?: string
+): Promise<void> {
   const id = houseId.toUpperCase();
   const web = listingWebShareUrl(id);
   const app = listingAppDeepLink(id);
+  const sale = category === "house_sale" || category === "land";
+  const price = sale
+    ? `${rent.toLocaleString()} RWF`
+    : lang === "fr"
+      ? `${rent.toLocaleString()} RWF/mois`
+      : `${rent.toLocaleString()} RWF/month`;
   const message =
     lang === "fr"
-      ? `🏠 ${type} — ${rent.toLocaleString()} RWF/mois sur Casa\n\nOuvrir dans l'app:\n${app}\n\n${web}`
-      : `🏠 ${type} — ${rent.toLocaleString()} RWF/month on Casa\n\nOpen in app:\n${app}\n\n${web}`;
+      ? `🏠 ${type} — ${price} sur Casa\n\nOuvrir dans l'app:\n${app}\n\n${web}`
+      : `🏠 ${type} — ${price} on Casa\n\nOpen in app:\n${app}\n\n${web}`;
   await Share.share({ message, url: web });
 }
 

@@ -109,7 +109,7 @@ Claude turns that into a clean, professional listing with:
 - Monthly rent  
 - Months of rent required upfront  
 - District, town, and neighbourhood  
-- Facilities (gated/fenced, parking, backup power, borehole/water tank, water supply, electricity — token meter or postpaid REG bill, security/askari, etc.)  
+- Facilities (gated/fenced, parking, backup power, water tank/borehole, WASAC water, electricity — token meter or postpaid REG bill, security guard, etc.)  
 - A short description  
 
 You confirm, then continue with GPS pin, photos, and video.
@@ -124,19 +124,19 @@ The bot asks you one question at a time:
    **Residential:**  
    - Single room (shared bathroom / kitchen)  
    - Double room (two rooms, shared facilities)  
-   - Bedsitter (room + bathroom + kitchenette)  
+   - Studio room (bathroom + kitchenette)  
    - Studio (open-plan living + sleeping)  
    - 1 bedroom (sitting room + bedroom)  
    - 2 bedroom  
    - 3+ bedroom  
    - Maisonette (multi-level)  
    - Bungalow / standalone house  
-   - Servant quarter (SQ / annex)  
+   - Annex (boys quarter)  
 
    **Commercial:**  
    - Shop / retail space  
    - Office space  
-   - Warehouse / go-down  
+   - Warehouse / depot  
    - Restaurant / bar / café  
    - Salon / barbershop  
    - Workshop / garage  
@@ -147,13 +147,13 @@ The bot asks you one question at a time:
 4. Months upfront required  
 5. **Select your district** (e.g. Gasabo, Kicukiro, Musanze)  
 6. **Type the city** (e.g. Kigali)  
-7. **Type the neighbourhood** (e.g. Kimironko, Kimironko)  
-8. **Pin your location on WhatsApp (GPS)** — after state, city, and neighbourhood  
+7. **Type the neighbourhood** (e.g. Kimironko, Remera)  
+8. **Pin your location on WhatsApp (GPS)** — after district, town, and neighbourhood  
 9. Gated / fenced compound? Yes/No  
 10. Parking? Yes/No  
 11. Backup power / generator? Yes/No  
-12. Borehole/well? Yes/No  
-13. Running water? Yes/No  
+12. Water tank / borehole? Yes/No  
+13. Running water (WASAC)? Yes/No  
 14. Electricity meter type — no electricity, prepaid meter, or postpaid meter  
 15. Furnished? Yes/No  
 16. Security guard? Yes/No  
@@ -161,13 +161,13 @@ The bot asks you one question at a time:
 18. **Video walkthrough (required)**  
 19. Confirm and publish  
 
-### 4.3 Location (state, city, neighbourhood, then GPS)
+### 4.3 Location (district, town, neighbourhood, then GPS)
 
 You first **select your district**, **type the city**, and **type the neighbourhood** — then **pin the exact location** on WhatsApp.  
 Casa uses this so tenants can:
 
 - Find homes **near them** or in a specific area  
-- See **state, city, and neighbourhood** on the listing  
+- See **district, town, and neighbourhood** on the listing  
 - Get a **Google Maps link** to navigate to the property  
 
 ### 4.4 Photos
@@ -215,7 +215,7 @@ Casa sends landlords messages **without you asking**, on a schedule:
 
 ### 4.10 When a tenant pays to contact you
 
-When someone unlocks your contact, you are meant to receive a notification (full payment integration with Paystack and Flutterwave is still being completed).
+When someone unlocks your contact, you are meant to receive a notification (full payment integration with MTN MoMo and Airtel Money is still being completed).
 
 ### 4.11 Property types reference
 
@@ -226,7 +226,7 @@ When someone unlocks your contact, you are meant to receive a notification (full
 | Single room (basic) | Room only — no private toilet or kitchen |
 | Single room + toilet | Room with toilet, no kitchen |
 | Single room + toilet + kitchen | Room with toilet and kitchen |
-| Bedsitter | Room + bathroom + kitchenette |
+| Studio room | Room + bathroom + kitchenette |
 | 1 bedroom | Sitting room + bedroom + bathroom + kitchen |
 | 2 bedroom | Sitting room + 2 bedrooms |
 | Maisonette / bungalow | Multi-level or standalone house |
@@ -280,9 +280,9 @@ Claude understands:
 
 - Residential or commercial  
 - Specific property type (studio, single room, shop, etc.)  
-- Area / state / city / neighbourhood  
+- Area / district / town / neighbourhood  
 - Maximum rent  
-- Facilities you need (gated, parking, backup power, borehole/tank, water, token/postpaid meter, askari, etc.)  
+- Facilities you need (gated, parking, backup power, water tank/borehole, WASAC water, token/postpaid meter, security guard, etc.)  
 
 You can search in **English**.
 
@@ -296,7 +296,7 @@ Casa shows matching properties with:
 - Monthly rent  
 - Months required upfront  
 - Distance from you  
-- Key facilities (gated, parking, backup power, borehole/tank, water, electricity meter type, askari, etc.)  
+- Key facilities (gated, parking, backup power, water tank/borehole, WASAC water, electricity meter type, security guard, etc.)  
 - **Verified landlord** badge if the owner passed ID check  
 - **Verified+** badge if the listing has a required video walkthrough  
 
@@ -317,11 +317,11 @@ This helps you avoid surprises.
 
 To get the landlord’s phone number:
 
-1. You pay **5,000 RWF** via **Paystack** or **Flutterwave** (card, bank transfer, or USSD)  
+1. You pay **5,000 RWF** via **MTN MoMo (*182#)** or **Airtel Money**  
 2. Use the **house ID** (e.g. CASA-1001) as the payment reference  
 3. Reply **PAID**  
 
-**Important:** Full automatic payment checking with Paystack/Flutterwave is still being connected. Right now, the system may unlock after you confirm payment — production will verify payments automatically.
+**Important:** Full automatic payment checking with MTN MoMo / Airtel Money is still being connected. Right now, the system may unlock after you confirm payment — production will verify payments automatically.
 
 After unlock you receive:
 
@@ -355,7 +355,7 @@ Casa automatically sends you:
 | 1 | **Saved search alert** | Describe your dream home once; Casa messages you when a new match is listed |
 | 2 | **Compare shortlist** | Save 2–3 houses (reply **SAVE** on a listing), then get an AI comparison |
 | 3 | **Diaspora mode** | If you live abroad, search and pay for a home for family in Rwanda — **both numbers** get the contact and map link |
-| 4 | **Get verified badge** | Upload ID or link Paystack — shows landlords you are a serious, verified tenant |
+| 4 | **Get verified badge** | Upload ID or confirm a Rwandan Mobile Money / bank account — shows landlords you are a serious, verified tenant |
 | 5 | **Refer a friend** | Invite someone; earn a **free unlock credit** when they complete a transaction |
 | 6 | **Rent heat map** | See average rents by neighbourhood (based on active listings on Casa) |
 
@@ -421,8 +421,8 @@ Claude needs an API key configured on the server. Without it, some AI features f
 
 ### Payment methods (planned / in progress)
 
-- **Paystack** (card, bank transfer, USSD)  
-- **Flutterwave** (card, bank transfer, mobile money)  
+- **MTN MoMo (*182#)**  
+- **Airtel Money**  
 
 ### Referral rewards
 
@@ -529,7 +529,7 @@ Each property gets a unique ID: **CASA-1000**, **CASA-1001**, etc.
 Casa stores (securely on servers):
 
 - Phone numbers and language preference  
-- Listing details: category (residential/commercial), property type, state, city, neighbourhood, rent, facilities (including **electricity meter type**: none, prepaid, or postpaid), photos, videos  
+- Listing details: category (residential/commercial), property type, district, town, neighbourhood, rent, facilities (including **electricity meter type**: none, prepaid, or postpaid), photos, videos  
 - Who unlocked which contact and when  
 - ID verification records (for landlords)  
 - Search alerts, shortlists, referrals, listing views, and flags  
@@ -540,12 +540,12 @@ Casa stores (securely on servers):
 
 | Works well today | Still in progress |
 |------------------|-------------------|
-| WhatsApp chat flows (English) | Automatic Paystack/Flutterwave payment verification |
+| WhatsApp chat flows (English) | Automatic MTN MoMo / Airtel Money payment verification |
 | Landlord & tenant registration | Storing photos/videos on Cloudinary (permanent cloud storage) |
 | Landlord ID verification (Claude Vision) | Full voice-note transcription |
 | Required video walkthrough (Verified+) | USSD partnership with telco |
 | Residential & commercial property types | Production hosting for thousands of users |
-| State → city → neighbourhood → GPS listing flow | Landlord payment notifications |
+| District → town → neighbourhood → GPS listing flow | Landlord payment notifications |
 | Electricity meter type (prepaid/postpaid/none) | Advanced AI fraud detection on every photo |
 | Tenant search by category and facilities | Featured listings (paid promotion) |
 | Search by GPS and natural language | |
@@ -564,18 +564,18 @@ Casa stores (securely on servers):
 | **Tenant** | Person looking for a place to rent |
 | **Unlock** | Paying 5,000 RWF to get a landlord’s phone number |
 | **National ID** | Rwanda national ID card |
-| **RWF** | Rwandan shilling (money used in Rwanda) |
+| **RWF** | Rwandan franc (money used in Rwanda) |
 | **REG** | Rwanda’s electricity distribution companies (listings show prepaid or postpaid meter type) |
 | **Token meter** | REG prepaid electricity (buy tokens) |
 | **Postpaid meter** | Pay electricity bill monthly after use |
 | **Residential** | Housing for people to live in |
 | **Commercial** | Space for businesses (shop, office, warehouse) |
-| **Quarter** | Neighbourhood within a city (e.g. Kimironko, Kimironko) — also called an area or district |
+| **Neighbourhood** | Area within a city (e.g. Kimironko, Remera, Kacyiru) |
 | **GPS pin** | Exact map location sent via WhatsApp |
 | **Verified landlord** | Landlord passed ID check |
 | **Verified+** | Listing includes required walkthrough video |
 | **Claude** | AI assistant that powers smart features |
-| **Paystack / Flutterwave** | Rwandan payment gateways (card, bank, USSD) |
+| **MTN MoMo / Airtel Money** | Rwandan mobile money (pay rent unlocks) |
 | **Diaspora** | Rwandans living abroad |
 | **USSD** | Simple text menu on basic phones (`*code#`) |
 
@@ -598,4 +598,4 @@ Casa stores (securely on servers):
 ---
 
 *Casa — Find Your Home on WhatsApp*  
-*Made for Rwanda 🇰🇪*
+*Made for Rwanda 🇷🇼*

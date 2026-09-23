@@ -18,6 +18,7 @@ export interface PublicListingMedia {
 export interface PublicListing {
   houseId: string;
   type: string;
+  propertySubtype?: string | null;
   propertyCategory: string;
   rent: number;
   location: string;
@@ -65,6 +66,7 @@ export async function getPublicListings(limit = 24): Promise<PublicListingsRespo
   const result = await query<{
     house_id: string;
     type: string;
+    property_subtype: string | null;
     property_category: string;
     rent: number;
     neighbourhood: string | null;
@@ -73,7 +75,7 @@ export async function getPublicListings(limit = 24): Promise<PublicListingsRespo
     photos: string[];
     videos: string[];
   }>(
-    `SELECT house_id, type, property_category, rent, neighbourhood, city, town, photos, videos
+    `SELECT house_id, type, property_subtype, property_category, rent, neighbourhood, city, town, photos, videos
      FROM houses
      WHERE status = 'active'
        AND cardinality(photos) > 0
@@ -105,6 +107,7 @@ export async function getPublicListings(limit = 24): Promise<PublicListingsRespo
     listings.push({
       houseId: row.house_id,
       type: row.type,
+      propertySubtype: row.property_subtype,
       propertyCategory: row.property_category,
       rent: row.rent,
       location: formatLocation(row.neighbourhood, row.city, row.town),

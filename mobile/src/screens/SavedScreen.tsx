@@ -24,6 +24,7 @@ import ScreenHeader from "../components/ScreenHeader";
 import ScreenLoader from "../components/ScreenLoader";
 import ListingCard from "../components/ListingCard";
 import { t } from "../i18n/strings";
+import { listingPriceLabel } from "../utils/listing-price";
 import { colors, radii, spacing } from "../theme/casa";
 import { ui } from "../theme/ui";
 import { useCasaTheme } from "../theme/ThemeContext";
@@ -172,7 +173,7 @@ export default function SavedScreen({
                 <ListingCard
                   type={item.type}
                   location={item.location}
-                  rentLabel={m.browseRent(item.rent)}
+                  rentLabel={listingPriceLabel(item.rent, item.propertyCategory, m)}
                   thumbUrl={item.thumbUrl}
                   language={lang}
                   bedroomCount={item.bedroomCount}
@@ -204,7 +205,7 @@ export default function SavedScreen({
                   <Text style={[styles.tableCell, styles.tableName]} numberOfLines={1}>
                     {row.type}
                   </Text>
-                  <Text style={styles.tableCell}>{m.browseRent(row.rent)}</Text>
+                  <Text style={styles.tableCell}>{listingPriceLabel(row.rent, row.propertyCategory, m)}</Text>
                   <Text style={styles.tableCell} numberOfLines={1}>
                     {row.location}
                   </Text>

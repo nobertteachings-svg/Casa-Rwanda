@@ -32,6 +32,7 @@ import ScreenLoader from "../components/ScreenLoader";
 import CasaToast from "../components/CasaToast";
 import CasaLogo from "../components/CasaLogo";
 import { t } from "../i18n/strings";
+import { listingPriceLabel } from "../utils/listing-price";
 import { radii, spacing, type ColorTokens } from "../theme/casa";
 import { fontFamily } from "../theme/fonts";
 import { screenInsets } from "../theme/insets";
@@ -451,7 +452,7 @@ export default function BrowseScreen({
             <ListingCard
               type={item.type}
               location={item.location}
-              rentLabel={m.browseRent(item.rent)}
+              rentLabel={listingPriceLabel(item.rent, item.propertyCategory, m)}
               thumbUrl={thumb(item)}
               trustTier={item.trustTier}
               landlordVerified={item.landlordVerified}

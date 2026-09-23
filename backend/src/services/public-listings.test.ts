@@ -57,6 +57,7 @@ describe("getPublicListings", () => {
         {
           house_id: "CASA-1001",
           type: "apartment",
+          property_subtype: "self_contained",
           property_category: "residential",
           rent: 75000,
           neighbourhood: "Kimironko",
@@ -68,6 +69,7 @@ describe("getPublicListings", () => {
         {
           house_id: "CASA-1002",
           type: "room",
+          property_subtype: "single_room",
           property_category: "residential",
           rent: 40000,
           neighbourhood: null,
@@ -87,6 +89,7 @@ describe("getPublicListings", () => {
 
     expect(data.listings).toHaveLength(1);
     expect(data.listings[0].houseId).toBe("CASA-1001");
+    expect(data.listings[0].propertySubtype).toBe("self_contained");
     expect(data.listings[0].media).toHaveLength(1);
     expect(data.listings[0].media[0].url).toContain("cloudinary.com");
   });

@@ -3,6 +3,8 @@ import type { Language } from "../i18n/messages.js";
 import {
   categoryLabel,
   electricityMeterLabel,
+  isSaleCategory,
+  listingPriceSuffix,
   regionLabel,
   subtypeLabel,
   type ElectricityMeter,
@@ -286,8 +288,8 @@ export function formatHouseSummary(
     house.fenced ? (lang === "fr" ? "Clôturé / sécurisé" : "Gated / fenced") : null,
     house.parking ? "Parking" : null,
     house.standby_generator ? (lang === "fr" ? "Alim. de secours" : "Backup power") : null,
-    house.borehole ? (lang === "fr" ? "Forage / réservoir" : "Borehole / tank") : null,
-    house.water ? (lang === "fr" ? "Eau fiable" : "Water supply") : null,
+    house.borehole ? (lang === "fr" ? "Citerne / forage" : "Water tank / borehole") : null,
+    house.water ? (lang === "fr" ? "Eau courante (WASAC)" : "Running water (WASAC)") : null,
     meterLabel,
   ]
     .filter(Boolean)
@@ -300,14 +302,18 @@ export function formatHouseSummary(
         : `\n📍 ${house.distance_km.toFixed(1)} km away`
       : "";
 
-  const rentLabel = lang === "fr" ? "RWF/mois" : "RWF/month";
-  const upfrontLabel = lang === "fr" ? "mois d'avance" : "months upfront";
+  const rentLabel = listingPriceSuffix(house.property_category, lang);
+  const priceLine = isSaleCategory(house.property_category)
+    ? `${house.rent.toLocaleString()} ${rentLabel}`
+    : `${house.rent.toLocaleString()} ${rentLabel} · ${house.months_upfront} ${
+        lang === "fr" ? "mois d'avance" : "months upfront"
+      }`;
 
   return (
     `*${house.house_id}*${categoryLine ? ` (${categoryLine})` : ""}\n` +
     `${typeLine}\n` +
     `📍 ${formatLocation(house, lang)}\n` +
-    `${house.rent.toLocaleString()} ${rentLabel} · ${house.months_upfront} ${upfrontLabel}` +
+    priceLine +
     distance +
     (facilities ? `\n✅ ${facilities}` : "")
   );

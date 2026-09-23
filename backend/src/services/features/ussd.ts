@@ -26,7 +26,7 @@ export async function handleUssdRequest(params: {
       }
       if (lastInput === "2") {
         await saveUssdSession(sessionId, phone, { step: "list_type", data: {} });
-        return "CON List property:\n1.Room 2.Bedsitter 3.1BR 4.Self-contained\n";
+        return "CON List property:\n1.Room 2.Studio 3.1BR 4.Self-contained 5.House sale 6.Land\n";
       }
       return (
         "CON Welcome to Casa Rwanda\n" +
@@ -71,9 +71,16 @@ export async function handleUssdRequest(params: {
     }
 
     case "list_type": {
-      const types = ["single_room", "bedsitter", "one_bedroom", "self_contained"];
+      const types = [
+        "single_room",
+        "studio",
+        "one_bedroom",
+        "self_contained",
+        "house",
+        "residential_plot",
+      ];
       const idx = parseInt(lastInput, 10) - 1;
-      if (idx < 0 || idx > 3) return "CON Invalid. Enter 1-4:\n";
+      if (idx < 0 || idx > 5) return "CON Invalid. Enter 1-6:\n";
       await saveUssdSession(sessionId, phone, {
         step: "list_rent",
         data: { type: types[idx] },

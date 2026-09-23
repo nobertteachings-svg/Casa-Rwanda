@@ -1,6 +1,10 @@
 import { env } from "../config/env.js";
 import type { Language } from "../i18n/messages.js";
-import { formatResidentialTypeLabel, type PropertyCategory } from "../constants/property-taxonomy.js";
+import {
+  formatResidentialTypeLabel,
+  isPropertyCategory,
+  type PropertyCategory,
+} from "../constants/property-taxonomy.js";
 import type { House } from "./houses.js";
 import {
   searchHousesByFilters,
@@ -107,6 +111,7 @@ function houseToSearchListing(
   return {
     houseId: house.house_id,
     type: formatResidentialTypeLabel(house, lang),
+    propertySubtype: house.property_subtype ?? null,
     propertyCategory: house.property_category ?? "residential",
     rent: house.rent,
     location: formatLocation(house.neighbourhood, house.city ?? null, house.town ?? null),
@@ -198,9 +203,7 @@ export function parseAppSearchQuery(q: Record<string, unknown>): AppSearchParams
   const lng = q.lng !== undefined ? Number(q.lng) : q.lon !== undefined ? Number(q.lon) : undefined;
   const categoryRaw = String(q.propertyCategory ?? q.category ?? "").trim();
   const propertyCategory =
-    categoryRaw === "commercial" || categoryRaw === "residential" || categoryRaw === "either"
-      ? categoryRaw
-      : undefined;
+    categoryRaw === "either" || isPropertyCategory(categoryRaw) ? categoryRaw : undefined;
   const langRaw = String(q.lang ?? "").trim();
   const lang: Language | undefined = langRaw === "fr" || langRaw === "en" ? langRaw : undefined;
   const meterRaw = String(q.electricityMeter ?? q.meter ?? "").trim();

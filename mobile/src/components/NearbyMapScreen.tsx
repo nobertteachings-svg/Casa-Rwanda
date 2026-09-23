@@ -11,6 +11,7 @@ import {
 import MapView, { Marker, type Region } from "react-native-maps";
 import type { Language, SearchListing } from "../api/client";
 import { t } from "../i18n/strings";
+import { listingPriceLabel } from "../utils/listing-price";
 import { openDirections } from "../utils/contact";
 import { hapticLight } from "../utils/haptics";
 import { useCasaTheme } from "../theme/ThemeContext";
@@ -62,8 +63,8 @@ export default function NearbyMapScreen({
   }, [selectedId, listings]);
 
   const region: Region = useMemo(() => {
-    const lat = active?.latitude ?? userCoords?.lat ?? 3.848;
-    const lng = active?.longitude ?? userCoords?.lng ?? 11.502;
+    const lat = active?.latitude ?? userCoords?.lat ?? -1.9441;
+    const lng = active?.longitude ?? userCoords?.lng ?? 30.0619;
     return { latitude: lat, longitude: lng, latitudeDelta: 0.06, longitudeDelta: 0.06 };
   }, [active, userCoords]);
 
@@ -140,7 +141,7 @@ export default function NearbyMapScreen({
             <Text style={styles.cardTitle} numberOfLines={1}>
               {active.location}
             </Text>
-            <Text style={styles.cardRent}>{m.browseRent(active.rent)}</Text>
+            <Text style={styles.cardRent}>{listingPriceLabel(active.rent, active.propertyCategory, m)}</Text>
             <Pressable
               style={styles.dirBtn}
               onPress={() => {

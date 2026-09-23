@@ -77,6 +77,7 @@ function shortlistItem(house: Awaited<ReturnType<typeof findHouseById>>, lang: L
   return {
     houseId: house.house_id,
     type: formatResidentialTypeLabel(house, lang),
+    propertyCategory: house.property_category ?? "residential",
     rent: house.rent,
     location: formatLocation(house.neighbourhood, house.city ?? null, house.town ?? null),
     trustTier: house.trust_tier ?? "standard",
@@ -90,6 +91,7 @@ function compareRow(house: NonNullable<Awaited<ReturnType<typeof findHouseById>>
   return {
     houseId: house.house_id,
     type: house.type,
+    propertyCategory: house.property_category ?? "residential",
     rent: house.rent,
     monthsUpfront: house.months_upfront,
     location: formatLocation(house.neighbourhood, house.city ?? null, house.town ?? null),
@@ -201,7 +203,10 @@ appTenantRouter.post("/saved-searches", async (req: Request, res: Response) => {
     raw_query: description,
     max_rent: filters.maxRent !== undefined ? Number(filters.maxRent) : undefined,
     property_category:
-      filters.propertyCategory === "commercial" || filters.propertyCategory === "residential"
+      filters.propertyCategory === "commercial" ||
+      filters.propertyCategory === "residential" ||
+      filters.propertyCategory === "house_sale" ||
+      filters.propertyCategory === "land"
         ? filters.propertyCategory
         : undefined,
     region: typeof filters.region === "string" ? filters.region : undefined,

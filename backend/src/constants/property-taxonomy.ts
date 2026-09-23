@@ -54,8 +54,6 @@ const REGION_ALIASES: Record<string, (typeof RWANDA_DISTRICTS)[number]["id"]> = 
   gisozi: "gasabo",
   kibagabaga: "gasabo",
   nyarutarama: "gasabo",
-  kisi: "kicukiro",
-  kicukiro: "kicukiro",
   gikondo: "kicukiro",
   kanombe: "kicukiro",
   niboye: "kicukiro",
@@ -82,7 +80,22 @@ const REGION_ALIASES: Record<string, (typeof RWANDA_DISTRICTS)[number]["id"]> = 
   kamonyi: "kamonyi",
 };
 
-export type PropertyCategory = "residential" | "commercial";
+export type PropertyCategory = "residential" | "commercial" | "house_sale" | "land";
+
+export const PROPERTY_CATEGORIES = [
+  "residential",
+  "commercial",
+  "house_sale",
+  "land",
+] as const;
+
+export function isSaleCategory(category?: string | null): boolean {
+  return category === "house_sale" || category === "land";
+}
+
+export function isPropertyCategory(value: string): value is PropertyCategory {
+  return (PROPERTY_CATEGORIES as readonly string[]).includes(value);
+}
 
 /**
  * Rwandan residential typology (how landlords and agents advertise).
@@ -97,12 +110,7 @@ export const RESIDENTIAL_SUBTYPES = [
   {
     id: "double_room",
     en: "Double room (two rooms, shared facilities)",
-    fr: "Double room (deux pièces, sanitaires partagés)",
-  },
-  {
-    id: "bedsitter",
-    en: "Bedsitter (room + bathroom + kitchenette)",
-    fr: "Bedsitter (chambre + salle de bain + kitchenette)",
+    fr: "Deux pièces (sanitaires partagés)",
   },
   {
     id: "self_contained",
@@ -111,8 +119,8 @@ export const RESIDENTIAL_SUBTYPES = [
   },
   {
     id: "studio",
-    en: "Studio (open-plan living + sleeping)",
-    fr: "Studio (pièce ouverte salon / chambre)",
+    en: "Studio",
+    fr: "Studio",
   },
   {
     id: "one_bedroom",
@@ -131,25 +139,25 @@ export const RESIDENTIAL_SUBTYPES = [
   },
   {
     id: "maisonette",
-    en: "Maisonette (multi-level)",
-    fr: "Maisonette (plusieurs niveaux)",
+    en: "Maisonette / duplex",
+    fr: "Maisonette / duplex",
   },
   {
     id: "bungalow",
-    en: "Bungalow / standalone house",
-    fr: "Bungalow / maison individuelle",
+    en: "House / bungalow",
+    fr: "Maison / bungalow",
   },
   {
     id: "servant_quarter",
-    en: "Servant quarter (SQ / boys quarter)",
-    fr: "Servant quarter (SQ)",
+    en: "Annex",
+    fr: "Annexe",
   },
 ] as const;
 
 /** Map legacy fork subtype ids → Rwanda ids (read-path safety). */
 const LEGACY_SUBTYPE_ALIASES: Record<string, string> = {
   single_room_basic: "single_room",
-  single_room_toilet: "bedsitter",
+  single_room_toilet: "studio",
   single_room_toilet_kitchen: "self_contained",
   apartment_2room_1toilet: "two_bedroom",
   apartment_2room_2toilet: "two_bedroom",
@@ -162,13 +170,18 @@ const LEGACY_SUBTYPE_ALIASES: Record<string, string> = {
   "boys quarters": "servant_quarter",
   "self contained": "self_contained",
   selfcontained: "self_contained",
+  bedsitter: "studio",
+  "studio room": "studio",
+  annex: "servant_quarter",
+  annexe: "servant_quarter",
+  duplex: "maisonette",
   "double rooms": "double_room",
 };
 
 export const COMMERCIAL_SUBTYPES = [
   { id: "shop", en: "Shop / retail space", fr: "Boutique / espace commercial" },
   { id: "office", en: "Office space", fr: "Espace bureau" },
-  { id: "warehouse", en: "Warehouse / go-down", fr: "Entrepôt / go-down" },
+  { id: "warehouse", en: "Warehouse / depot", fr: "Entrepôt / dépôt" },
   { id: "restaurant", en: "Restaurant / bar / café", fr: "Restaurant / bar / café" },
   { id: "salon", en: "Salon / barbershop", fr: "Salon de coiffure / barbier" },
   { id: "workshop", en: "Workshop / garage", fr: "Atelier / garage" },
@@ -176,9 +189,51 @@ export const COMMERCIAL_SUBTYPES = [
   { id: "commercial_space", en: "Other commercial space", fr: "Autre espace commercial" },
 ] as const;
 
+export const HOUSE_SALE_SUBTYPES = [
+  { id: "house", en: "House", fr: "Maison" },
+  { id: "villa", en: "Villa", fr: "Villa" },
+  { id: "bungalow_sale", en: "Bungalow", fr: "Bungalow" },
+  { id: "maisonette_sale", en: "Maisonette / duplex", fr: "Maisonette / duplex" },
+  { id: "apartment_sale", en: "Apartment / flat", fr: "Appartement" },
+] as const;
+
+export const LAND_SUBTYPES = [
+  { id: "residential_plot", en: "Plot (residential)", fr: "Parcelle (résidentielle)" },
+  { id: "commercial_plot", en: "Plot (commercial)", fr: "Parcelle (commerciale)" },
+  { id: "farmland", en: "Farmland", fr: "Terre agricole" },
+  { id: "mixed_use_plot", en: "Plot (mixed-use)", fr: "Parcelle (mixte)" },
+] as const;
+
+const SALE_SUBTYPE_ALIASES: Record<string, string> = {
+  house: "house",
+  villa: "villa",
+  bungalow: "bungalow_sale",
+  maisonette: "maisonette_sale",
+  duplex: "maisonette_sale",
+  apartment: "apartment_sale",
+  flat: "apartment_sale",
+  plot: "residential_plot",
+  "residential plot": "residential_plot",
+  "commercial plot": "commercial_plot",
+  farmland: "farmland",
+  farm: "farmland",
+  terrain: "residential_plot",
+  parcelle: "residential_plot",
+  land: "residential_plot",
+};
+
 export type PropertySubtype =
   | (typeof RESIDENTIAL_SUBTYPES)[number]["id"]
-  | (typeof COMMERCIAL_SUBTYPES)[number]["id"];
+  | (typeof COMMERCIAL_SUBTYPES)[number]["id"]
+  | (typeof HOUSE_SALE_SUBTYPES)[number]["id"]
+  | (typeof LAND_SUBTYPES)[number]["id"];
+
+export function subtypesForCategory(category: PropertyCategory) {
+  if (category === "commercial") return COMMERCIAL_SUBTYPES;
+  if (category === "house_sale") return HOUSE_SALE_SUBTYPES;
+  if (category === "land") return LAND_SUBTYPES;
+  return RESIDENTIAL_SUBTYPES;
+}
 
 function normalizeSubtypeId(subtypeId: string): string {
   return LEGACY_SUBTYPE_ALIASES[subtypeId] ?? subtypeId;
@@ -192,15 +247,27 @@ export function regionLabel(regionId: string, lang: Language): string {
 
 export function subtypeLabel(subtypeId: string, lang: Language): string {
   const id = normalizeSubtypeId(subtypeId);
-  const all = [...RESIDENTIAL_SUBTYPES, ...COMMERCIAL_SUBTYPES];
+  const all = [
+    ...RESIDENTIAL_SUBTYPES,
+    ...COMMERCIAL_SUBTYPES,
+    ...HOUSE_SALE_SUBTYPES,
+    ...LAND_SUBTYPES,
+  ];
   const s = all.find((x) => x.id === id);
   if (!s) return subtypeId;
   return lang === "fr" ? s.fr : s.en;
 }
 
 export function categoryLabel(category: PropertyCategory, lang: Language): string {
-  if (category === "commercial") return lang === "fr" ? "Commercial" : "Commercial";
+  if (category === "commercial") return "Commercial";
+  if (category === "house_sale") return lang === "fr" ? "Maison à vendre" : "House for sale";
+  if (category === "land") return lang === "fr" ? "Terrain à vendre" : "Land for sale";
   return lang === "fr" ? "Résidentiel" : "Residential";
+}
+
+export function listingPriceSuffix(category: string | undefined, lang: Language): string {
+  if (isSaleCategory(category)) return "RWF";
+  return lang === "fr" ? "RWF/mois" : "RWF/month";
 }
 
 /** Display label for a listing type in the mobile API. */
@@ -209,8 +276,8 @@ export function formatResidentialTypeLabel(
   lang: Language
 ): string {
   if (house.property_subtype) return subtypeLabel(house.property_subtype, lang);
-  if (house.property_category === "commercial" || house.property_category === "residential") {
-    return categoryLabel(house.property_category, lang);
+  if (isPropertyCategory(house.property_category ?? "")) {
+    return categoryLabel(house.property_category as PropertyCategory, lang);
   }
   return house.type?.trim() || "Home";
 }
@@ -225,16 +292,15 @@ export function formatRegionMenu(lang: Language): string {
 }
 
 export function formatSubtypeMenu(category: PropertyCategory, lang: Language): string {
-  const list = category === "residential" ? RESIDENTIAL_SUBTYPES : COMMERCIAL_SUBTYPES;
+  const list = subtypesForCategory(category);
   const lines = list.map((s, i) => `*${i + 1}.* ${lang === "fr" ? s.fr : s.en}`);
-  const header =
-    lang === "fr"
-      ? category === "residential"
-        ? "Type de logement résidentiel :"
-        : "Type d'espace commercial :"
-      : category === "residential"
-        ? "Residential property type:"
-        : "Commercial property type:";
+  const headers: Record<PropertyCategory, { en: string; fr: string }> = {
+    residential: { en: "Residential property type:", fr: "Type de logement résidentiel :" },
+    commercial: { en: "Commercial property type:", fr: "Type d'espace commercial :" },
+    house_sale: { en: "House for sale type:", fr: "Type de maison à vendre :" },
+    land: { en: "Land / plot type:", fr: "Type de terrain / parcelle :" },
+  };
+  const header = lang === "fr" ? headers[category].fr : headers[category].en;
   return `${header}\n\n${lines.join("\n")}`;
 }
 
@@ -277,34 +343,56 @@ export function parseSubtypeChoice(
   choice: string,
   category: PropertyCategory
 ): string | null {
-  const list = category === "residential" ? RESIDENTIAL_SUBTYPES : COMMERCIAL_SUBTYPES;
+  const list = subtypesForCategory(category);
   const idx = parseInt(choice.trim(), 10);
   if (idx >= 1 && idx <= list.length) return list[idx - 1].id;
 
   const lower = choice.trim().toLowerCase().replace(/[_-]+/g, " ").replace(/\s+/g, " ");
-  const byAlias = LEGACY_SUBTYPE_ALIASES[choice.trim()] ?? LEGACY_SUBTYPE_ALIASES[lower.replace(/\s+/g, "_")];
-  if (byAlias && category === "residential") return byAlias;
+  const underscored = lower.replace(/\s+/g, "_");
+  const byLegacy =
+    LEGACY_SUBTYPE_ALIASES[choice.trim()] ??
+    LEGACY_SUBTYPE_ALIASES[lower] ??
+    LEGACY_SUBTYPE_ALIASES[underscored];
+  if (byLegacy && category === "residential") return byLegacy;
+  const bySale = SALE_SUBTYPE_ALIASES[lower] ?? SALE_SUBTYPE_ALIASES[underscored];
+  if (bySale && isSaleCategory(category)) {
+    const allowed = list.some((s) => s.id === bySale);
+    if (allowed) return bySale;
+  }
+
+  const exact = list.find((s) => s.id === underscored || s.id.replace(/_/g, " ") === lower);
+  if (exact) return exact.id;
 
   const match = list.find(
-    (s) =>
-      s.id === lower.replace(/\s+/g, "_") ||
-      s.en.toLowerCase().startsWith(lower) ||
-      s.id.replace(/_/g, " ") === lower
+    (s) => s.en.toLowerCase().startsWith(lower) || s.fr.toLowerCase().startsWith(lower)
   );
   return match?.id ?? null;
 }
 
 export function parseCategoryChoice(choice: string): PropertyCategory | null {
   const c = choice.trim().toLowerCase();
+  if (c === "3" || c.includes("house for sale") || c.includes("maison à vendre") || c.includes("maison a vendre")) {
+    return "house_sale";
+  }
+  if (
+    c === "4" ||
+    c.includes("land") ||
+    c.includes("plot") ||
+    c.includes("terrain") ||
+    c.includes("parcelle")
+  ) {
+    return "land";
+  }
   if (c === "1" || c.includes("resident")) return "residential";
   if (c === "2" || c.includes("commercial") || c.includes("business")) return "commercial";
+  if (c.includes("sale") || c.includes("vendre") || c.includes("achat")) return "house_sale";
   return null;
 }
 
 /** Map subtype to legacy `type` column for DB compatibility */
 export function legacyTypeFromSubtype(subtype: string): string {
   const id = normalizeSubtypeId(subtype);
-  if (id === "single_room" || id === "double_room" || id === "bedsitter" || id === "servant_quarter") {
+  if (id === "single_room" || id === "double_room" || id === "servant_quarter") {
     return "room";
   }
   if (id === "self_contained") return "apartment";
@@ -319,9 +407,25 @@ export function legacyTypeFromSubtype(subtype: string): string {
     return "apartment";
   }
   if (
-    ["shop", "office", "warehouse", "restaurant", "salon", "workshop", "showroom", "commercial_space"].includes(
-      id
-    )
+    [
+      "shop",
+      "office",
+      "warehouse",
+      "restaurant",
+      "salon",
+      "workshop",
+      "showroom",
+      "commercial_space",
+      "house",
+      "villa",
+      "bungalow_sale",
+      "maisonette_sale",
+      "apartment_sale",
+      "residential_plot",
+      "commercial_plot",
+      "farmland",
+      "mixed_use_plot",
+    ].includes(id)
   ) {
     return "apartment";
   }
@@ -392,10 +496,10 @@ export function formatFacilitiesSummary(
     { key: "fenced", en: "Gated / fenced", fr: "Clôturé / sécurisé" },
     { key: "parking", en: "Parking", fr: "Parking" },
     { key: "standby_generator", en: "Backup power / generator", fr: "Alimentation de secours / générateur" },
-    { key: "borehole", en: "Borehole / water tank", fr: "Forage / réservoir d'eau" },
-    { key: "water", en: "Reliable water supply", fr: "Eau fiable" },
+    { key: "borehole", en: "Water tank / borehole", fr: "Citerne / forage" },
+    { key: "water", en: "Running water (WASAC)", fr: "Eau courante (WASAC)" },
     { key: "furnished", en: "Furnished", fr: "Meublé" },
-    { key: "security", en: "Security / askari", fr: "Sécurité / askari" },
+    { key: "security", en: "Security guard", fr: "Gardien" },
   ] as const;
 
   const lines = boolItems.map(({ key, en, fr }) => {

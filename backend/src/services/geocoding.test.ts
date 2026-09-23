@@ -10,24 +10,28 @@ vi.mock("../redis/client.js", () => ({
   },
 }));
 
+const KIMIRONKO = { lat: "-1.9500", lon: "30.1250" };
+
 describe("forwardGeocode", () => {
   beforeEach(() => {
     vi.restoreAllMocks();
   });
 
-  it("returns coordinates from Nominatim", async () => {
-    vi.stubGlobal(
-      "fetch",
-      vi.fn().mockResolvedValue({
-        ok: true,
-        json: async () => [
-          { lat: "3.8480", lon: "11.5021", display_name: "Kimironko, Kigali, Rwanda" },
-        ],
-      })
-    );
+  it("returns coordinates from Nominatim scoped to Rwanda", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => [
+        { lat: KIMIRONKO.lat, lon: KIMIRONKO.lon, display_name: "Kimironko, Kigali, Rwanda" },
+      ],
+    });
+    vi.stubGlobal("fetch", fetchMock);
 
     const result = await forwardGeocode("Kimironko, Kigali");
-    expect(result).toMatchObject({ latitude: 3.848, longitude: 11.5021 });
+    expect(result).toMatchObject({ latitude: -1.95, longitude: 30.125 });
+
+    const url = String(fetchMock.mock.calls[0][0]);
+    expect(url).toContain("countrycodes=rw");
+    expect(url).toContain("Rwanda");
   });
 
   it("returns null when geocoder finds nothing", async () => {
@@ -47,7 +51,7 @@ describe("resolveSearchCoordinates", () => {
       vi.fn().mockResolvedValue({
         ok: true,
         json: async () => [
-          { lat: "4.0511", lon: "9.7679", display_name: "Kimironko, Kigali" },
+          { lat: KIMIRONKO.lat, lon: KIMIRONKO.lon, display_name: "Kimironko, Kigali" },
         ],
       })
     );
@@ -56,7 +60,7 @@ describe("resolveSearchCoordinates", () => {
       neighbourhood: "Kimironko",
       town: "Kigali",
     });
-    expect(result?.latitude).toBeCloseTo(4.0511);
+    expect(result?.latitude).toBeCloseTo(-1.95);
   });
 });
 
@@ -78,7 +82,7 @@ describe("reverseGeocode", () => {
     const fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);
 
-    const result = await reverseGeocode(3.848, 11.5021);
+    const result = await reverseGeocode(-1.95, 30.125);
     expect(result.neighbourhood).toBe("Kimironko");
     expect(fetchMock).not.toHaveBeenCalled();
   });
@@ -95,10 +99,10 @@ describe("reverseGeocode", () => {
       })
     );
 
-    await reverseGeocode(4.0511, 9.7679);
+    await reverseGeocode(-1.95, 30.125);
 
     expect(redis.set).toHaveBeenCalledWith(
-      "casa:geo:rev:4.0511:9.7679",
+      "casa:geo:rev:-1.9500:30.1250",
       expect.stringContaining("Kimironko"),
       "EX",
       expect.any(Number)

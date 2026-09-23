@@ -25,6 +25,7 @@
     "production": {
       "ios": {
         "appleId": "mutaleyinguhalain@gmail.com",
+        "ascAppId": "6808415610",
         "appleTeamId": "X59YSW73S8"
       },
       "android": {

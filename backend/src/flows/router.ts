@@ -4,12 +4,11 @@ import { findUser, isUserSuspended, syncWhatsAppDisplayName } from "../services/
 import type { IncomingMessage } from "../services/whatsapp.js";
 import { markAsRead, sendTextMessage } from "../services/transport.js";
 import {
-  generateOTP,
   isAppLoginTrigger,
   isPendingOtpFollowup,
   loginOtpMessage,
+  otpForInboundWhatsApp,
   peekLoginOtp,
-  storeLoginOtp,
 } from "../services/app-otp.js";
 import { processVoiceNote } from "../services/features/voice.js";
 import { handleLandlordListing } from "./landlord-listing.js";
@@ -86,20 +85,17 @@ export async function routeMessage(message: IncomingMessage): Promise<void> {
   const effectiveType =
     message.type === "location" ? "location" : message.type === "video" ? "video" : message.type === "image" ? "image" : resolvedType;
 
-  const pendingOtp = await peekLoginOtp(phone);
-  if (isAppLoginTrigger(text) || (pendingOtp && isPendingOtpFollowup(text))) {
-    let otp = pendingOtp;
-    if (!otp) {
-      otp = generateOTP();
-      try {
-        await storeLoginOtp(phone, otp);
-      } catch {
-        await sendTextMessage(
-          phone,
-          "Could not create a code right now. Open the Casa app and tap Send code again."
-        );
-        return;
-      }
+  if (isAppLoginTrigger(text) || (isPendingOtpFollowup(text) && (await peekLoginOtp(phone)))) {
+    let otp: string;
+    try {
+      otp = await otpForInboundWhatsApp(phone);
+    } catch (err) {
+      console.warn("otpForInboundWhatsApp failed:", err);
+      await sendTextMessage(
+        phone,
+        "Could not create a code right now. Open the Casa app and tap Send code again."
+      );
+      return;
     }
     await sendTextMessage(phone, loginOtpMessage(otp, "en"));
     return;
