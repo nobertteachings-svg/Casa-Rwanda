@@ -1,9 +1,9 @@
 [build]
-builder = "RAILPACK"
-buildCommand = "npm run build"
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
 watchPatterns = ["/marketing/**"]
 
 [deploy]
-startCommand = "npm start"
+startCommand = "npx serve dist -s -l ${PORT:-3000}"
 healthcheckPath = "/"
 restartPolicyType = "ON_FAILURE"
