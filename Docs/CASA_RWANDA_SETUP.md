@@ -9,8 +9,8 @@ Casa Rwanda is a **separate codebase and deployment** from Casa Nigeria, Kenya, 
 | Phone country | +256 | **+250** |
 | Locations | Major districts | **30 districts** (Gasabo, Kicukiro, Nyarugenge, …) |
 | WhatsApp | Uganda WABA | **Separate Rwanda WABA number** |
-| Domain | casahomesrwanda.com | **casahomesrwanda.com** |
-| Mobile package | com.casahomesrwanda.app | **com.casahomesrwanda.app** |
+| Domain | casahomesuganda.com | **casahomesrwanda.com** |
+| Mobile package | com.casahomesuganda.app | **com.casahomesrwanda.app** |
 | Unlock fee env | `UNLOCK_FEE_UGX` | **`UNLOCK_FEE_RWF`** (default 2000) |
 
 ## Hard rules
