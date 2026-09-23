@@ -57,7 +57,7 @@ export function formatLocation(
   town: string | null
 ): string {
   const parts = [neighbourhood, city ?? town].filter(Boolean);
-  return parts.length > 0 ? parts.join(", ") : "Kenya";
+  return parts.length > 0 ? parts.join(", ") : "Rwanda";
 }
 
 export async function getPublicListings(limit = 24): Promise<PublicListingsResponse> {

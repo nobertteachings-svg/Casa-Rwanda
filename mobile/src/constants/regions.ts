@@ -32,9 +32,6 @@ export const RWANDA_DISTRICTS = [
   { id: "rutsiro", en: "Rutsiro", fr: "Rutsiro" },
 ] as const;
 
-/** @deprecated Use RWANDA_DISTRICTS */
-export const UGANDA_REGIONS = RWANDA_DISTRICTS;
-
 export type RegionId = (typeof RWANDA_DISTRICTS)[number]["id"];
 
 export function regionLabel(id: string, lang: "en" | "fr" = "en"): string {

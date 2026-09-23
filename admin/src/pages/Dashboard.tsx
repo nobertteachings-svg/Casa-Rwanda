@@ -5,7 +5,7 @@ import StatCard from "../components/StatCard";
 import ErrorBanner from "../components/ErrorBanner";
 import { BarChart } from "../components/BarChart";
 import type { DashboardStats } from "../types";
-import { formatDate, formatUgx } from "../utils";
+import { formatDate, formatRwf } from "../utils";
 
 export default function Dashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -70,8 +70,8 @@ export default function Dashboard() {
         <StatCard label="Total users" value={stats.users.total} sub={`+${stats.users.newToday} today`} accent="blue" />
         <StatCard label="Landlords" value={stats.users.landlords} accent="green" />
         <StatCard label="Active listings" value={stats.listings.active} sub={`${stats.listings.flagged} flagged`} accent="gold" />
-        <StatCard label="Earnings (month)" value={formatUgx(stats.revenue.earningsThisMonthUgx)} accent="gold" />
-        <StatCard label="Unlocks today" value={stats.revenue.unlocksToday} sub={formatUgx(stats.revenue.earningsTodayUgx)} accent="green" />
+        <StatCard label="Earnings (month)" value={formatRwf(stats.revenue.earningsThisMonthRwf)} accent="gold" />
+        <StatCard label="Unlocks today" value={stats.revenue.unlocksToday} sub={formatRwf(stats.revenue.earningsTodayRwf)} accent="green" />
         <StatCard label="Pending reviews" value={stats.moderation.pendingReviews} accent="red" />
       </section>
 
@@ -129,7 +129,7 @@ export default function Dashboard() {
                 <tr key={u.id}>
                   <td><code>{u.house_id}</code></td>
                   <td>{u.tenant_phone}</td>
-                  <td>{formatUgx(u.amount_paid)}</td>
+                  <td>{formatRwf(u.amount_paid)}</td>
                 </tr>
               ))}
             </tbody>

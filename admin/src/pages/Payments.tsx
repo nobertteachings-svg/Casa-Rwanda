@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import type { PaymentRow } from "../types";
-import { formatDate, formatUgx } from "../utils";
+import { formatDate, formatRwf } from "../utils";
 
 export default function Payments() {
   const [payments, setPayments] = useState<PaymentRow[]>([]);
@@ -62,7 +62,7 @@ export default function Payments() {
         {Object.entries(byMethod).map(([method, amount]) => (
           <div key={method} className="panel stat-mini">
             <span className="muted">{method}</span>
-            <strong>{formatUgx(amount)}</strong>
+            <strong>{formatRwf(amount)}</strong>
           </div>
         ))}
       </section>
@@ -91,7 +91,7 @@ export default function Payments() {
                     <td>{p.tenant_phone}</td>
                     <td><code>{p.house_id}</code></td>
                     <td>{p.neighbourhood ?? "—"}</td>
-                    <td>{formatUgx(p.amount_paid)}</td>
+                    <td>{formatRwf(p.amount_paid)}</td>
                     <td>{p.payment_method ?? "—"}</td>
                     <td className="muted">{formatDate(p.paid_at)}</td>
                     <td>

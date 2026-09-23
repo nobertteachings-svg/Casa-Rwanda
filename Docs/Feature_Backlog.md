@@ -74,11 +74,11 @@ CREATE TABLE shortlists (
 
 ### 3. Total Cost Calculator
 
-**What:** Shows one number: rent × months upfront + 5,000 KES unlock fee = **"You need X KES to move in."**
+**What:** Shows one number: rent × months upfront + 2,000 RWF unlock fee = **"You need X RWF to move in."**
 
 **Why:** Reduces surprise drop-off at payment step.
 
-**Depends on:** Nothing new — uses existing `rent`, `months_upfront`, `UNLOCK_FEE_KES`.
+**Depends on:** Nothing new — uses existing `rent`, `months_upfront`, `UNLOCK_FEE_RWF`.
 
 **Flow:** Inject into house detail message before unlock prompt. Optional standalone command: `COST CASA-2847`.
 
@@ -88,7 +88,7 @@ CREATE TABLE shortlists (
 
 ### 4. Diaspora Mode
 
-**What:** User abroad searches and pays on behalf of family in Kenya. Listing + landlord contact sent to **both** WhatsApp numbers.
+**What:** User abroad searches and pays on behalf of family in Rwanda. Listing + landlord contact sent to **both** WhatsApp numbers.
 
 **Why:** Large diaspora audience remitting rent; family may not have WhatsApp skills.
 
@@ -110,7 +110,7 @@ ALTER TABLE unlocks ADD COLUMN payer_phone VARCHAR(20);  -- may differ from tena
 
 **What:** After unlock, Claude **proactively** sends visit checklist, negotiation tips, and required documents — not waiting for the tenant to ask.
 
-**Why:** Product plan §5.6; increases perceived value of the 5,000 KES fee.
+**Why:** Product plan §5.6; increases perceived value of the 2,000 RWF fee.
 
 **Depends on:** Unlock flow writing to `unlocks` table; Claude API.
 
@@ -124,7 +124,7 @@ ALTER TABLE unlocks ADD COLUMN payer_phone VARCHAR(20);  -- may differ from tena
 
 **What:** Users send WhatsApp voice notes. Claude transcribes (or Whisper) and processes as text for search/listing.
 
-**Why:** Lower barrier for less literate or older users; aligns with Kenya usage patterns.
+**Why:** Lower barrier for less literate or older users; aligns with Rwanda usage patterns.
 
 **Depends on:** WhatsApp audio message handling, transcription API (Whisper or Claude).
 
@@ -287,9 +287,9 @@ CREATE TABLE credits (
 
 ### 15. ~~Agent Commission Mode~~ — REMOVED
 
-**Status:** Rejected for Casa Kenya.
+**Status:** Rejected for Casa Rwanda.
 
-Casa Kenya connects **landlords and tenants directly**. Agent commission / middleman fee sharing is out of scope and conflicts with the product mission to reduce exploitation.
+Casa Rwanda connects **landlords and tenants directly**. Agent commission / middleman fee sharing is out of scope and conflicts with the product mission to reduce exploitation.
 
 ---
 
@@ -299,7 +299,7 @@ Casa Kenya connects **landlords and tenants directly**. Agent commission / middl
 
 **Why:** Massive reach expansion beyond smartphone users.
 
-**Depends on:** Telco USSD gateway partnership (MTN Kenya, Airtel, etc.), simplified text-only flows, separate state machine.
+**Depends on:** Telco USSD gateway partnership (MTN Rwanda, Airtel, etc.), simplified text-only flows, separate state machine.
 
 **Technical:** Entirely new channel — not a WhatsApp extension. Likely third-party USSD provider (e.g. Africa's Talking, local telco API).
 
@@ -317,7 +317,7 @@ Casa Kenya connects **landlords and tenants directly**. Agent commission / middl
 
 **Depends on:** Sufficient listing volume, image generation (Canvas/Chart API), admin data pipeline.
 
-**Delivery:** Tenant asks "rent map Westlands" → server generates PNG → send via WhatsApp media API.
+**Delivery:** Tenant asks "rent map Kimironko" → server generates PNG → send via WhatsApp media API.
 
 **Effort:** Large | **Wave:** 4 | **Priority:** Medium (needs data volume first)
 
@@ -325,7 +325,7 @@ Casa Kenya connects **landlords and tenants directly**. Agent commission / middl
 
 ### 18. Market Trend Reports
 
-**What:** Monthly message: *"Average rent in Westlands moved up 5%."* Keeps landlords checking Casa.
+**What:** Monthly message: *"Average rent in Kimironko moved up 5%."* Keeps landlords checking Casa.
 
 **Why:** Retention + data monetization (banks, developers, government).
 

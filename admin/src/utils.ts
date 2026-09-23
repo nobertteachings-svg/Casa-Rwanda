@@ -4,7 +4,7 @@ export function formatMoney(amount: number): string {
 
 /** @deprecated Use formatMoney */
 export const formatNgn = formatMoney;
-export const formatUgx = formatMoney;
+export const formatRwf = formatMoney;
 
 export function formatDate(iso: string): string {
   return new Date(iso).toLocaleString("en-UG", {

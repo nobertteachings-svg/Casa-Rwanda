@@ -1,9 +1,9 @@
 import { FormEvent, useEffect, useState } from "react";
 import { api } from "../api/client";
-import { formatUgx } from "../utils";
+import { formatRwf } from "../utils";
 
 export default function SettingsPage() {
-  const [fee, setFee] = useState(5000);
+  const [fee, setFee] = useState(2000);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
 
@@ -39,7 +39,7 @@ export default function SettingsPage() {
           Fee (RWF)
           <input type="number" min={500} step={500} value={fee} onChange={(e) => setFee(parseInt(e.target.value, 10))} />
         </label>
-        <p>Preview: {formatUgx(fee)} per unlock</p>
+        <p>Preview: {formatRwf(fee)} per unlock</p>
         {error && <p className="error">{error}</p>}
         {saved && <p className="success">Saved — takes effect on new unlocks</p>}
         <button type="submit" className="btn-primary">Save pricing</button>

@@ -16,11 +16,11 @@ export interface DashboardStats {
   };
   revenue: {
     totalUnlocks: number;
-    totalEarningsUgx: number;
+    totalEarningsRwf: number;
     unlocksToday: number;
-    earningsTodayUgx: number;
+    earningsTodayRwf: number;
     unlocksThisMonth: number;
-    earningsThisMonthUgx: number;
+    earningsThisMonthRwf: number;
     unlockFeeRwf: number;
   };
   moderation: { pendingReviews: number };
@@ -34,7 +34,7 @@ export interface DashboardStats {
 
 export interface ChartSeries {
   signupsByDay: Array<{ date: string; landlords: number; tenants: number }>;
-  unlocksByDay: Array<{ date: string; count: number; revenue_kes: number }>;
+  unlocksByDay: Array<{ date: string; count: number; revenue_rwf: number }>;
   listingsByRegion: Array<{ region: string; count: number }>;
   funnel: { searches: number; listingViews: number; unlocks: number };
 }
@@ -225,7 +225,7 @@ export interface PublicListingCard {
   neighbourhood: string | null;
   city: string | null;
   region: string | null;
-  rentUgx: number | null;
+  rentRwf: number | null;
   category: string | null;
   photoUrl: string | null;
 }

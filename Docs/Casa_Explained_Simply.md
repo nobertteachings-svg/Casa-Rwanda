@@ -20,7 +20,7 @@ Casa connects two groups of people:
 
 Behind the scenes, Casa uses **artificial intelligence (AI)** — a smart computer assistant called **Claude** — to understand messages, help write listings, search for homes, check ID cards, and answer questions.
 
-Casa is built for **Kenya**: prices are in **RWF**, the product is **English-only**, and it understands neighbourhoods like Westlands, Nairobi, Kilimani, and more.
+Casa is built for **Rwanda**: prices are in **RWF**, the product is **English-only**, and it understands neighbourhoods like Kimironko, Kigali, Kacyiru, and more.
 
 ---
 
@@ -100,7 +100,7 @@ From the landlord menu, choose **1 (List a new property)**.
 
 You type something casual, for example:
 
-> “I have a 2-room apartment in Westlands. Water, light, parking. 80,000 per month, 2 months caution.”
+> “I have a 2-room apartment in Kimironko. Water, light, parking. 80,000 per month, 2 months caution.”
 
 Claude turns that into a clean, professional listing with:
 
@@ -145,9 +145,9 @@ The bot asks you one question at a time:
 
 3. Monthly rent in RWF  
 4. Months upfront required  
-5. **Select your district** (e.g. Nairobi, FCT, Rivers)  
-6. **Type the city** (e.g. Nairobi, Nairobi)  
-7. **Type the neighbourhood** (e.g. Westlands, Westlands)  
+5. **Select your district** (e.g. Gasabo, Kicukiro, Musanze)  
+6. **Type the city** (e.g. Kigali)  
+7. **Type the neighbourhood** (e.g. Kimironko, Kimironko)  
 8. **Pin your location on WhatsApp (GPS)** — after state, city, and neighbourhood  
 9. Gated / fenced compound? Yes/No  
 10. Parking? Yes/No  
@@ -273,8 +273,8 @@ Pin your current location on WhatsApp. Casa finds matching properties **near you
 
 Examples:
 
-> “I need a quiet 2-bedroom apartment near a school in Westlands, max 60k, with parking and water.”  
-> “Commercial shop space in Westlands, Nairobi, with parking, max 150k.”
+> “I need a quiet 2-bedroom apartment near a school in Kimironko, max 60k, with parking and water.”  
+> “Commercial shop space in Kimironko, Kigali, with parking, max 150k.”
 
 Claude understands:
 
@@ -395,13 +395,13 @@ You never need to talk to “Claude” directly. It works quietly in the backgro
 | Task | Example |
 |------|---------|
 | **Write listings** | Turns a casual WhatsApp message into a proper property ad |
-| **Understand searches** | “Cheap 2-bedroom near Kilimani with water” → structured search |
+| **Understand searches** | “Cheap 2-bedroom near Kacyiru with water” → structured search |
 | **Compare homes** | Side-by-side summary of 2–3 shortlisted properties |
 | **Check landlord IDs** | Reads ID photo, checks expiry, approves or rejects |
 | **Suggest rent prices** | Tells landlords if their price may be too high for the area |
 | **Generate leases** | Draft rental agreement in English |
 | **Answer after unlock** | Visit tips, negotiation advice, document lists |
-| **Market reports** | “Average rent in Westlands moved up 5%” |
+| **Market reports** | “Average rent in Kimironko moved up 5%” |
 
 Claude needs an API key configured on the server. Without it, some AI features fall back to simpler behaviour or manual review.
 
@@ -494,7 +494,7 @@ Casa has a **private website** for the team (not for regular users). Staff log i
 2. Registers as landlord  
 3. Sends photo of her National ID → AI approves → **Verified landlord**  
 4. Lists her apartment: chooses **residential** → **2-room apartment** → rent and upfront months  
-5. Selects **FCT** state, types **Nairobi** and **Westlands**, then pins GPS  
+5. Selects **Gasabo** district, types **Kigali** and **Kimironko**, then pins GPS  
 6. Answers facilities (fenced, parking, **prepaid meter**, etc.)  
 7. Sends 3 photos and 1 walkthrough video  
 8. Listing **CASA-1042** goes live with **Verified+**  
@@ -505,7 +505,7 @@ Casa has a **private website** for the team (not for regular users). Staff log i
 
 1. Jean messages Casa in English, registers as tenant  
 2. Chooses **Search** → **Residential**  
-3. Sends location in Nairobi  
+3. Sends location in Kigali  
 4. Types: “2-bedroom max 75k with water, parking, and prepaid meter”  
 5. Sees 4 matches, picks one, sees total move-in cost  
 6. Pays 5,000 RWF, replies PAID  
@@ -517,7 +517,7 @@ Casa has a **private website** for the team (not for regular users). Staff log i
 
 1. Paul lives in France, registers as tenant  
 2. More options → Diaspora mode → enters his mother’s Rwanda number  
-3. Searches for a house in Nairobi, pays unlock  
+3. Searches for a house in Kigali, pays unlock  
 4. **Paul and his mother** both receive the landlord contact and map link  
 
 ---
@@ -570,7 +570,7 @@ Casa stores (securely on servers):
 | **Postpaid meter** | Pay electricity bill monthly after use |
 | **Residential** | Housing for people to live in |
 | **Commercial** | Space for businesses (shop, office, warehouse) |
-| **Quarter** | Neighbourhood within a city (e.g. Westlands, Westlands) — also called an area or district |
+| **Quarter** | Neighbourhood within a city (e.g. Kimironko, Kimironko) — also called an area or district |
 | **GPS pin** | Exact map location sent via WhatsApp |
 | **Verified landlord** | Landlord passed ID check |
 | **Verified+** | Listing includes required walkthrough video |

@@ -136,7 +136,7 @@ function AppBody({ fontsLoaded }: { fontsLoaded: boolean }) {
   }, []);
 
   const handleLanguageChange = useCallback(async (_lang: Language) => {
-    // Casa Kenya is English-only at launch (Swahili later).
+    // Casa Rwanda is English-only at launch (Kinyarwanda later).
     setUiLanguage("en");
     await saveLanguagePref("en");
   }, []);

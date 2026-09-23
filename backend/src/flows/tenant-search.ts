@@ -217,8 +217,8 @@ export async function handleTenantSearch(
           await sendTextMessage(
             phone,
             lang === "fr"
-              ? "Je n'ai pas trouvé ce quartier. Envoyez votre position 📍 ou précisez (ex: Kimironko, Nyarutarama, Najjera)."
-              : "Couldn't find that area. Send your location 📍 or name an area (e.g. Kimironko, Nyarutarama, Najjera)."
+              ? "Je n'ai pas trouvé ce quartier. Envoyez votre position 📍 ou précisez (ex: Kimironko, Remera, Kacyiru)."
+              : "Couldn't find that area. Send your location 📍 or name an area (e.g. Kimironko, Remera, Kacyiru)."
           );
           return;
         }

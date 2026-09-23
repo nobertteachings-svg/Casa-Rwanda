@@ -82,9 +82,6 @@ const REGION_ALIASES: Record<string, (typeof RWANDA_DISTRICTS)[number]["id"]> = 
   kamonyi: "kamonyi",
 };
 
-/** @deprecated Use RWANDA_DISTRICTS */
-export const UGANDA_REGIONS = RWANDA_DISTRICTS;
-
 export type PropertyCategory = "residential" | "commercial";
 
 /**

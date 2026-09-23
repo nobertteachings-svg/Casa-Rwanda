@@ -12,18 +12,18 @@ export async function getUnlockFee(): Promise<number> {
   return parseInt(raw, 10) || env.UNLOCK_FEE_RWF;
 }
 
-export async function setUnlockFee(kes: number, updatedBy: string): Promise<void> {
+export async function setUnlockFee(rwf: number, updatedBy: string): Promise<void> {
   await query(
     `INSERT INTO platform_settings (key, value, updated_by, updated_at)
      VALUES ('unlock_fee_rwf', $1::jsonb, $2, NOW())
      ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_by = EXCLUDED.updated_by, updated_at = NOW()`,
-    [JSON.stringify(kes), updatedBy]
+    [JSON.stringify(rwf), updatedBy]
   );
 }
 
 export interface ChartSeries {
   signupsByDay: Array<{ date: string; landlords: number; tenants: number }>;
-  unlocksByDay: Array<{ date: string; count: number; revenue_kes: number }>;
+  unlocksByDay: Array<{ date: string; count: number; revenue_rwf: number }>;
   listingsByRegion: Array<{ region: string; count: number }>;
   funnel: { searches: number; listingViews: number; unlocks: number };
 }
@@ -67,7 +67,7 @@ export async function getChartData(): Promise<ChartSeries> {
     unlocksByDay: unlocks.rows.map((r) => ({
       date: r.date,
       count: parseInt(r.count, 10),
-      revenue_kes: parseInt(r.revenue, 10),
+      revenue_rwf: parseInt(r.revenue, 10),
     })),
     listingsByRegion: regions.rows.map((r) => ({
       region: r.region,

@@ -171,8 +171,8 @@ async function promptAddressStep(
     await sendTextMessage(
       phone,
       lang === "fr"
-        ? "Tapez le nom du quartier (ex: Kimironko, Nyarutarama, Najjera)."
-        : "Type the quarter/neighbourhood name (e.g. Kimironko, Nyarutarama, Najjera)."
+        ? "Tapez le nom du quartier (ex: Kimironko, Remera, Kacyiru)."
+        : "Type the quarter/neighbourhood name (e.g. Kimironko, Remera, Kacyiru)."
     );
     return;
   }

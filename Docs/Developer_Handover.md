@@ -549,15 +549,15 @@ Community flags, already-rented reports, moderation alerts.
 ```bash
 curl -X POST http://localhost:3000/webhook/simulate \
   -H "Content-Type: application/json" \
-  -d '{"phone":"254800000001","text":"hello"}'
+  -d '{"phone":"250788000001","text":"hello"}'
 
 curl -X POST http://localhost:3000/webhook/simulate \
   -H "Content-Type: application/json" \
-  -d '{"phone":"254800000001","text":"1"}'
+  -d '{"phone":"250788000001","text":"1"}'
 
 curl -X POST http://localhost:3000/webhook/simulate \
   -H "Content-Type: application/json" \
-  -d '{"phone":"254800000001","latitude":6.5244,"longitude":3.3792}'
+  -d '{"phone":"250788000001","latitude":-1.9441,"longitude":30.0619}'
 ```
 
 ### 9.4 Supported Inbound Message Types
@@ -644,7 +644,7 @@ category → await_query (GPS or text)
   → house actions: SAVE / FLAG / already rented / menu
 ```
 
-**Search:** GPS Haversine/PostGIS; text via Claude filters + **forward geocoding** (`geocoding.ts`) with Redis cache. Hardcoded Westlands/Nairobi fallbacks remain as last resort.
+**Search:** GPS Haversine/PostGIS; text via Claude filters + **forward geocoding** (`geocoding.ts`) with Redis cache. Hardcoded Kimironko/Kigali fallbacks remain as last resort.
 
 **Already rented:** tenant report sets listing `inactive` and logs a review (`community-flag.ts`).
 

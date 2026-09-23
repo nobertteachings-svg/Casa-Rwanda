@@ -1,7 +1,7 @@
 {
-  "name": "Casa Uganda",
-  "short_name": "Casa Uganda",
-  "description": "Find your home on WhatsApp — housing across Uganda.",
+  "name": "Casa Rwanda",
+  "short_name": "Casa Rwanda",
+  "description": "Find your home on WhatsApp — housing across Rwanda.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f2f24",

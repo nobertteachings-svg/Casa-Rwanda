@@ -19,11 +19,11 @@ export interface DashboardStats {
   };
   revenue: {
     totalUnlocks: number;
-    totalEarningsUgx: number;
+    totalEarningsRwf: number;
     unlocksToday: number;
-    earningsTodayUgx: number;
+    earningsTodayRwf: number;
     unlocksThisMonth: number;
-    earningsThisMonthUgx: number;
+    earningsThisMonthRwf: number;
     unlockFeeRwf: number;
   };
   moderation: {
@@ -149,11 +149,11 @@ export async function getDashboardStats(): Promise<DashboardStats> {
     },
     revenue: {
       totalUnlocks: parseInt(r.total_unlocks, 10),
-      totalEarningsUgx: parseInt(r.total_earnings, 10),
+      totalEarningsRwf: parseInt(r.total_earnings, 10),
       unlocksToday: parseInt(r.unlocks_today, 10),
-      earningsTodayUgx: parseInt(r.earnings_today, 10),
+      earningsTodayRwf: parseInt(r.earnings_today, 10),
       unlocksThisMonth: parseInt(r.unlocks_month, 10),
-      earningsThisMonthUgx: parseInt(r.earnings_month, 10),
+      earningsThisMonthRwf: parseInt(r.earnings_month, 10),
       unlockFeeRwf: env.UNLOCK_FEE_RWF,
     },
     moderation: {

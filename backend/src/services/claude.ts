@@ -66,7 +66,7 @@ Return ONLY valid JSON with keys:
 - property_category: "residential" or "commercial"
 - property_subtype: one of single_room, double_room, bedsitter, self_contained, studio, one_bedroom, two_bedroom, three_bedroom_plus, maisonette, bungalow, servant_quarter (residential) OR shop, office, warehouse, restaurant, salon, workshop, showroom, commercial_space (commercial)
 - rent (number RWF/month), months_upfront (number)
-- region (Rwanda district id — one of: ${rwandaDistrictIdsForPrompt()}; e.g. kigali, wakiso, mukono)
+- region (Rwanda district id — one of: ${rwandaDistrictIdsForPrompt()}; e.g. gasabo, kicukiro, musanze)
 - town, neighbourhood (quarter)
 - fenced (gated), water, borehole (or water tank), parking, electricity_meter (none|prepaid/token|postpaid), furnished, security (askari), standby_generator/backup power (booleans except electricity_meter)
 - description (professional paragraph)
@@ -104,8 +104,8 @@ export async function parseSearchFromText(
         content: `Extract rental search filters from this tenant message in Rwanda. Language: ${language}.
 Return ONLY valid JSON with optional keys: property_category (residential|commercial), property_subtype, max_rent, region, town, neighbourhood, city, water, parking, electricity_meter (none|prepaid|postpaid), furnished, fenced, borehole, standby_generator, raw_query.
 
-region must be a Rwanda district id when present (one of: ${rwandaDistrictIdsForPrompt()}; e.g. kigali, wakiso).
-Residential subtypes: single_room, double_room, bedsitter, self_contained, studio, one_bedroom, two_bedroom, three_bedroom_plus, maisonette, bungalow, servant_quarter. Prefer Rwandan terms (bedsitter, maisonette) over Nigerian parlour/self-contain wording.
+region must be a Rwanda district id when present (one of: ${rwandaDistrictIdsForPrompt()}; e.g. gasabo, kicukiro).
+Residential subtypes: single_room, double_room, bedsitter, self_contained, studio, one_bedroom, two_bedroom, three_bedroom_plus, maisonette, bungalow, servant_quarter. Prefer Rwandan terms (bedsitter, self-contained, maisonette).
 Commercial subtypes: shop, office, warehouse, restaurant, salon, workshop, showroom, commercial_space.
 
 Message: "${text}"`,

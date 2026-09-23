@@ -181,7 +181,7 @@ type Strings = {
   detailListedAgo: (days: number) => string;
   trustVerifiedPlus: string;
   unlockSheetTitle: string;
-  unlockFee: (kes: number) => string;
+  unlockFee: (rwf: number) => string;
   unlockReference: (ref: string) => string;
   unlockCredits: (n: number) => string;
   unlockDailyLimit: (used: number, limit: number) => string;
@@ -194,7 +194,7 @@ type Strings = {
   unlockLimitReached: string;
   unlockPaymentRequired: string;
   unlockMoveInTitle: string;
-  unlockMoveInTotal: (kes: number) => string;
+  unlockMoveInTotal: (rwf: number) => string;
   marketTitle: string;
   marketHeatMap: string;
   diasporaTitle: string;
@@ -526,7 +526,7 @@ const en: Strings = {
   detailListedAgo: (days) => (days === 0 ? "Listed today" : `Listed ${days} day(s) ago`),
   trustVerifiedPlus: "Verified+",
   unlockSheetTitle: "Unlock landlord contact",
-  unlockFee: (kes) => `${kes.toLocaleString()} RWF unlock fee`,
+  unlockFee: (rwf) => `${rwf.toLocaleString()} RWF unlock fee`,
   unlockReference: (ref) => `Payment reference: ${ref}`,
   unlockCredits: (n) => `${n} free unlock credit(s) available`,
   unlockDailyLimit: (used, limit) => `Daily unlocks: ${used}/${limit}`,
@@ -539,7 +539,7 @@ const en: Strings = {
   unlockLimitReached: "Daily unlock limit reached. Try again tomorrow.",
   unlockPaymentRequired: "Complete payment, then tap I've paid.",
   unlockMoveInTitle: "Estimated move-in cost",
-  unlockMoveInTotal: (kes) => `Total: ${kes.toLocaleString()} RWF`,
+  unlockMoveInTotal: (rwf) => `Total: ${rwf.toLocaleString()} RWF`,
   marketTitle: "Rent heat map",
   marketHeatMap: "Average rent by area (active listings)",
   diasporaTitle: "Diaspora mode",
@@ -610,8 +610,8 @@ const en: Strings = {
   savedCompareResult: "Compare result",
   savedAiCompareTitle: "AI compare",
   savedAiBestFit: "Best fit",
-  searchTownPlaceholder: "Nairobi, Nairobi…",
-  searchNeighbourhoodPlaceholder: "Kimironko, Nyarutarama, Najjera…",
+  searchTownPlaceholder: "Kigali…",
+  searchNeighbourhoodPlaceholder: "Kimironko, Remera, Kacyiru…",
   searchValidationLocation: "Enter region, town, or neighbourhood.",
   searchValidationRent: "Min rent must be less than max rent.",
   detailReportThanks: "Thanks — our team will review.",
@@ -619,7 +619,7 @@ const en: Strings = {
   unlockSuccessHint: "You can message the landlord now.",
   unlockStepContact: "Show WhatsApp number",
   searching: "Finding homes near you…",
-  searchPlaceholder: "Kimironko, Nyarutarama, Najjera…",
+  searchPlaceholder: "Kimironko, Remera, Kacyiru…",
   filters: "Filters",
   filtersApply: "Show homes",
   filtersClear: "Clear",
@@ -680,7 +680,7 @@ const en: Strings = {
   compareColRent: "Rent",
   compareColArea: "Area",
   compareColBeds: "Beds",
-  locationTypeHint: "Type a neighbourhood above to search — Kimironko, Nyarutarama, Najjera, Musanze…",
+  locationTypeHint: "Type a neighbourhood above to search — Kimironko, Remera, Kacyiru, Musanze…",
   unlockComingSoon: "Contact unlock stays free for now. Try again in a moment.",
   notificationEmptyLine: "No notifications yet.",
 };
@@ -877,7 +877,7 @@ const fr: Strings = {
   detailListedAgo: (days) => (days === 0 ? "Publié aujourd'hui" : `Publié il y a ${days} jour(s)`),
   trustVerifiedPlus: "Vérifié+",
   unlockSheetTitle: "Débloquer le contact",
-  unlockFee: (kes) => `Frais : ${kes.toLocaleString()} RWF`,
+  unlockFee: (rwf) => `Frais : ${rwf.toLocaleString()} RWF`,
   unlockReference: (ref) => `Référence : ${ref}`,
   unlockCredits: (n) => `${n} crédit(s) gratuit(s)`,
   unlockDailyLimit: (used, limit) => `Déblocages du jour : ${used}/${limit}`,
@@ -890,7 +890,7 @@ const fr: Strings = {
   unlockLimitReached: "Limite quotidienne atteinte. Réessayez demain.",
   unlockPaymentRequired: "Payez puis appuyez sur J'ai payé.",
   unlockMoveInTitle: "Coût d'emménagement estimé",
-  unlockMoveInTotal: (kes) => `Total : ${kes.toLocaleString()} RWF`,
+  unlockMoveInTotal: (rwf) => `Total : ${rwf.toLocaleString()} RWF`,
   marketTitle: "Carte des loyers",
   marketHeatMap: "Loyer moyen par quartier",
   diasporaTitle: "Mode diaspora",
@@ -961,8 +961,8 @@ const fr: Strings = {
   savedCompareResult: "Résultat de comparaison",
   savedAiCompareTitle: "Comparaison IA",
   savedAiBestFit: "Meilleur choix",
-  searchTownPlaceholder: "Nairobi, Nairobi…",
-  searchNeighbourhoodPlaceholder: "Kimironko, Nyarutarama, Najjera…",
+  searchTownPlaceholder: "Kigali…",
+  searchNeighbourhoodPlaceholder: "Kimironko, Remera, Kacyiru…",
   searchValidationLocation: "Indiquez région, ville ou quartier.",
   searchValidationRent: "Le loyer min doit être inférieur au max.",
   detailReportThanks: "Merci — notre équipe va examiner.",
@@ -970,7 +970,7 @@ const fr: Strings = {
   unlockSuccessHint: "Vous pouvez écrire au propriétaire maintenant.",
   unlockStepContact: "Afficher le numéro WhatsApp",
   searching: "Recherche de logements près de vous…",
-  searchPlaceholder: "Kimironko, Nyarutarama, Najjera…",
+  searchPlaceholder: "Kimironko, Remera, Kacyiru…",
   filters: "Filtres",
   filtersApply: "Voir les logements",
   filtersClear: "Effacer",
@@ -1031,7 +1031,7 @@ const fr: Strings = {
   compareColRent: "Loyer",
   compareColArea: "Quartier",
   compareColBeds: "Ch.",
-  locationTypeHint: "Type a neighbourhood — Kimironko, Nyarutarama, Najjera, Musanze…",
+  locationTypeHint: "Type a neighbourhood — Kimironko, Remera, Kacyiru, Musanze…",
   unlockComingSoon: "Le contact reste gratuit pour le moment. Réessayez dans un instant.",
   notificationEmptyLine: "Aucune notification.",
 };

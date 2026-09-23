@@ -705,7 +705,7 @@ export default function FlowWizardModal({
           m.searchNeighbourhood,
           quarterInput,
           setQuarterInput,
-          lang === "fr" ? "Kimironko, Najjera, Nyarutarama…" : "Kimironko, Najjera, Nyarutarama…",
+          lang === "fr" ? "Kimironko, Remera, Nyarutarama…" : "Kimironko, Remera, Nyarutarama…",
           town ? neighbourhoodsForTown(town).map((n) => ({ id: n, label: n })) : []
         );
       }

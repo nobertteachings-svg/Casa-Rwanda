@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import type { MarketInsight } from "../types";
-import { formatUgx } from "../utils";
+import { formatRwf } from "../utils";
 
 export default function Insights() {
   const [data, setData] = useState<MarketInsight | null>(null);
@@ -34,7 +34,7 @@ export default function Insights() {
                 <tr key={`${r.area}-${r.property_subtype}`}>
                   <td>{r.area}</td>
                   <td>{r.property_subtype.replace(/_/g, " ")}</td>
-                  <td>{formatUgx(r.median_rent)}</td>
+                  <td>{formatRwf(r.median_rent)}</td>
                   <td>{r.count}</td>
                 </tr>
               ))}

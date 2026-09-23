@@ -83,9 +83,9 @@ export async function executeAppUnlock(
 
 export function momoPaymentInstructions(
   houseId: string,
-  feeUgx: number,
+  feeRwf: number,
   _lang: Language
 ): string {
-  return `Pay RWF ${feeUgx.toLocaleString()} via Mobile Money / Paystack with reference ${houseId}, then tap "I've paid".`;
+  return `Pay RWF ${feeRwf.toLocaleString()} via Mobile Money / Paystack with reference ${houseId}, then tap "I've paid".`;
 }
 
