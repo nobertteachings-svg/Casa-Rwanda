@@ -1,0 +1,47 @@
+{
+  "name": "casa-backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "start:prod": "node dist/db/migrate.js && node dist/index.js",
+    "start:worker": "node dist/db/migrate.js && node dist/worker.js",
+    "loadtest": "node scripts/load-test.mjs",
+    "db:migrate": "tsx src/db/migrate.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "railway:deploy": "cd .. && npx railway up"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@sentry/node": "^9.5.0",
+    "cloudinary": "^2.5.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "ioredis": "^5.4.2",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.13.1",
+    "sharp": "^0.35.3",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@railway/cli": "^5.15.0",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^22.10.5",
+    "@types/pg": "^8.11.10",
+    "@types/supertest": "^6.0.2",
+    "@vitest/coverage-v8": "^3.0.5",
+    "supertest": "^7.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^3.0.5"
+  }
+}

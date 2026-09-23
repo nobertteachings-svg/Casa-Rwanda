@@ -1,0 +1,12 @@
+node_modules
+.git
+.env
+.env.*
+!.env.example
+admin/dist
+backend/dist
+Docs
+*.md
+!README.md
+.cursor
+terminals

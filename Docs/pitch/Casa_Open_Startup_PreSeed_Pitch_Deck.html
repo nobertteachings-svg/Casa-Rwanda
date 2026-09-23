@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Casa Kenya — Pre-Seed Pitch Deck</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0c1a14;
+      --ink-soft: #24352c;
+      --muted: #5c6f64;
+      --paper: #f3f6f4;
+      --paper-2: #e7eee9;
+      --forest: #0f2f24;
+      --forest-deep: #091c16;
+      --leaf: #1f6b4a;
+      --leaf-bright: #2f8f64;
+      --wa: #128c7e;
+      --gold: #c4a35a;
+      --white: #ffffff;
+      --danger: #8a1f1f;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @page {
+      size: 13.333in 7.5in;
+      margin: 0;
+    }
+
+    html, body {
+      background: #1a1a1a;
+      font-family: "Manrope", "Avenir Next", sans-serif;
+      color: var(--ink);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .deck {
+      display: block;
+    }
+
+    .slide {
+      width: 1280px;
+      height: 720px;
+      background: var(--paper);
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      break-after: page;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 100% 0%, rgba(47, 143, 100, 0.12), transparent 55%),
+        radial-gradient(ellipse 50% 40% at 0% 100%, rgba(18, 140, 126, 0.1), transparent 50%);
+      pointer-events: none;
+    }
+
+    .slide--dark {
+      background: linear-gradient(145deg, var(--forest-deep) 0%, var(--forest) 55%, #134036 100%);
+      color: var(--white);
+    }
+
+    .slide--dark .muted { color: rgba(255,255,255,0.72); }
+    .slide--dark .eyebrow { color: var(--leaf-bright); }
+
+    .inner {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      padding: 52px 64px 48px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .eyebrow {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--leaf);
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-family: "Syne", sans-serif;
+      font-weight: 800;
+      font-size: 56px;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-family: "Syne", sans-serif;
+      font-weight: 800;
+      font-size: 40px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      font-family: "Syne", sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    p, li {
+      font-size: 18px;
+      line-height: 1.45;
+      color: var(--ink-soft);
+    }
+
+    .slide--dark p, .slide--dark li { color: rgba(255,255,255,0.88); }
+
+    .muted { color: var(--muted); }
+
+    .lead {
+      font-size: 22px;
+      line-height: 1.4;
+      max-width: 920px;
+      margin-top: 16px;
+    }
+
+    .footer {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 20px;
+      border-top: 1px solid rgba(12, 26, 20, 0.12);
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .slide--dark .footer {
+      border-top-color: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.55);
+    }
+
+    .logo {
+      height: 40px;
+      width: auto;
+    }
+
+    .logo--light {
+      filter: brightness(0) invert(1);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-top: 8px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      margin-top: 12px;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid rgba(12, 26, 20, 0.1);
+      padding: 22px 24px;
+      border-radius: 4px;
+    }
+
+    .slide--dark .card {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.12);
+    }
+
+    .card strong {
+      display: block;
+      font-family: "Syne", sans-serif;
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+
+    .slide--dark .card strong { color: #fff; }
+
+    .card p, .card li {
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    ul.clean {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    ul.clean li {
+      padding-left: 28px;
+      position: relative;
+    }
+
+    ul.clean li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 12px;
+      height: 12px;
+      background: var(--leaf-bright);
+      border-radius: 2px;
+    }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .stat {
+      background: var(--white);
+      border: 1px solid rgba(12, 26, 20, 0.1);
+      padding: 20px;
+      border-radius: 4px;
+    }
+
+    .stat .num {
+      font-family: "Syne", sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      color: var(--leaf);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat .label {
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .tag {
+      display: inline-block;
+      background: rgba(31, 107, 74, 0.12);
+      color: var(--leaf);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border-radius: 2px;
+      margin-right: 8px;
+      margin-bottom: 8px;
+    }
+
+    .slide--dark .tag {
+      background: rgba(47, 143, 100, 0.25);
+      color: #b8f0d4;
+    }
+
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 12px;
+    }
+
+    .compare .bad {
+      border-top: 4px solid var(--danger);
+    }
+
+    .compare .good {
+      border-top: 4px solid var(--leaf-bright);
+    }
+
+    .hero-meta {
+      margin-top: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 28px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .hero-meta span { opacity: 0.9; }
+
+    .ask-box {
+      margin-top: 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.16);
+      padding: 24px 28px;
+      border-radius: 4px;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .timeline .card .when {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--leaf);
+      margin-bottom: 8px;
+    }
+
+    @media print {
+      html, body { background: none; width: 1280px; }
+      .deck { padding: 0; margin: 0; }
+      .slide {
+        page-break-after: always;
+        break-after: page;
+        margin: 0;
+        box-shadow: none;
+      }
+      .slide:last-child {
+        page-break-after: auto;
+        break-after: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck">
+
+    <!-- 1 COVER -->
+    <section class="slide slide--dark">
+      <div class="inner">
+        <img class="logo logo--light" src="casa_logo_lockup_horizontal.png" alt="Casa" />
+        <div style="flex:1; display:flex; flex-direction:column; justify-content:center; max-width:980px;">
+          <div class="eyebrow">Open Startup · Pre-Seed Track 2026</div>
+          <h1>Find your home<br />on WhatsApp.</h1>
+          <p class="lead">Casa is Kenya’s AI-powered housing marketplace — connecting landlords and tenants where they already are, without downloading another app.</p>
+          <div class="hero-meta">
+            <span>casahomeskenya.com</span>
+            <span>wa.me/2548000000000</span>
+            <span>PropTech · AI · Marketplace</span>
+          </div>
+        </div>
+        <div class="footer">
+          <span>Casa Kenya</span>
+          <span>Confidential · Pre-seed pitch</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 PROBLEM -->
+    <section class="slide">
+      <div class="inner">
+        <div class="eyebrow">The problem</div>
+        <h2>Finding a home in Kenya is slow, risky, and informal.</h2>
+        <div class="grid-2" style="margin-top:8px;">
+          <div class="card">
+            <strong>Tenants (22–40)</strong>
+            <p>Waste days chasing word-of-mouth leads, Facebook posts, and brokers. Pay for transport to visit places already rented or fake. Risk deposits with unverified landlords — especially when they must move in 2–4 weeks.</p>
+          </div>
+          <div class="card">
+            <strong>Landlords (30–55)</strong>
+            <p>Units sit empty. Reach only their immediate network. Face unserious inquiries and lose rental income while waiting for a trustworthy tenant.</p>
+          </div>
+        </div>
+        <ul class="clean" style="margin-top:22px;">
+          <li>People rely on friends, street brokers, Facebook groups, WhatsApp statuses, and “To let” signs</li>
+          <li>They love convenience but are sceptical of new apps — especially on slow, expensive internet</li>
+        </ul>
+        <div class="footer">
+          <span>Casa Kenya</span>
+          <span>02 / Problem</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 SOLUTION -->
+    <section class="slide">
+      <div class="inner">
+        <div class="eyebrow">The solution</div>
+        <h2>A full housing marketplace inside WhatsApp.</h2>
+        <p class="lead muted" style="margin-bottom:20px;">Landlords list. Tenants search. AI assists. Trust is built in. No new app.</p>
+        <div class="grid-3">
+          <div class="card">
+            <strong>1. List</strong>
+            <p>Landlords verify ID, set location, add photos + mandatory property video, and go live in English.</p>
+          </div>
+          <div class="card">
+            <strong>2. Search</strong>
+            <p>Tenants search by neighbourhood, category, or natural language — residential or commercial.</p>
+          </div>
+          <div class="card">
+            <strong>3. Unlock</strong>
+            <p>Pay 5,000 KES (~$3.30) once per listing to get the landlord’s number and map link.</p>
+          </div>
+        </div>
+        <div style="margin-top:22px;">
+          <span class="tag">WhatsApp-native</span>
+          <span class="tag">AI-assisted</span>
+          <span class="tag">ID + video trust</span>
+          <span class="tag">English-only NG</span>
+          <span class="tag">Paystack / Flutterwave ready</span>
+        </div>
+        <div class="footer">
+          <span>Casa Kenya</span>
+          <span>03 / Solution</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 WHY THIS APPROACH -->
+    <section class="slide">
+      <div class="inner">
+        <div class="eyebrow">Why this approach</div>
+        <h2>Distribution and trust beat another housing app.</h2>
+        <div class="compare">
+          <div class="card bad">
+            <strong>What fails today</strong>
+            <ul class="clean" style="margin-top:10px;">
+              <li>Play Store / App Store apps add download friction</li>
+              <li>Facebook groups lack verification</li>
+              <li>Brokers are opaque and expensive</li>
+              <li>Heavy apps struggle on slow networks</li>
+            </ul>
+          </div>
+          <div class="card good">
+            <strong>Why Casa wins</strong>
+            <ul class="clean" style="margin-top:10px;">
+              <li>WhatsApp is already on nearly every phone</li>
+              <li>Lighter than a native app</li>
+              <li>ID checks + property videos reduce fakes</li>
+              <li>Once it works, users become glued to it</li>
+            </ul>
+          </div>
+        </div>
+        <p style="margin-top:22px; font-size:17px;"><strong>Insight:</strong> Kenyans will not install another app for a one-time housing search — but they will chat.</p>
+        <div class="footer">
+          <span>Casa Kenya</span>
+          <span>04 / Insight</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 MARKET -->
+    <section class="slide">
+      <div class="inner">
+        <div class="eyebrow">Market</div>
+        <h2>Kenya first. West Africa next.</h2>
+        <div class="grid-2">
+          <div>
+            <div class="card" style="margin-bottom:16px;">
+              <strong>Beachhead</strong>
+              <p>Urban renters and landlords in <strong>Nairobi</strong>, <strong>Nairobi</strong>, then <strong>Port Harcourt</strong> — students, young professionals, small-business owners, diaspora-supported movers.</p>
+            </div>
+            <div class="card">
+              <strong>Customer types</strong>
+              <p>C2C marketplace · B2C unlock fees · commercial listings</p>
+            </div>
+          </div>
+          <div>
+            <div class="card" style="margin-bottom:16px;">
+              <strong>Categories we play in</strong>
+              <p>PropTech · Residential & commercial rental · Consumer marketplace · Conversational commerce · AI · Mobile</p>
+            </div>
+            <div class="card">
+              <strong>Expansion thesis</strong>
+              <p>Same WhatsApp-first model travels to other high-WhatsApp, informal-housing markets across West and Sub-Saharan Africa.</p>
+            </div>
+          </div>
+        </div>
+        <div class="footer">
+          <span>Casa Kenya</span>
+          <span>05 / Market</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 PRODUCT / ARCHITECTURE -->
+    <section class="slide">
+      <div class="inner">
+        <div class="eyebrow">Product</div>
+        <h2>Live today — hybrid architecture, WhatsApp-first UX.</h2>
+        <div class="grid-3">
+          <div class="card">
+            <strong>WhatsApp app</strong>
+            <p>Conversation engine, menus, listing & search flows, unlocks, referrals, alerts.</p>
+          </div>
+          <div class="card">
+            <strong>Trust layer</strong>
+            <p>Claude Vision ID checks, mandatory videos, community flagging, admin moderation.</p>
+          </div>
+          <div class="card">
+            <strong>Platform</strong>
+            <p>Express backend, Postgres, Redis queue, marketing site, admin dashboard — Railway hybrid web/worker.</p>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat">
+            <div class="num">Live</div>
+            <div class="label">casahomeskenya.com</div>
+          </div>
+          <div class="stat">
+            <div class="num">EN</div>
+            <div class="label">English-only product</div>
+          </div>
+          <div class="stat">
+            <div class="num">AI</div>
+            <div class="label">Listings, search, ID review</div>
+          </div>
+          <div class="stat">
+            <div class="num">NGN</div>
+            <div class="label">Paystack & Flutterwave next</div>
+          </div>
+        </div>
+        <div class="footer">
+          <span>Casa Kenya</span>
+          <span>06 / Product</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 BUSINESS MODEL -->
+    <section class="slide">
+      <div class="inner">
+        <div class="eyebrow">Business model</div>
+        <h2>Pay-per-unlock. Free to list. Built for occasional search.</h2>
+        <div class="grid-2">
+          <div class="card">
+            <strong>Pricing</strong>
+            <ul class="clean" style="margin-top:10px;">
+              <li><strong>Tenants:</strong> 5,000 KES (~$3.30) per listing unlock</li>
+              <li><strong>Landlords:</strong> free to list</li>
+              <li><strong>No agents:</strong> landlords and tenants connect directly</li>
+              <li>Launch mode: free unlocks while validating conversion</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>Unit economics (estimate)</strong>
+            <ul class="clean" style="margin-top:10px;">
+              <li><strong>CAC:</strong> ~$10 once paid social starts (cash CAC $0 today)</li>
+              <li><strong>LTV:</strong> ~$25 (≈2 unlocks × 1.5 search cycles)</li>
+              <li><strong>Revenue mix:</strong> 100% one-time today; subscriptions later</li>
+              <li><strong>MRR now:</strong> $0 — pre-recurring, early traction</li>
+            </ul>
+          </div>
+        </div>
+        <p style="margin-top:20px; font-size:16px;" class="muted">Rationale: unlock fee is a small fraction of move-in costs and below what tenants often lose on fake leads and transport.</p>
+        <div class="footer">
+          <span>Casa Kenya</span>
+          <span>07 / Model</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 TRACTION -->
+    <section class="slide">
+      <div class="inner">
+        <div class="eyebrow">Traction</div>
+        <h2>Live product. Early users. Clear next mile.</h2>
+        <div class="stat-row">
+          <div class="stat">
+            <div class="num">8</div>
+            <div class="label">Registered users</div>
+          </div>
+          <div class="stat">
+            <div class="num">1 / 7</div>
+            <div class="label">Landlord / tenants</div>
+          </div>
+          <div class="stat">
+            <div class="num">1</div>
+            <div class="label">Unlock completed</div>
+          </div>
+          <div class="stat">
+            <div class="num">$0</div>
+            <div class="label">Paid ad spend so far</div>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:24px;">
+          <div class="card">
+            <strong>Channels live</strong>
+            <p>WhatsApp · Website · Instagram · Facebook · TikTok · X · LinkedIn (organic)</p>
+          </div>
+          <div class="card">
+            <strong>Honest stage</strong>
+            <p>Pre-seed validation. Product works; sales motion is the bottleneck we are solving next.</p>
+          </div>
+        </div>
+        <div class="footer">
+          <span>Casa Kenya</span>
+          <span>08 / Traction</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9 GTM -->
+    <section class="slide">
+      <div class="inner">
+        <div class="eyebrow">Go-to-market</div>
+        <h2>First 100 users: Facebook housing groups → WhatsApp.</h2>
+        <div class="grid-2">
+          <div class="card">
+            <strong>Repeatable acquisition hypothesis</strong>
+            <ul class="clean" style="margin-top:10px;">
+              <li>Post in Nairobi/Nairobi “houses for rent” Facebook groups</li>
+              <li>Convert to Casa WhatsApp chat</li>
+              <li>Seed landlords first so tenants find listings</li>
+              <li>Referrals + agent partnerships</li>
+              <li>Campus / young-pro WhatsApp communities</li>
+            </ul>
+          </div>
+          <div class="card">
+            <strong>12-month targets</strong>
+            <ul class="clean" style="margin-top:10px;">
+              <li>Month 6: 500+ users, 150+ active listings</li>
+              <li>Month 9: Paystack/Flutterwave live, 500+ paid unlocks</li>
+              <li>Month 12: 5,000 users, 1,000 listings, 3 cities, ≥40% search→unlock</li>
+            </ul>
+          </div>
+        </div>
+        <p style="margin-top:20px; font-size:16px;"><strong>One hire that matters most:</strong> Sales / Growth Lead — own landlord & tenant acquisition.</p>
+        <div class="footer">
+          <span>Casa Kenya</span>
+          <span>09 / GTM</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10 COMPETITION / MOAT -->
+    <section class="slide">
+      <div class="inner">
+        <div class="eyebrow">Advantage</div>
+        <h2>Unique distribution — hardest thing to copy.</h2>
+        <div class="grid-3">
+          <div class="card">
+            <strong>vs Native apps</strong>
+            <p>No download. Works better on slow networks. Meets sceptical users in an existing habit.</p>
+          </div>
+          <div class="card">
+            <strong>vs Facebook groups</strong>
+            <p>Structured search, ID + video trust, moderation, and durable listing inventory.</p>
+          </div>
+          <div class="card">
+            <strong>vs Brokers</strong>
+            <p>Transparent fee, broader reach, English self-serve flow, digital trail.</p>
+          </div>
+        </div>
+        <div class="card" style="margin-top:20px;">
+          <strong>Moat path</strong>
+          <p>Today: WhatsApp-native distribution + Kenya localisation + trust stack. Tomorrow: network effects (more listings → more tenants) and proprietary rent / neighbourhood data.</p>
+        </div>
+        <div class="footer">
+          <span>Casa Kenya</span>
+          <span>10 / Advantage</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11 IMPACT -->
+    <section class="slide">
+      <div class="inner">
+        <div class="eyebrow">Impact</div>
+        <h2>Safer housing access — then cleaner communities.</h2>
+        <div class="grid-2">
+          <div class="card">
+            <strong>Near-term social value</strong>
+            <p>Reduce fraud and wasted search costs. Help families and small businesses settle faster. Formalise an informal rental market with verification and transparency.</p>
+          </div>
+          <div class="card">
+            <strong>Longer-term SDG path</strong>
+            <p>With a WhatsApp-reachable user base, Casa can coordinate neighbourhood <strong>waste sorting and collection</strong> — supporting sustainable cities and responsible communities.</p>
+          </div>
+        </div>
+        <p class="lead" style="margin-top:24px; font-size:20px;">In 10 years, success means informal housing in African cities becomes searchable, trusted, and fair — not that a logo is famous.</p>
+        <div class="footer">
+          <span>Casa Kenya</span>
+          <span>11 / Impact</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12 TEAM -->
+    <section class="slide">
+      <div class="inner">
+        <div class="eyebrow">Team</div>
+        <h2>Founder-built. Shipping in production.</h2>
+        <div class="grid-2">
+          <div class="card">
+            <strong>Nkwain Nobert Ekfuingei</strong>
+            <p style="margin-top:8px;">Founder & Developer</p>
+            <p style="margin-top:12px;">Built and launched Casa end-to-end: WhatsApp product, AI flows, trust features, admin, marketing site, and Railway production deploy.</p>
+            <p style="margin-top:12px;">+234 800 000 0000 · casahomeskenya.com</p>
+          </div>
+          <div class="card">
+            <strong>How we stay accountable</strong>
+            <ul class="clean" style="margin-top:10px;">
+              <li>Weekly KPI scorecard (users, listings, unlocks)</li>
+              <li>Weekly acquisition + conversion targets</li>
+              <li>Monthly OKR-style review</li>
+              <li>External commits with mentors/advisors</li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer">
+          <span>Casa Kenya</span>
+          <span>12 / Team</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 13 ROADMAP / ASK -->
+    <section class="slide">
+      <div class="inner">
+        <div class="eyebrow">Roadmap & ask</div>
+        <h2>Validate sales. Turn on payments. Scale cities.</h2>
+        <div class="timeline">
+          <div class="card">
+            <div class="when">M1–2</div>
+            <p>Paystack + Flutterwave; first paid unlocks</p>
+          </div>
+          <div class="card">
+            <div class="when">M3–6</div>
+            <p>Nairobi + Nairobi density; referrals</p>
+          </div>
+          <div class="card">
+            <div class="when">M7–9</div>
+            <p>3rd city; path to ops break-even</p>
+          </div>
+          <div class="card">
+            <div class="when">M10–12</div>
+            <p>Waste-outreach pilot; seed/grant for marketing</p>
+          </div>
+        </div>
+        <div class="card" style="margin-top:20px;">
+          <strong>Why Open Startup Pre-Seed</strong>
+          <p>We need mentorship on <strong>sales and go-to-market</strong>, structured validation support, and a path to early capital. Bootstrap target: ~$800/month. Product is live — distribution is the unlock.</p>
+        </div>
+        <div class="footer">
+          <span>Casa Kenya</span>
+          <span>13 / Ask</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 14 CLOSE -->
+    <section class="slide slide--dark">
+      <div class="inner">
+        <img class="logo logo--light" src="casa_logo_lockup_horizontal.png" alt="Casa" />
+        <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+          <div class="eyebrow">Let’s build trusted housing infrastructure</div>
+          <h1 style="font-size:48px;">Casa — Find your home<br />on WhatsApp.</h1>
+          <div class="ask-box">
+            <p style="font-size:20px; margin-bottom:14px;"><strong>Nkwain Nobert Ekfuingei</strong> · Founder & Developer</p>
+            <p>Phone / WhatsApp: +234 800 000 0000</p>
+            <p>Chat: https://wa.me/2548000000000</p>
+            <p>Web: https://casahomeskenya.com</p>
+            <p>hello@casahomeskenya.com</p>
+          </div>
+        </div>
+        <div class="footer">
+          <span>Casa Kenya · Open Startup Pre-Seed 2026</span>
+          <span>Thank you</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+import type { House } from "../services/houses.js";
+
+export function makeHouse(overrides: Partial<House> = {}): House {
+  return {
+    house_id: "CASA-1001",
+    landlord_phone: "250788000001",
+    type: "apartment",
+    property_category: "residential",
+    property_subtype: "two_bedroom",
+    region: "gasabo",
+    town: "Kigali",
+    rent: 350000,
+    months_upfront: 2,
+    latitude: -1.9441,
+    longitude: 30.0619,
+    neighbourhood: "Kimironko",
+    city: "Kigali",
+    fenced: true,
+    water: true,
+    borehole: false,
+    parking: true,
+    electricity: true,
+    electricity_meter: "prepaid",
+    furnished: false,
+    security: true,
+    standby_generator: false,
+    photos: [],
+    videos: ["wa-media:vid1"],
+    trust_tier: "verified_plus",
+    ai_description: null,
+    status: "active",
+    created_at: new Date(),
+    ...overrides,
+  };
+}

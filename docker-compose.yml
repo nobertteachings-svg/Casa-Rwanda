@@ -1,0 +1,33 @@
+# Local data stores for Casa. App processes run via `npm run dev:*` at repo root.
+services:
+  postgres:
+    image: postgis/postgis:16-3.4-alpine
+    environment:
+      POSTGRES_USER: casa
+      POSTGRES_PASSWORD: casa_dev
+      POSTGRES_DB: casa
+    ports:
+      - "5432:5432"
+    volumes:
+      - casa_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U casa -d casa"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - casa_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  casa_pg_data:
+  casa_redis_data:

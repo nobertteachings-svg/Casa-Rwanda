@@ -1,0 +1,21 @@
+{
+  "name": "casa-rwanda",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Casa \u2014 WhatsApp-first housing platform for Rwanda",
+  "scripts": {
+    "dev:db": "docker compose up -d postgres redis",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:admin": "npm --prefix admin run dev",
+    "dev:marketing": "npm --prefix marketing run dev",
+    "build": "npm --prefix backend run build && npm --prefix admin run build && npm --prefix marketing run build",
+    "typecheck": "npm --prefix backend run typecheck && npm --prefix admin run build --if-present && npm --prefix marketing run build --if-present",
+    "test": "npm --prefix backend test",
+    "test:coverage": "npm --prefix backend run test:coverage",
+    "db:migrate": "npm --prefix backend run db:migrate",
+    "quality:check": "npm run test && npm --prefix backend run typecheck"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,9 @@
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "backend/Dockerfile"
+watchPatterns = ["backend/**", "db/migrations/**", "railway.worker.toml"]
+
+[deploy]
+restartPolicyType = "ON_FAILURE"
+numReplicas = 1
+startCommand = "node dist/db/migrate.js && node dist/worker.js"

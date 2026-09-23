@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mutual Non-Disclosure Agreement — Casa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0c1a14;
+      --ink-soft: #24352c;
+      --muted: #5c6f64;
+      --paper: #f3f6f4;
+      --paper-2: #e7eee9;
+      --forest: #0f2f24;
+      --forest-deep: #091c16;
+      --leaf: #1f6b4a;
+      --leaf-bright: #2f8f64;
+      --wa: #128c7e;
+      --line: rgba(12, 26, 20, 0.14);
+      --white: #ffffff;
+    }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: #dfe6e2;
+      font-family: "Manrope", "Avenir Next", sans-serif;
+      color: var(--ink);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      background: var(--paper);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 40% at 100% 0%, rgba(47, 143, 100, 0.14), transparent 55%),
+        radial-gradient(ellipse 50% 35% at 0% 100%, rgba(18, 140, 126, 0.08), transparent 50%);
+      pointer-events: none;
+    }
+
+    .accent-bar {
+      height: 8px;
+      background: linear-gradient(90deg, var(--forest-deep), var(--leaf) 45%, var(--wa));
+      position: relative;
+      z-index: 1;
+    }
+
+    .inner {
+      position: relative;
+      z-index: 1;
+      padding: 28px 36px 36px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 22px;
+    }
+
+    .logo {
+      height: 42px;
+      width: auto;
+    }
+
+    .doc-meta {
+      text-align: right;
+    }
+
+    .doc-meta .badge {
+      display: inline-block;
+      background: rgba(31, 107, 74, 0.12);
+      color: var(--leaf);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border-radius: 2px;
+      margin-bottom: 8px;
+    }
+
+    .doc-meta p {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    h1 {
+      font-family: "Syne", sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--forest-deep);
+      line-height: 1.15;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .intro, .clause, .parties p {
+      font-size: 10.5px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      text-align: justify;
+      margin-bottom: 9px;
+    }
+
+    .parties {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--leaf);
+      border-radius: 4px;
+      padding: 14px 16px;
+      margin: 14px 0 16px;
+    }
+
+    .parties p { margin-bottom: 6px; }
+    .parties p:last-child { margin-bottom: 0; }
+
+    .party-name {
+      color: var(--forest);
+      font-weight: 800;
+    }
+
+    h2 {
+      font-family: "Syne", sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--forest);
+      margin: 14px 0 6px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    h2 .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      background: var(--forest);
+      color: #fff;
+      font-size: 10px;
+      border-radius: 2px;
+      font-family: "Manrope", sans-serif;
+    }
+
+    ol.sub {
+      margin: 6px 0 0 18px;
+      padding: 0;
+    }
+
+    ol.sub li {
+      font-size: 10.5px;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      margin-bottom: 4px;
+      text-align: justify;
+    }
+
+    .law-box {
+      background: linear-gradient(135deg, rgba(15, 47, 36, 0.06), rgba(18, 140, 126, 0.08));
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 12px 14px;
+      margin-top: 6px;
+    }
+
+    .law-box p {
+      font-size: 10.5px;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      text-align: justify;
+      margin: 0;
+    }
+
+    .witness {
+      margin-top: 16px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--forest);
+    }
+
+    .sig-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 18px;
+      page-break-inside: avoid;
+    }
+
+    .sig-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 16px;
+      min-height: 210px;
+    }
+
+    .sig-card .label {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--leaf);
+      margin-bottom: 8px;
+    }
+
+    .sig-card .who {
+      font-family: "Syne", sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--forest-deep);
+      margin-bottom: 2px;
+    }
+
+    .sig-card .where {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 28px;
+    }
+
+    .sig-field {
+      margin-top: 16px;
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .sig-line {
+      margin-top: 28px;
+      border-bottom: 1.5px solid var(--forest);
+      height: 28px;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      font-size: 8.5px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .footer-brand {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--leaf);
+      letter-spacing: 0.04em;
+    }
+
+    @media print {
+      html, body { background: none; }
+      .page { margin: 0; width: 210mm; min-height: 297mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="accent-bar"></div>
+    <div class="inner">
+
+      <div class="header">
+        <img class="logo" src="casa_logo_lockup_horizontal.png" alt="Casa" />
+        <div class="doc-meta">
+          <div class="badge">Mutual NDA</div>
+          <p>Confidential · Bilateral<br />Effective upon signature</p>
+        </div>
+      </div>
+
+      <h1>Mutual Non-Disclosure Agreement</h1>
+      <p class="subtitle">Confidentiality Agreement between the Parties named below</p>
+
+      <p class="intro">This Mutual Non-Disclosure Agreement (the “<strong>Agreement</strong>”) is entered into as of the later of the dates signed below (the “<strong>Effective Date</strong>”), by and between:</p>
+
+      <div class="parties">
+        <p><span class="party-name">Party 1:</span> <strong>Nkwain Nobert Ekfuingei</strong>, an individual based in Nairobi, Kenya (“<strong>Party 1</strong>”); and</p>
+        <p><span class="party-name">Party 2:</span> <strong>Musa Ceesay</strong>, an individual based at Sinchu Sorrie, Yundum, The Gambia (“<strong>Party 2</strong>”).</p>
+        <p style="margin-top:8px;">Party 1 and Party 2 are each a “<strong>Party</strong>” and together the “<strong>Parties</strong>”.</p>
+      </div>
+
+      <p class="intro">The Parties wish to explore a potential technology business collaboration or partnership (the “<strong>Purpose</strong>”) and may disclose confidential information to each other. The Parties agree as follows:</p>
+
+      <h2><span class="num">1</span> Mutual Obligations</h2>
+      <p class="clause">This Agreement is mutual. Each Party may be a disclosing party and/or a receiving party. Each Party agrees to protect the other Party’s Confidential Information as set out herein.</p>
+
+      <h2><span class="num">2</span> Definition of Confidential Information</h2>
+      <p class="clause">“<strong>Confidential Information</strong>” means any non-public information — technical, commercial, financial, operational, strategic, or otherwise — disclosed by one Party (the “<strong>Disclosing Party</strong>”) to the other Party (the “<strong>Receiving Party</strong>”), whether orally, in writing, electronically, or by any other means, that is marked confidential or that a reasonable person would understand to be confidential given its nature or the circumstances of disclosure. It includes, without limitation, business plans, ideas, concepts, product plans, technical designs, software, algorithms, data, customer or user information, financial information, and the existence and terms of discussions between the Parties relating to the Purpose.</p>
+
+      <h2><span class="num">3</span> Obligations of Confidentiality</h2>
+      <p class="clause">The Receiving Party shall:</p>
+      <ol class="sub" type="a">
+        <li>hold Confidential Information in strict confidence and protect it with at least reasonable care (and no less care than it uses for its own similar confidential information);</li>
+        <li>not disclose Confidential Information to any third party without prior written consent of the Disclosing Party, except to professional advisors who need to know and are bound by confidentiality obligations no less restrictive than those herein;</li>
+        <li>not use Confidential Information for any purpose other than the Purpose; and</li>
+        <li>not copy or reproduce Confidential Information except as reasonably necessary for the Purpose.</li>
+      </ol>
+
+      <h2><span class="num">4</span> Exclusions</h2>
+      <p class="clause">Confidential Information does not include information that the Receiving Party can demonstrate:</p>
+      <ol class="sub" type="a">
+        <li>is or becomes publicly available through no fault or breach of this Agreement by the Receiving Party;</li>
+        <li>was lawfully known to the Receiving Party before disclosure by the Disclosing Party without a confidentiality obligation;</li>
+        <li>is independently developed by the Receiving Party without use of or reference to the Disclosing Party’s Confidential Information; or</li>
+        <li>is rightfully received from a third party without breach of any confidentiality obligation.</li>
+      </ol>
+      <p class="clause" style="margin-top:8px;">The Receiving Party may disclose Confidential Information if required by law, regulation, or court order, provided that (to the extent legally permitted) it gives the Disclosing Party prompt notice and reasonable cooperation to seek protective measures.</p>
+
+      <h2><span class="num">5</span> Non-Use</h2>
+      <p class="clause">The Receiving Party shall not use Confidential Information for any purpose outside the Purpose, including for its own benefit or for the benefit of any third party, except as expressly permitted in writing by the Disclosing Party.</p>
+
+      <h2><span class="num">6</span> No License or Ownership Transfer</h2>
+      <p class="clause">Nothing in this Agreement grants any license, assignment, or transfer of any intellectual property or other rights in Confidential Information. All Confidential Information remains the property of the Disclosing Party. No partnership, joint venture, agency, or employment relationship is created by this Agreement. Neither Party is obligated to proceed with any collaboration, investment, or transaction.</p>
+
+      <h2><span class="num">7</span> Return or Destruction</h2>
+      <p class="clause">Upon the Disclosing Party’s written request, or upon termination of discussions regarding the Purpose, the Receiving Party shall promptly return or securely destroy all Confidential Information in its possession or control (including copies), and upon request confirm in writing that it has done so, except for copies retained solely as required by law or automated backup systems, which remain subject to this Agreement.</p>
+
+      <h2><span class="num">8</span> Term</h2>
+      <p class="clause">This Agreement begins on the Effective Date and continues for <strong>two (2) years</strong>. The obligations of confidentiality and non-use with respect to Confidential Information disclosed during the term shall survive for <strong>two (2) years</strong> from the Effective Date (or, if longer is required by applicable law for trade secrets, for so long as such information remains a trade secret).</p>
+
+      <h2><span class="num">9</span> Remedies</h2>
+      <p class="clause">The Parties acknowledge that a breach of this Agreement may cause irreparable harm for which monetary damages may be inadequate. Accordingly, the Disclosing Party shall be entitled to seek injunctive or other equitable relief, without prejudice to any other rights or remedies available at law or in equity.</p>
+
+      <h2><span class="num">10</span> Governing Law and Dispute Resolution</h2>
+      <div class="law-box">
+        <p>This Agreement shall be governed by and construed in accordance with the applicable laws of <strong>the Republic of Kenya</strong> and <strong>the Republic of The Gambia</strong>, to the extent of each Party’s location and obligations hereunder. Each Party agrees to comply with the confidentiality and related obligations of this Agreement under the laws applicable in Kenya and in The Gambia.</p>
+        <p style="margin-top:8px;">The Parties shall first attempt to resolve any dispute arising out of or in connection with this Agreement amicably through good-faith negotiations. If the dispute is not resolved within thirty (30) days, either Party may pursue available remedies before a court of competent jurisdiction in Kenya or The Gambia, or such other forum as the Parties may agree in writing (including arbitration).</p>
+      </div>
+
+      <h2><span class="num">11</span> General</h2>
+      <p class="clause">This Agreement constitutes the entire agreement between the Parties concerning its subject matter and supersedes prior discussions on confidentiality relating to the Purpose. It may be amended only in a writing signed by both Parties. If any provision is held unenforceable, the remaining provisions shall continue in force. Failure to enforce any provision is not a waiver. This Agreement may be executed in counterparts (including electronic or PDF signatures), each of which is deemed an original.</p>
+
+      <p class="witness">IN WITNESS WHEREOF, the Parties have executed this Agreement as of the dates set forth below.</p>
+
+      <div class="sig-grid">
+        <div class="sig-card">
+          <div class="label">Party 1</div>
+          <div class="who">Nkwain Nobert Ekfuingei</div>
+          <div class="where">Nairobi, Kenya</div>
+          <div class="sig-field">Signature</div>
+          <div class="sig-line"></div>
+          <div class="sig-field" style="margin-top:18px;">Date</div>
+          <div class="sig-line" style="margin-top:8px;"></div>
+        </div>
+        <div class="sig-card">
+          <div class="label">Party 2</div>
+          <div class="who">Musa Ceesay</div>
+          <div class="where">Sinchu Sorrie, Yundum, The Gambia</div>
+          <div class="where" style="margin-top:4px;margin-bottom:20px;">Musacee17@gmail.com</div>
+          <div class="sig-field">Signature</div>
+          <div class="sig-line"></div>
+          <div class="sig-field" style="margin-top:18px;">Date</div>
+          <div class="sig-line" style="margin-top:8px;"></div>
+        </div>
+      </div>
+
+      <p class="footer-note">
+        <strong>Disclaimer:</strong> This document is a general template for early-stage discussions and does not constitute legal advice. The Parties should have a qualified lawyer in Kenya and/or The Gambia review this Agreement (and any later partnership, equity, or investment documents) before relying on it for significant commercial commitments.
+      </p>
+
+      <div class="footer-brand">
+        <span>CASA · CONFIDENTIAL</span>
+        <span>casahomeskenya.com</span>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

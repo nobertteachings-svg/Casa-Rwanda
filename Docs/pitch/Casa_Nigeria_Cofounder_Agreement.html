@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Casa Kenya — Co-Founder Collaboration Agreement</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0c1a14; --ink-soft: #24352c; --muted: #5c6f64; --paper: #f3f6f4;
+      --forest: #0f2f24; --forest-deep: #091c16; --leaf: #1f6b4a; --leaf-bright: #2f8f64;
+      --wa: #128c7e; --line: rgba(12, 26, 20, 0.14); --white: #ffffff;
+    }
+    @page { size: A4; margin: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: #dfe6e2; font-family: "Manrope", sans-serif; color: var(--ink);
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .page {
+      width: 210mm; min-height: 297mm; margin: 0 auto; background: var(--paper);
+      position: relative; overflow: visible; page-break-after: always; break-after: page;
+    }
+    .page:last-child { page-break-after: auto; }
+    .page::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 40% at 100% 0%, rgba(47,143,100,.14), transparent 55%),
+        radial-gradient(ellipse 50% 35% at 0% 100%, rgba(18,140,126,.08), transparent 50%);
+    }
+    .accent-bar {
+      height: 8px; position: relative; z-index: 1;
+      background: linear-gradient(90deg, var(--forest-deep), var(--leaf) 45%, var(--wa));
+    }
+    .inner { position: relative; z-index: 1; padding: 26px 34px 32px; }
+    .header {
+      display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
+      padding-bottom: 14px; border-bottom: 1px solid var(--line); margin-bottom: 16px;
+    }
+    .logo { height: 40px; width: auto; }
+    .badge {
+      display: inline-block; background: rgba(31,107,74,.12); color: var(--leaf);
+      font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+      padding: 6px 10px; border-radius: 2px; margin-bottom: 6px;
+    }
+    .doc-meta { text-align: right; font-size: 10px; color: var(--muted); font-weight: 600; line-height: 1.4; }
+    h1 {
+      font-family: "Syne", sans-serif; font-size: 22px; font-weight: 800;
+      letter-spacing: -.02em; color: var(--forest-deep); line-height: 1.15; margin-bottom: 4px;
+    }
+    .subtitle { font-size: 11px; color: var(--muted); font-weight: 600; margin-bottom: 14px; }
+    p, li { font-size: 10px; line-height: 1.5; color: var(--ink-soft); text-align: justify; }
+    p { margin-bottom: 8px; }
+    .parties {
+      background: var(--white); border: 1px solid var(--line); border-left: 4px solid var(--leaf);
+      border-radius: 4px; padding: 12px 14px; margin: 10px 0 12px;
+    }
+    .parties p { margin-bottom: 5px; }
+    .parties p:last-child { margin-bottom: 0; }
+    .party-name { color: var(--forest); font-weight: 800; }
+    h2 {
+      font-family: "Syne", sans-serif; font-size: 11.5px; font-weight: 800;
+      color: var(--forest); margin: 12px 0 5px; display: flex; align-items: center; gap: 8px;
+    }
+    h2 .num {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 18px; height: 18px; background: var(--forest); color: #fff;
+      font-size: 9px; border-radius: 2px; font-family: "Manrope", sans-serif;
+    }
+    .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0 10px; }
+    .role-card {
+      background: var(--white); border: 1px solid var(--line); border-radius: 4px; padding: 12px;
+    }
+    .role-card .title {
+      font-family: "Syne", sans-serif; font-size: 11px; font-weight: 700;
+      color: var(--forest-deep); margin-bottom: 2px;
+    }
+    .role-card .role {
+      font-size: 9px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+      color: var(--leaf); margin-bottom: 8px;
+    }
+    .role-card ul { margin: 0 0 0 14px; padding: 0; }
+    .role-card li { margin-bottom: 3px; text-align: left; font-size: 9.5px; }
+    .box {
+      background: linear-gradient(135deg, rgba(15,47,36,.06), rgba(18,140,126,.08));
+      border: 1px solid var(--line); border-radius: 4px; padding: 10px 12px; margin: 6px 0 10px;
+    }
+    .box p { margin-bottom: 6px; }
+    .box p:last-child { margin-bottom: 0; }
+    ol.sub { margin: 4px 0 8px 16px; padding: 0; }
+    ol.sub li { margin-bottom: 3px; }
+    .equity {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0;
+    }
+    .equity .stat {
+      background: var(--white); border: 1px solid var(--line); border-radius: 4px;
+      text-align: center; padding: 14px 10px;
+    }
+    .equity .pct {
+      font-family: "Syne", sans-serif; font-size: 28px; font-weight: 800; color: var(--leaf); line-height: 1;
+    }
+    .equity .who { font-size: 10px; font-weight: 700; color: var(--forest); margin-top: 6px; }
+    .witness { margin-top: 12px; font-size: 10px; font-weight: 700; color: var(--forest); }
+    .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+    .sig-card {
+      background: var(--white); border: 1px solid var(--line); border-radius: 4px;
+      padding: 14px; min-height: 180px;
+    }
+    .sig-card .label {
+      font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--leaf); margin-bottom: 6px;
+    }
+    .sig-card .who-name {
+      font-family: "Syne", sans-serif; font-size: 12px; font-weight: 700; color: var(--forest-deep);
+    }
+    .sig-card .where { font-size: 9.5px; color: var(--muted); font-weight: 600; margin-bottom: 20px; }
+    .sig-field { font-size: 9.5px; color: var(--muted); font-weight: 600; margin-top: 12px; }
+    .sig-line { margin-top: 22px; border-bottom: 1.5px solid var(--forest); height: 22px; }
+    .footer-note {
+      margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line);
+      font-size: 8px; line-height: 1.4; color: var(--muted);
+    }
+    .footer-brand {
+      margin-top: 8px; display: flex; justify-content: space-between;
+      font-size: 9px; font-weight: 700; color: var(--leaf); letter-spacing: .04em;
+    }
+    @media print {
+      html, body { background: none; }
+      .page { margin: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1 -->
+  <div class="page">
+    <div class="accent-bar"></div>
+    <div class="inner">
+      <div class="header">
+        <img class="logo" src="casa_logo_lockup_horizontal.png" alt="Casa" />
+        <div class="doc-meta">
+          <div class="badge">Co-Founder Agreement</div>
+          <p>Casa Kenya<br />50 / 50 Equity</p>
+        </div>
+      </div>
+
+      <h1>Casa Kenya<br />Co-Founder Collaboration Agreement</h1>
+      <p class="subtitle">Roles · Equity · Decision-making · Dispute resolution</p>
+
+      <p>This Co-Founder Collaboration Agreement (the “<strong>Agreement</strong>”) is entered into as of the later of the dates signed below (the “<strong>Effective Date</strong>”), by and between:</p>
+
+      <div class="parties">
+        <p><span class="party-name">Party A:</span> <strong>Nkwain Nobert Ekfuingei</strong>, an individual based in Nairobi, Kenya (“<strong>Nobert</strong>” / “<strong>Technical Co-Founder</strong>”); and</p>
+        <p><span class="party-name">Party B:</span> <strong>Ibrahim Adewale Zakariyyah</strong>, an individual based in Kenya (“<strong>Ibrahim</strong>” / “<strong>Managing Co-Founder</strong>”).</p>
+        <p style="margin-top:6px;">Together, the “<strong>Co-Founders</strong>” or “<strong>Parties</strong>”.</p>
+      </div>
+
+      <h2><span class="num">1</span> Purpose</h2>
+      <p>The Co-Founders agree to establish and operate <strong>Casa Kenya</strong> — a technology / PropTech venture bringing a WhatsApp-based housing marketplace (and related products) to Kenya (the “<strong>Venture</strong>”). This Agreement sets out ownership, responsibilities, and how the Co-Founders will work together and resolve disputes.</p>
+
+      <h2><span class="num">2</span> Equity Ownership</h2>
+      <div class="equity">
+        <div class="stat">
+          <div class="pct">50%</div>
+          <div class="who">Nkwain Nobert Ekfuingei</div>
+        </div>
+        <div class="stat">
+          <div class="pct">50%</div>
+          <div class="who">Ibrahim Adewale Zakariyyah</div>
+        </div>
+      </div>
+      <div class="box">
+        <p>Unless otherwise agreed in writing, ownership of the Venture (and of any company incorporated for Casa Kenya) shall be held <strong>fifty percent (50%)</strong> by Nobert and <strong>fifty percent (50%)</strong> by Ibrahim, on equal terms as Co-Founders of Casa Kenya.</p>
+        <p>This equity split applies to <strong>Casa Kenya</strong> only. It does not automatically transfer ownership of Casa Kenya, the Casa brand globally, or pre-existing technology owned by Nobert, except as licensed to the Venture under Clause 5.</p>
+      </div>
+
+      <h2><span class="num">3</span> Designation of Responsibilities</h2>
+      <div class="role-grid">
+        <div class="role-card">
+          <div class="title">Nkwain Nobert Ekfuingei</div>
+          <div class="role">Engineering / Technology</div>
+          <ul>
+            <li>Own product engineering, architecture, and codebase</li>
+            <li>Build, maintain, and deploy software for Casa Kenya</li>
+            <li>Technical infrastructure, security, and integrations (e.g. WhatsApp, payments)</li>
+            <li>Technical roadmap and engineering priorities</li>
+            <li>Advise on product feasibility and technical risk</li>
+            <li>Manage technical contractors/developers (if any), with mutual agreement on hires</li>
+          </ul>
+        </div>
+        <div class="role-card">
+          <div class="title">Ibrahim Adewale Zakariyyah</div>
+          <div class="role">Management / Marketing / Operations</div>
+          <ul>
+            <li>Day-to-day management of Casa Kenya operations</li>
+            <li>Marketing, growth, partnerships, and brand presence in Kenya</li>
+            <li>Sales, landlord/tenant acquisition, and local go-to-market</li>
+            <li>Customer support coordination and market feedback</li>
+            <li>Local compliance, banking/setup support, and stakeholder relations in Kenya</li>
+            <li>Business development and fundraising support for Casa Kenya (jointly with Nobert on terms)</li>
+          </ul>
+        </div>
+      </div>
+      <p>Both Co-Founders shall act in good faith, communicate regularly, and support each other where needed. Major decisions remain joint under Clause 4.</p>
+
+      <h2><span class="num">4</span> Decision-Making</h2>
+      <p>Day-to-day decisions within each Co-Founder’s designated area may be made by that Co-Founder, keeping the other reasonably informed. The following require <strong>written mutual agreement</strong> of both Co-Founders:</p>
+      <ol class="sub" type="a">
+        <li>Issuing or changing equity, options, or ownership;</li>
+        <li>Raising capital, taking loans, or granting security;</li>
+        <li>Hiring or terminating key personnel / contractors above an agreed budget;</li>
+        <li>Entering contracts above a material threshold (to be agreed, or otherwise any contract binding the Venture for more than a short trial period);</li>
+        <li>Changing brand, pricing model, or core product direction for Casa Kenya;</li>
+        <li>Incorporating a company, opening bank accounts, or appointing directors/signatories;</li>
+        <li>Selling, merging, or winding down the Venture; and</li>
+        <li>Any matter outside a Co-Founder’s designated responsibility that materially affects the Venture.</li>
+      </ol>
+
+      <div class="footer-brand">
+        <span>CASA NIGERIA · CONFIDENTIAL</span>
+        <span>Page 1 of 2</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="page">
+    <div class="accent-bar"></div>
+    <div class="inner">
+      <div class="header">
+        <img class="logo" src="casa_logo_lockup_horizontal.png" alt="Casa" />
+        <div class="doc-meta">
+          <div class="badge">Co-Founder Agreement</div>
+          <p>Casa Kenya · Continued</p>
+        </div>
+      </div>
+
+      <h2><span class="num">5</span> Intellectual Property & Brand</h2>
+      <div class="box">
+        <p><strong>Pre-existing IP:</strong> Technology, code, designs, and know-how created by Nobert before the Effective Date (including the Casa platform as developed for Kenya) remain Nobert’s property, unless assigned in a separate written agreement.</p>
+        <p><strong>License to Casa Kenya:</strong> Nobert grants the Venture a non-exclusive right to use, adapt, and operate relevant software and brand elements as needed to run Casa Kenya, while this Agreement remains in force and the Co-Founders continue the Venture in good faith.</p>
+        <p><strong>New IP for Kenya:</strong> Work product created specifically for Casa Kenya in the course of the Venture shall be owned by the Venture (or held for the benefit of both Co-Founders 50/50 pending company formation), unless otherwise agreed in writing.</p>
+        <p><strong>Brand:</strong> Use of the “Casa” name and marks for Kenya shall be coordinated so as not to harm Casa’s reputation in other markets.</p>
+      </div>
+
+      <h2><span class="num">6</span> Contributions, Expenses & Revenue</h2>
+      <p>Each Co-Founder shall contribute the time and effort reasonably required for their role. Out-of-pocket expenses for the Venture shall be pre-agreed where material and reimbursed from Venture funds when available. Revenue, costs, and distributions of Casa Kenya shall be shared in proportion to equity (50/50), after agreed operating expenses, unless the Co-Founders agree otherwise in writing.</p>
+
+      <h2><span class="num">7</span> Confidentiality</h2>
+      <p>The Co-Founders shall keep confidential all non-public information relating to the Venture, and shall comply with any mutual NDA already signed between them. Confidentiality survives termination of this Agreement for two (2) years.</p>
+
+      <h2><span class="num">8</span> Dispute Resolution</h2>
+      <p>If a dispute arises between the Co-Founders concerning this Agreement or the Venture, they shall resolve it as follows:</p>
+      <ol class="sub" type="a">
+        <li><strong>Good-faith discussion:</strong> Either Co-Founder may give written notice of the dispute. The Co-Founders shall meet (in person or by video/call) within seven (7) days and attempt to resolve it amicably for up to fourteen (14) days.</li>
+        <li><strong>Cooling-off & written positions:</strong> If unresolved, each Co-Founder shall exchange a short written statement of their position and proposed solution within a further seven (7) days, then hold one additional resolution meeting.</li>
+        <li><strong>Mediation:</strong> If still unresolved, the Co-Founders shall refer the dispute to mediation before a mutually agreed mediator (in Kenya or online). Costs of mediation shall be shared 50/50 unless otherwise agreed.</li>
+        <li><strong>Deadlock on major decisions:</strong> If the Co-Founders cannot agree on a Clause 4 major decision after the steps above, they may agree to: (i) pause that decision; (ii) appoint an independent advisor’s non-binding recommendation; or (iii) negotiate a buyout, pause, or wind-down of the Venture on fair terms.</li>
+        <li><strong>Legal remedies:</strong> If mediation fails within thirty (30) days of referral (or such longer period as agreed), either Co-Founder may pursue available remedies before a court of competent jurisdiction in <strong>Nigeria</strong> or <strong>Nigeria</strong>, or such other forum (including arbitration) as the Parties agree in writing.</li>
+      </ol>
+      <p>During a dispute, both Co-Founders shall continue to perform essential duties in good faith to protect users, data, and the Venture’s reputation, unless doing so would cause material harm.</p>
+
+      <h2><span class="num">9</span> Term, Exit & Termination</h2>
+      <p>This Agreement begins on the Effective Date and continues until the Venture is wound down, sold, or the Co-Founders replace it with a shareholders’ / founders’ agreement for an incorporated company. Either Co-Founder may propose exit terms in writing. Voluntary departure, removal for material breach, or prolonged failure to perform shall be addressed in good faith with a fair process; equity treatment on exit should be documented in writing (and ideally in a future vesting schedule reviewed by counsel).</p>
+
+      <h2><span class="num">10</span> Governing Law</h2>
+      <div class="box">
+        <p>This Agreement shall be governed by and construed in accordance with the applicable laws of the <strong>Federal Republic of Kenya</strong> and the <strong>Republic of Kenya</strong>, to the extent of each Co-Founder’s location and obligations. The primary operating jurisdiction of the Venture is intended to be <strong>Nigeria</strong>.</p>
+      </div>
+
+      <h2><span class="num">11</span> General</h2>
+      <p>This Agreement is the entire understanding between the Co-Founders on its subject matter and may be amended only in writing signed by both. If any clause is unenforceable, the rest remains in force. It may be signed in counterparts (including electronic / PDF signatures). The Co-Founders intend to incorporate a Kenyan company for Casa Kenya when practical and to execute fuller constitutional documents consistent with this Agreement.</p>
+
+      <p class="witness">IN WITNESS WHEREOF, the Co-Founders have executed this Agreement as of the dates below.</p>
+
+      <div class="sig-grid">
+        <div class="sig-card">
+          <div class="label">Party A — Technical Co-Founder</div>
+          <div class="who-name">Nkwain Nobert Ekfuingei</div>
+          <div class="where">Nairobi, Kenya · 50% Casa Kenya</div>
+          <div class="sig-field">Signature</div>
+          <div class="sig-line"></div>
+          <div class="sig-field">Date</div>
+          <div class="sig-line" style="margin-top:8px;height:18px;"></div>
+        </div>
+        <div class="sig-card">
+          <div class="label">Party B — Managing Co-Founder</div>
+          <div class="who-name">Ibrahim Adewale Zakariyyah</div>
+          <div class="where">Kenya · 50% Casa Kenya</div>
+          <div class="sig-field">Signature</div>
+          <div class="sig-line"></div>
+          <div class="sig-field">Date</div>
+          <div class="sig-line" style="margin-top:8px;height:18px;"></div>
+        </div>
+      </div>
+
+      <p class="footer-note">
+        <strong>Disclaimer:</strong> This document is a collaboration template for early-stage alignment and does not constitute legal advice. Before incorporating, raising capital, or transferring equity, both parties should have qualified lawyers in Kenya and/or Kenya review and upgrade this into formal company / shareholders documents (including vesting, IP assignment, and bank mandates).
+      </p>
+
+      <div class="footer-brand">
+        <span>CASA NIGERIA · casahomeskenya.com</span>
+        <span>Page 2 of 2</span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

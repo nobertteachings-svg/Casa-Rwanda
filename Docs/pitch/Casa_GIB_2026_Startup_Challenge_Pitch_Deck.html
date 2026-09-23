@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Casa Kenya — The Gap in Between 2026 Startup Challenge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0c1a14; --ink-soft: #24352c; --muted: #5c6f64; --paper: #f3f6f4;
+      --forest: #0f2f24; --forest-deep: #091c16; --leaf: #1f6b4a; --leaf-bright: #2f8f64;
+      --white: #fff; --danger: #8a1f1f;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    @page { size: 13.333in 7.5in; margin: 0; }
+    html, body {
+      font-family: "Manrope", sans-serif; color: var(--ink);
+      -webkit-print-color-adjust: exact; print-color-adjust: exact; background: #111;
+    }
+    .deck { display: block; }
+    .slide {
+      width: 1280px; height: 720px; background: var(--paper); position: relative;
+      overflow: hidden; page-break-after: always; break-after: page;
+      page-break-inside: avoid; break-inside: avoid;
+    }
+    .slide::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 100% 0%, rgba(47,143,100,.12), transparent 55%),
+        radial-gradient(ellipse 50% 40% at 0% 100%, rgba(18,140,126,.1), transparent 50%);
+    }
+    .slide--dark {
+      background: linear-gradient(145deg, var(--forest-deep), var(--forest) 55%, #134036);
+      color: var(--white);
+    }
+    .slide--dark .eyebrow { color: var(--leaf-bright); }
+    .slide--dark p, .slide--dark li { color: rgba(255,255,255,.88); }
+    .inner {
+      position: relative; z-index: 1; height: 100%;
+      padding: 52px 64px 48px; display: flex; flex-direction: column;
+    }
+    .eyebrow {
+      font-size: 13px; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--leaf); margin-bottom: 14px;
+    }
+    h1 { font-family: Syne, sans-serif; font-weight: 800; font-size: 52px; line-height: 1.05; letter-spacing: -.02em; }
+    h2 { font-family: Syne, sans-serif; font-weight: 800; font-size: 38px; line-height: 1.1; letter-spacing: -.02em; margin-bottom: 18px; }
+    h3 { font-family: Syne, sans-serif; font-weight: 700; font-size: 20px; margin-bottom: 8px; }
+    p, li { font-size: 17px; line-height: 1.45; color: var(--ink-soft); }
+    .lead { font-size: 21px; line-height: 1.4; max-width: 980px; margin-top: 14px; }
+    .footer {
+      margin-top: auto; display: flex; justify-content: space-between; align-items: center;
+      padding-top: 18px; border-top: 1px solid rgba(12,26,20,.12);
+      font-size: 12px; color: var(--muted); font-weight: 600;
+    }
+    .slide--dark .footer { border-top-color: rgba(255,255,255,.15); color: rgba(255,255,255,.55); }
+    .logo { height: 38px; width: auto; }
+    .logo--light { filter: brightness(0) invert(1); }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+    .card {
+      background: #fff; border: 1px solid rgba(12,26,20,.1);
+      padding: 20px 22px; border-radius: 4px;
+    }
+    .slide--dark .card { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.12); }
+    .card strong { display: block; font-family: Syne, sans-serif; font-size: 17px; margin-bottom: 8px; color: var(--ink); }
+    .slide--dark .card strong { color: #fff; }
+    .card p, .card li { font-size: 14.5px; line-height: 1.4; }
+    ul.clean { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    ul.clean li { padding-left: 26px; position: relative; }
+    ul.clean li::before {
+      content: ""; position: absolute; left: 0; top: 7px;
+      width: 11px; height: 11px; background: var(--leaf-bright); border-radius: 2px;
+    }
+    .stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 18px; }
+    .stat { background: #fff; border: 1px solid rgba(12,26,20,.1); padding: 18px; border-radius: 4px; }
+    .stat .num { font-family: Syne, sans-serif; font-size: 32px; font-weight: 800; color: var(--leaf); line-height: 1; margin-bottom: 6px; }
+    .stat .label { font-size: 13px; color: var(--muted); font-weight: 600; line-height: 1.3; }
+    .tag {
+      display: inline-block; background: rgba(31,107,74,.12); color: var(--leaf);
+      font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+      padding: 6px 10px; border-radius: 2px; margin: 0 8px 8px 0;
+    }
+    .compare .bad { border-top: 4px solid var(--danger); }
+    .compare .good { border-top: 4px solid var(--leaf-bright); }
+    .hero-meta { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 12px 26px; font-size: 15px; font-weight: 600; }
+    .ask-box {
+      margin-top: 18px; background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.16); padding: 22px 26px; border-radius: 4px;
+    }
+    .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 14px; }
+    .timeline .when { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--leaf); margin-bottom: 6px; }
+    @media print {
+      html, body { background: none; width: 1280px; }
+      .slide { margin: 0; }
+      .slide:last-child { page-break-after: auto; break-after: auto; }
+    }
+  </style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- 1 COVER -->
+  <section class="slide slide--dark">
+    <div class="inner">
+      <img class="logo logo--light" src="casa_logo_lockup_horizontal.png" alt="Casa" />
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;max-width:1000px;">
+        <div class="eyebrow">The Gap in Between · Startup Challenge 2026 · Social Nest Foundation</div>
+        <h1>Trusted housing access<br />on WhatsApp.</h1>
+        <p class="lead">Casa Kenya is an AI-powered, WhatsApp-first marketplace that makes renting safer and faster — then turns the same user network into community infrastructure for cleaner cities.</p>
+        <div class="hero-meta">
+          <span>Social innovation · PropTech · AI</span>
+          <span>SDG 11 · 8 · 9 · 12</span>
+          <span>Seeking €10,000</span>
+        </div>
+      </div>
+      <div class="footer"><span>Casa Kenya</span><span>GIB 2026 · Impact pitch</span></div>
+    </div>
+  </section>
+
+  <!-- 2 PROBLEM -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">Problem</div>
+      <h2>Informal housing search locks people out of safe urban opportunity.</h2>
+      <div class="grid-2">
+        <div class="card">
+          <strong>Who is affected</strong>
+          <p>Tenants (22–40) and landlords (30–55) in Nairobi, Nairobi and other Kenya cities — plus small businesses seeking commercial space.</p>
+        </div>
+        <div class="card">
+          <strong>What goes wrong</strong>
+          <p>Word of mouth, brokers and Facebook groups waste time and money. Fake or rented-out listings. Unverified landlords. Empty units. No trust layer.</p>
+        </div>
+      </div>
+      <div class="card" style="margin-top:18px;">
+        <strong>Why it matters at scale</strong>
+        <p>~60% of Kenyans live in cities; urban growth ~3.6%/year. Rental demand is strong because ownership is unaffordable for many (CAHF). Discovery still runs on informal channels while people already live on WhatsApp — but refuse heavy new apps on slow internet.</p>
+      </div>
+      <div class="footer"><span>Casa Kenya</span><span>02 / Problem</span></div>
+    </div>
+  </section>
+
+  <!-- 3 SOLUTION -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">Solution</div>
+      <h2>A full housing marketplace inside WhatsApp.</h2>
+      <div class="grid-3" style="margin-top:8px;">
+        <div class="card"><strong>List</strong><p>Landlords verify ID, add GPS, photos and a mandatory property video. English-only.</p></div>
+        <div class="card"><strong>Search</strong><p>Tenants search by neighbourhood, category or natural language — residential or commercial.</p></div>
+        <div class="card"><strong>Unlock</strong><p>Pay 5,000 KES (~€3.30) once per listing to get the landlord contact and map link.</p></div>
+      </div>
+      <div style="margin-top:20px;">
+        <span class="tag">No new app</span>
+        <span class="tag">AI-assisted</span>
+        <span class="tag">ID + video trust</span>
+        <span class="tag">Paystack / Flutterwave path</span>
+        <span class="tag">English-only Kenya</span>
+      </div>
+      <p style="margin-top:16px;font-size:16px;"><strong>Innovation:</strong> distribution-first PropTech — product where behaviour already is, trust where informal markets fail.</p>
+      <div class="footer"><span>Casa Kenya</span><span>03 / Solution</span></div>
+    </div>
+  </section>
+
+  <!-- 4 UVP / DIFFERENTIATION -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">Unique value proposition</div>
+      <h2>Find and rent on WhatsApp — verified, English-only, no download.</h2>
+      <div class="grid-2 compare">
+        <div class="card bad">
+          <strong>Alternatives</strong>
+          <ul class="clean" style="margin-top:8px;">
+            <li>Facebook groups — noisy, unverified</li>
+            <li>Street brokers — opaque, limited reach</li>
+            <li>Native apps — install friction, heavy data</li>
+            <li>Agencies — slow/costly for mass market</li>
+          </ul>
+        </div>
+        <div class="card good">
+          <strong>Casa differentiation</strong>
+          <ul class="clean" style="margin-top:8px;">
+            <li>Full product in WhatsApp chat</li>
+            <li>AI listing + search understanding</li>
+            <li>ID verification + mandatory videos</li>
+            <li>Built for slow networks & English Kenya</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer"><span>Casa Kenya</span><span>04 / Differentiation</span></div>
+    </div>
+  </section>
+
+  <!-- 5 IMPACT -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">Impact model</div>
+      <h2>Social impact now. Environmental infrastructure next.</h2>
+      <div class="grid-2">
+        <div class="card">
+          <strong>Social (primary)</strong>
+          <p>Safer housing access, less fraud, faster moves for families and small businesses, fairer landlord–tenant matching.</p>
+          <p style="margin-top:10px;"><strong>KPIs:</strong> verified listings %, flagged/fake rate, successful unlocks, users in target cities.</p>
+        </div>
+        <div class="card">
+          <strong>Environmental (phase 2)</strong>
+          <p>Same WhatsApp user database coordinates neighbourhood <strong>waste sorting & collection</strong> — schedules, guidance, participation.</p>
+          <p style="margin-top:10px;"><strong>KPIs:</strong> neighbourhoods piloted, messages delivered, participation rate.</p>
+        </div>
+      </div>
+      <div style="margin-top:16px;">
+        <span class="tag">SDG 11 Cities</span>
+        <span class="tag">SDG 8 Decent work</span>
+        <span class="tag">SDG 9 Innovation</span>
+        <span class="tag">SDG 12 Responsible consumption</span>
+      </div>
+      <p style="margin-top:12px;font-size:15px;color:var(--muted);">Impact evolution: early stage — product live, first users/unlock. Next quarters focus on density + measurable unlock and trust KPIs.</p>
+      <div class="footer"><span>Casa Kenya</span><span>05 / Impact</span></div>
+    </div>
+  </section>
+
+  <!-- 6 MARKET -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">Market</div>
+      <h2>Kenya beachhead. West Africa expansion.</h2>
+      <div class="grid-2">
+        <div class="card">
+          <strong>Operating country</strong>
+          <p><strong>Nigeria</strong> — Nairobi & Nairobi first, then Port Harcourt. Paying ICP: urban tenants; supply: landlords with 1–10 units; direct landlord–tenant matching only.</p>
+        </div>
+        <div class="card">
+          <strong>Market potential</strong>
+          <p>Large informal rental economy + high WhatsApp usage + Paystack/Flutterwave rails. Same pattern repeats in Ghana, Kenya, and other high-WhatsApp markets.</p>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <strong>GTM</strong>
+        <p>Landlord-first seeding → Facebook “houses for rent” groups → WhatsApp conversion → referrals → paid social once CAC proven. Bootstrap target ~€800/month ops.</p>
+      </div>
+      <div class="footer"><span>Casa Kenya</span><span>06 / Market</span></div>
+    </div>
+  </section>
+
+  <!-- 7 BUSINESS MODEL -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">Business model</div>
+      <h2>Marketplace unlock fees. Free to list.</h2>
+      <div class="grid-2">
+        <div class="card">
+          <strong>Revenue streams</strong>
+          <ul class="clean" style="margin-top:8px;">
+            <li>Tenant unlock: 5,000 KES (~€3.30) / listing</li>
+            <li>No agent fees — direct landlord/tenant contact</li>
+            <li>Landlords list free (grow supply)</li>
+            <li>Future: featured listings / subscriptions</li>
+          </ul>
+        </div>
+        <div class="card">
+          <strong>Unit economics (estimate)</strong>
+          <ul class="clean" style="margin-top:8px;">
+            <li>Cash CAC today: €0 (organic)</li>
+            <li>Est. paid CAC: ~€9–10 / user</li>
+            <li>Est. LTV: ~€23 (~$25)</li>
+            <li>Revenue type: 100% one-time today</li>
+          </ul>
+        </div>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><div class="num">~€8</div><div class="label">Revenue last 12 months</div></div>
+        <div class="stat"><div class="num">€0</div><div class="label">ARR (no subscriptions yet)</div></div>
+        <div class="stat"><div class="num">No</div><div class="label">Positive EBITDA yet</div></div>
+        <div class="stat"><div class="num">8</div><div class="label">Users · 1 unlock</div></div>
+      </div>
+      <div class="footer"><span>Casa Kenya</span><span>07 / Model</span></div>
+    </div>
+  </section>
+
+  <!-- 8 TRACTION / TECH -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">Traction & technology</div>
+      <h2>Live in production. TRL 7. Honest early numbers.</h2>
+      <div class="grid-3">
+        <div class="card"><strong>Product live</strong><p>WhatsApp Cloud API marketplace, AI flows, ID + video trust, admin + marketing site on Railway.</p></div>
+        <div class="card"><strong>Users</strong><p>8 registered (1 landlord, 7 tenants). First unlock completed. Organic social live.</p></div>
+        <div class="card"><strong>Architecture</strong><p>Hybrid web/worker, Postgres, Redis durable queue, English-only, Paystack/Flutterwave path next.</p></div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <strong>Performance KPIs we track</strong>
+        <p>Active listings · Paid unlocks · Registered users · Search→unlock conversion · Flagged listing rate</p>
+      </div>
+      <div class="footer"><span>Casa Kenya</span><span>08 / Traction</span></div>
+    </div>
+  </section>
+
+  <!-- 9 TEAM -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">Team</div>
+      <h2>Founder-built. Shipping. Ready for growth hire.</h2>
+      <div class="grid-2">
+        <div class="card">
+          <strong>Nkwain Nobert Ekfuingei</strong>
+          <p style="margin-top:6px;">Founder & Developer · 1 founder · 1 collaborator</p>
+          <p style="margin-top:12px;">Built Casa end-to-end and launched in production. Women in founding team: 0%. Next hire: Sales/Growth Lead (English).</p>
+          <p style="margin-top:12px;">+234 800 000 0000 · casahomeskenya.com</p>
+        </div>
+        <div class="card">
+          <strong>Accountability</strong>
+          <ul class="clean" style="margin-top:8px;">
+            <li>Weekly KPI scorecard</li>
+            <li>Weekly acquisition targets</li>
+            <li>Monthly OKR-style review</li>
+            <li>External mentor commits</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer"><span>Casa Kenya</span><span>09 / Team</span></div>
+    </div>
+  </section>
+
+  <!-- 10 ROADMAP -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">Roadmap</div>
+      <h2>Scale density → payments → cities → community impact.</h2>
+      <div class="timeline">
+        <div class="card"><div class="when">M1–2</div><p>Paystack + Flutterwave; first paid unlocks</p></div>
+        <div class="card"><div class="when">M3–6</div><p>Nairobi/Nairobi density; sales playbook</p></div>
+        <div class="card"><div class="when">M7–9</div><p>3rd city; ops break-even path</p></div>
+        <div class="card"><div class="when">M10–12</div><p>Waste-outreach pilot; West Africa expansion prep</p></div>
+      </div>
+      <div class="card" style="margin-top:18px;">
+        <strong>3–5 year vision</strong>
+        <p>Default WhatsApp housing layer for Kenya’s major cities, then West Africa — with community services (waste coordination) on the same trusted network. Market transformation: informal rental becomes searchable, fair and safe.</p>
+      </div>
+      <div class="footer"><span>Casa Kenya</span><span>10 / Roadmap</span></div>
+    </div>
+  </section>
+
+  <!-- 11 ASK -->
+  <section class="slide">
+    <div class="inner">
+      <div class="eyebrow">The ask · GIB 2026</div>
+      <h2>Capital to grow. Mentors to learn. Network to scale.</h2>
+      <div class="grid-2">
+        <div class="card">
+          <strong>Funding</strong>
+          <p>Raised to date: <strong>€0</strong> (bootstrapped).<br />Looking for: <strong>€10,000</strong> for marketing + burn rate while we validate repeatable acquisition.</p>
+        </div>
+        <div class="card">
+          <strong>What GIB unlocks for us</strong>
+          <ul class="clean" style="margin-top:8px;">
+            <li>Visibility with impact investors & corporates</li>
+            <li>Mentorship on sales / GTM</li>
+            <li>Connections with founders across countries</li>
+            <li>Stage to pitch internationally (Valencia)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <strong>Barriers we are addressing</strong>
+        <p>Sales capacity · supply/demand balance · Paystack/Flutterwave go-live · trust at scale · marketing capital — solved via hire/playbook, landlord-first seeding, payments wiring, moderation stack, and this €10k raise.</p>
+      </div>
+      <div class="footer"><span>Casa Kenya</span><span>11 / Ask</span></div>
+    </div>
+  </section>
+
+  <!-- 12 CLOSE -->
+  <section class="slide slide--dark">
+    <div class="inner">
+      <img class="logo logo--light" src="casa_logo_lockup_horizontal.png" alt="Casa" />
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+        <div class="eyebrow">Close the gap between informal housing and trusted access</div>
+        <h1 style="font-size:44px;">Casa — Find your home<br />on WhatsApp.</h1>
+        <div class="ask-box">
+          <p style="font-size:18px;margin-bottom:10px;"><strong>Nkwain Nobert Ekfuingei</strong> · Founder & Developer</p>
+          <p>+234 800 000 0000 · https://wa.me/2548000000000</p>
+          <p>https://casahomeskenya.com · hello@casahomeskenya.com</p>
+          <p style="margin-top:12px;">Seeking €10,000 · Mentorship · Founder network · Impact partnerships</p>
+        </div>
+      </div>
+      <div class="footer"><span>Casa Kenya · The Gap in Between 2026</span><span>Thank you</span></div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

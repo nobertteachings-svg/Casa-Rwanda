@@ -1,0 +1,9 @@
+[build]
+builder = "RAILPACK"
+buildCommand = "npm run build"
+watchPatterns = ["/marketing/**"]
+
+[deploy]
+startCommand = "npm start"
+healthcheckPath = "/"
+restartPolicyType = "ON_FAILURE"
