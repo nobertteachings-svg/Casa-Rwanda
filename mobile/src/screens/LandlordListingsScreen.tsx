@@ -64,18 +64,19 @@ interface EditForm {
 }
 
 function formFromListing(d: ListingDetail): EditForm {
+  const a = d.amenities ?? {};
   return {
-    rent: String(d.rent),
+    rent: String(d.rent ?? 0),
     town: d.town ?? "",
     neighbourhood: d.neighbourhood ?? "",
     monthsUpfront: String(d.monthsUpfront ?? 0),
-    water: d.amenities.water,
-    parking: d.amenities.parking,
-    fenced: d.amenities.fenced,
-    borehole: d.amenities.borehole,
-    furnished: d.amenities.furnished,
-    security: d.amenities.security,
-    standbyGenerator: d.amenities.standbyGenerator,
+    water: Boolean(a.water),
+    parking: Boolean(a.parking),
+    fenced: Boolean(a.fenced),
+    borehole: Boolean(a.borehole),
+    furnished: Boolean(a.furnished),
+    security: Boolean(a.security),
+    standbyGenerator: Boolean(a.standbyGenerator),
   };
 }
 
@@ -110,10 +111,10 @@ export default function LandlordListingsScreen({
         getMyListings(token),
         getLandlordStats(token).catch(() => ({ listings: [], periodDays: 7 })),
       ]);
-      setListings(res.listings);
-      setStats(st.listings);
+      setListings(res.listings ?? []);
+      setStats(st.listings ?? []);
       const map: Record<string, { views: number; unlocks: number }> = {};
-      for (const s of st.listings) map[s.house_id] = { views: s.views, unlocks: s.unlocks };
+      for (const s of st.listings ?? []) map[s.house_id] = { views: s.views, unlocks: s.unlocks };
       setCardStats(map);
     } catch (e) {
       setError(e instanceof Error ? e.message : m.errorGeneric);

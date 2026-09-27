@@ -166,13 +166,13 @@ export default function ListingDetailModal({
   const current = media[mediaIdx];
   const amenityList = listing
     ? [
-        listing.amenities.water && m.detailWater,
-        listing.amenities.parking && m.detailParking,
-        listing.amenities.fenced && m.detailFenced,
-        listing.amenities.borehole && m.detailBorehole,
-        listing.amenities.furnished && m.detailFurnished,
-        listing.amenities.security && m.detailSecurity,
-        listing.amenities.standbyGenerator && m.detailGenerator,
+        listing.amenities?.water && m.detailWater,
+        listing.amenities?.parking && m.detailParking,
+        listing.amenities?.fenced && m.detailFenced,
+        listing.amenities?.borehole && m.detailBorehole,
+        listing.amenities?.furnished && m.detailFurnished,
+        listing.amenities?.security && m.detailSecurity,
+        listing.amenities?.standbyGenerator && m.detailGenerator,
       ].filter(Boolean)
     : [];
 
@@ -259,15 +259,15 @@ export default function ListingDetailModal({
   }
 
   const meterLabel =
-    listing?.amenities.electricityMeter === "prepaid"
+    listing?.amenities?.electricityMeter === "prepaid"
       ? lang === "fr"
         ? "Prépayé"
         : "Token meter"
-      : listing?.amenities.electricityMeter === "postpaid"
+      : listing?.amenities?.electricityMeter === "postpaid"
         ? lang === "fr"
           ? "Postpayé"
           : "Postpaid bill"
-        : listing?.amenities.electricityMeter === "none"
+        : listing?.amenities?.electricityMeter === "none"
           ? lang === "fr"
             ? "Aucun"
             : "None"

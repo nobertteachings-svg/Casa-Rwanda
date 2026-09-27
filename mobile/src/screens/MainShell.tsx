@@ -8,6 +8,7 @@ import { useCasaTheme } from "../theme/ThemeContext";
 import CasaTabBar, { type TabItem } from "../components/CasaTabBar";
 import AccountScreen, { type FlowLaunch } from "./AccountScreen";
 import BrowseScreen from "./BrowseScreen";
+import AppErrorBoundary from "../components/AppErrorBoundary";
 import FlowWizardModal from "../components/FlowWizardModal";
 import LandlordInterestScreen from "./LandlordInterestScreen";
 import LandlordListingsScreen from "./LandlordListingsScreen";
@@ -277,18 +278,20 @@ export default function MainShell({
       />
 
       {!guest ? (
-        <FlowWizardModal
-          visible={Boolean(flow)}
-          token={token}
-          user={user}
-          uiLanguage={uiLanguage}
-          title={flow?.title ?? ""}
-          startMode={flow?.mode ?? "menu"}
-          extrasPick={flow?.extrasPick}
-          onClose={() => setFlow(null)}
-          onUserUpdate={onUserUpdate}
-          onComplete={() => setFlow(null)}
-        />
+        <AppErrorBoundary>
+          <FlowWizardModal
+            visible={Boolean(flow)}
+            token={token}
+            user={user}
+            uiLanguage={uiLanguage}
+            title={flow?.title ?? ""}
+            startMode={flow?.mode ?? "menu"}
+            extrasPick={flow?.extrasPick}
+            onClose={() => setFlow(null)}
+            onUserUpdate={onUserUpdate}
+            onComplete={() => setFlow(null)}
+          />
+        </AppErrorBoundary>
       ) : null}
     </View>
   );

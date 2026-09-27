@@ -28,9 +28,11 @@ export default class AppErrorBoundary extends Component<Props, State> {
         <View style={styles.wrap}>
           <Text style={styles.title}>Casa hit a problem</Text>
           <Text style={styles.body}>
-            Please close and reopen the app. If this keeps happening, update from the Play Store once a
-            fix is available.
+            Please close this screen and try again. If it keeps happening, reopen the app.
           </Text>
+          {this.state.error.message ? (
+            <Text style={styles.detail}>{this.state.error.message}</Text>
+          ) : null}
           <Pressable style={styles.btn} onPress={() => this.setState({ error: null })}>
             <Text style={styles.btnText}>Try again</Text>
           </Pressable>
@@ -61,6 +63,13 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     color: colors.muted,
     textAlign: "center",
+    marginBottom: spacing.md,
+  },
+  detail: {
+    fontSize: 13,
+    lineHeight: 18,
+    color: colors.mutedLight,
+    textAlign: "center",
     marginBottom: spacing.xl,
   },
   btn: {
@@ -69,5 +78,5 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: spacing.xl,
   },
-  btnText: { color: colors.white, fontWeight: "800", fontSize: 15 },
+  btnText: { color: colors.white ?? "#ffffff", fontWeight: "800", fontSize: 15 },
 });

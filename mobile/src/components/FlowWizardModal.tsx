@@ -186,7 +186,7 @@ export default function FlowWizardModal({
       setError("");
       try {
         const res = await sendAppMessage(token, payload);
-        setActions(res.actions);
+        setActions(res.actions ?? []);
         setSession(res.session);
         onUserUpdate(res.user, res.needsSignup);
         if (
@@ -234,7 +234,7 @@ export default function FlowWizardModal({
         setBusy(true);
         try {
           const res = await startLandlordVerification(token);
-          setActions(res.actions);
+          setActions(res.actions ?? []);
           setSession(res.session);
           onUserUpdate(res.user, false);
         } catch (e) {

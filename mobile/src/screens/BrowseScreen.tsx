@@ -154,14 +154,15 @@ export default function BrowseScreen({
 
   const applyResults = useCallback(
     async (data: { listings: SearchListing[]; total: number; updatedAt: string }, desc: string) => {
-      setListings(data.listings);
-      setTotal(data.total);
+      const rows = data.listings ?? [];
+      setListings(rows);
+      setTotal(data.total ?? rows.length);
       setCachedHint(false);
       setError("");
       setLastSearchDesc(desc);
       onSearchSaved?.(desc);
-      if (data.listings[0]) setSelectedId(data.listings[0].houseId);
-      await saveSearchCache({ listings: data.listings, total: data.total, updatedAt: data.updatedAt });
+      if (rows[0]) setSelectedId(rows[0].houseId);
+      await saveSearchCache({ listings: rows, total: data.total ?? rows.length, updatedAt: data.updatedAt });
     },
     [onSearchSaved]
   );
