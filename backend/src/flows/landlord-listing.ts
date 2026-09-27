@@ -565,8 +565,10 @@ export async function handleLandlordListing(
       }
       if (!draft.photos) draft.photos = [];
 
-      if (messageType === "image" && message?.imageId) {
-        const ref = await persistWhatsAppMedia(message.imageId, "image");
+      if (messageType === "image" && (message?.imageId || message?.mediaRef)) {
+        const ref = message.mediaRef
+          ? message.mediaRef
+          : await persistWhatsAppMedia(message.imageId!, "image");
         draft.photos.push(ref);
       }
 
@@ -589,8 +591,10 @@ export async function handleLandlordListing(
     case "video": {
       if (!draft.videos) draft.videos = [];
 
-      if (messageType === "video" && message?.videoId) {
-        const ref = await persistWhatsAppMedia(message.videoId, "video");
+      if (messageType === "video" && (message?.videoId || message?.mediaRef)) {
+        const ref = message.mediaRef
+          ? message.mediaRef
+          : await persistWhatsAppMedia(message.videoId!, "video");
         draft.videos.push(ref);
         draft.trust_tier = "verified_plus";
       }

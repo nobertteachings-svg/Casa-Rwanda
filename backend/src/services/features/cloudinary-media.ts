@@ -98,6 +98,19 @@ export async function uploadVideoBuffer(buffer: Buffer): Promise<string> {
   return uploadBuffer(buffer, "videos", "video");
 }
 
+/** Fetch image bytes from a cloudinary:… ref for ID scan / app uploads. */
+export async function fetchCloudinaryBuffer(ref: string): Promise<Buffer | null> {
+  const url = cloudinaryDeliveryUrl(ref);
+  if (!url) return null;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    return Buffer.from(await res.arrayBuffer());
+  } catch {
+    return null;
+  }
+}
+
 /** Upload a remote image URL straight to Cloudinary (admin repair / backfill). */
 export async function uploadImageFromUrl(imageUrl: string): Promise<string> {
   if (!isCloudinaryConfigured) {
