@@ -40,6 +40,16 @@ import { screenInsets } from "../theme/insets";
 import { useCasaTheme } from "../theme/ThemeContext";
 
 const MIN_LISTING_PHOTOS = 5;
+const RENT_CHIPS = [...(RENT_PRESETS ?? [50000, 100000, 150000, 250000, 400000, 600000])];
+const MONTH_CHIPS = [...(MONTHS_UPFRONT_OPTIONS ?? [1, 2, 3, 6, 12])];
+
+function townQuarters(town: string): string[] {
+  try {
+    return typeof neighbourhoodsForTown === "function" ? townQuarters(town) : [];
+  } catch {
+    return [];
+  }
+}
 
 function stripMd(text: string): string {
   return text.replace(/\*/g, "");
@@ -583,7 +593,7 @@ export default function FlowWizardModal({
             <ChipRow
               disabled={locked}
               selectedId={String(whatForm.months)}
-              items={MONTHS_UPFRONT_OPTIONS.map((n) => ({ id: String(n), label: String(n) }))}
+              items={MONTH_CHIPS.map((n) => ({ id: String(n), label: String(n) }))}
               onSelect={(id) => setWhatForm((s) => ({ ...s, months: Number(id) }))}
             />
               </>
@@ -635,7 +645,7 @@ export default function FlowWizardModal({
               <ChipRow
                 disabled={locked}
                 selectedId={whereForm.quarter}
-                items={neighbourhoodsForTown(whereForm.town).map((n) => ({ id: n, label: n }))}
+                items={townQuarters(whereForm.town).map((n) => ({ id: n, label: n }))}
                 onSelect={(_id, labelText) => setWhereForm((s) => ({ ...s, quarter: labelText }))}
               />
             ) : null}
@@ -729,7 +739,7 @@ export default function FlowWizardModal({
         return (
           <ChipRow
             disabled={locked}
-            items={MONTHS_UPFRONT_OPTIONS.map((n) => ({ id: String(n), label: String(n) }))}
+            items={MONTH_CHIPS.map((n) => ({ id: String(n), label: String(n) }))}
             onSelect={(id) => void pickChoice(id)}
           />
         );
@@ -762,7 +772,7 @@ export default function FlowWizardModal({
           quarterInput,
           setQuarterInput,
           lang === "fr" ? "Kimironko, Remera, Nyarutarama…" : "Kimironko, Remera, Nyarutarama…",
-          town ? neighbourhoodsForTown(town).map((n) => ({ id: n, label: n })) : []
+          town ? townQuarters(town).map((n) => ({ id: n, label: n })) : []
         );
       }
       if (step === "location") {
@@ -954,7 +964,14 @@ export default function FlowWizardModal({
     return null;
   }
 
-  const stepControls = renderStepControls();
+  let stepControls = null;
+  try {
+    stepControls = renderStepControls();
+  } catch (e) {
+    stepControls = (
+      <Text style={styles.error}>{e instanceof Error ? e.message : m.errorGeneric}</Text>
+    );
+  }
   const filteredMenuOptions =
     menu && flow === "landlord_listing" && step === "mode"
       ? menu.options.filter((o) => o.id !== "1")
