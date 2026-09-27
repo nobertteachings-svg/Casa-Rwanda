@@ -25,6 +25,7 @@ import {
   updateListingStatus,
   uploadMedia,
 } from "../api/client";
+import { pickerAssetToBase64 } from "../utils/picker-asset";
 import CachedImage from "../components/CachedImage";
 import EmptyState from "../components/EmptyState";
 import LandlordVerificationBadge from "../components/LandlordVerificationBadge";
@@ -233,18 +234,28 @@ export default function LandlordListingsScreen({
     if (!perm.granted) return;
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: kind === "video" ? ["videos"] : ["images"],
-      quality: 0.7,
+      quality: 0.55,
       base64: true,
-      videoMaxDuration: 90,
+      videoMaxDuration: 45,
     });
-    if (result.canceled || !result.assets?.[0]?.base64) return;
+    const asset = result.assets?.[0];
+    if (result.canceled || !asset?.uri) return;
     setEditBusy(true);
     try {
-      const uploaded = await uploadMedia(token, kind, result.assets[0].base64);
+      const uploaded = await uploadMedia(token, kind, await pickerAssetToBase64(asset));
       await updateListing(token, houseId, kind === "video" ? { videosAdd: [uploaded.ref] } : { photosAdd: [uploaded.ref] });
       await load();
     } catch (e) {
-      Alert.alert(m.errorGeneric, e instanceof Error ? e.message : "");
+      const code = e instanceof Error ? e.message : "";
+      const detail =
+        code === "FILE_TOO_LARGE"
+          ? m.errorUploadTooLarge
+          : code === "READ_FAILED"
+            ? m.errorUploadRead
+            : e instanceof Error
+              ? e.message
+              : "";
+      Alert.alert(m.errorGeneric, detail);
     } finally {
       setEditBusy(false);
     }

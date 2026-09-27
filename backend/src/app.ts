@@ -76,7 +76,7 @@ export function createApp() {
   );
 
   app.use("/webhook", webhookRateLimit, webhookJson, webhookRouter);
-  app.use(json({ limit: "1mb" }));
+  app.use(json({ limit: "32mb" }));
 
   app.get("/health", async (_req, res) => {
     try {
@@ -124,6 +124,16 @@ export function createApp() {
   app.use(legalRouter);
 
   app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
+    const status = typeof err === "object" && err && "status" in err ? Number((err as { status: number }).status) : 0;
+    const tooLarge =
+      status === 413 ||
+      (typeof err === "object" && err && "type" in err && (err as { type: string }).type === "entity.too.large");
+    if (tooLarge) {
+      if (!res.headersSent) {
+        res.status(413).json({ error: "File too large" });
+      }
+      return;
+    }
     logger.error("Unhandled Express error", { err: String(err) });
     captureError(err, { component: "express" });
     if (!res.headersSent) {

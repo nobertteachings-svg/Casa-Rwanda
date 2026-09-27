@@ -16,6 +16,7 @@ import CasaVideoPlayer from "./CasaVideoPlayer";
 import ScreenLoader from "./ScreenLoader";
 import type { CasaUser, Language, SessionInfo, UIAction } from "../api/client";
 import { sendAppMessage, startLandlordVerification, uploadMedia } from "../api/client";
+import { pickerAssetToBase64 } from "../utils/picker-asset";
 import OptionGrid, { ChipRow } from "./OptionGrid";
 import { RWANDA_DISTRICTS, regionLabel } from "../constants/regions";
 import {
@@ -280,23 +281,27 @@ export default function FlowWizardModal({
       const result = fromLibrary
         ? await ImagePicker.launchImageLibraryAsync({
             mediaTypes: kind === "video" ? ["videos"] : ["images"],
-            quality: 0.7,
+            quality: 0.55,
             base64: true,
-            videoMaxDuration: 90,
+            videoMaxDuration: 45,
           })
         : kind === "video"
-          ? await ImagePicker.launchCameraAsync({ mediaTypes: ["videos"], videoMaxDuration: 90, base64: true })
-          : await ImagePicker.launchCameraAsync({ mediaTypes: ["images"], quality: 0.7, base64: true });
-      if (result.canceled || !result.assets?.[0]?.base64) {
-        if (!result.canceled) setError(m.errorGeneric);
+          ? await ImagePicker.launchCameraAsync({ mediaTypes: ["videos"], videoMaxDuration: 45, base64: true })
+          : await ImagePicker.launchCameraAsync({ mediaTypes: ["images"], quality: 0.55, base64: true });
+      const asset = result.assets?.[0];
+      if (result.canceled || !asset?.uri) {
         return;
       }
-      const uploaded = await uploadMedia(token, kind, result.assets[0].base64);
+      const data = await pickerAssetToBase64(asset);
+      const uploaded = await uploadMedia(token, kind, data);
       await send({ mediaRef: uploaded.ref, mediaKind: kind });
       if (kind === "image") setPhotoCount((c) => c + 1);
       if (kind === "video") setVideoCount((c) => c + 1);
     } catch (e) {
-      setError(e instanceof Error ? e.message : m.errorGeneric);
+      const code = e instanceof Error ? e.message : "";
+      if (code === "FILE_TOO_LARGE") setError(m.errorUploadTooLarge);
+      else if (code === "READ_FAILED") setError(m.errorUploadRead);
+      else setError(e instanceof Error ? e.message : m.errorGeneric);
     } finally {
       setUploadBusy(false);
     }
